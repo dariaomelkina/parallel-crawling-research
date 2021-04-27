@@ -1,2 +1,2 @@
-# parallel-crawling-research
+# Parallel crawling research
 Repository with implementation of crawlers from the paper.
