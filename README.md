@@ -10,6 +10,7 @@ _DRAFT_
 
 In order for testing of the crawlers to be consistent and representative we have 
 set some parameters, which should be the same for all the crawlers:
+* **OS (for benchmarking):** Ubuntu (_which one?_)
 * **Compiler:** gcc 10.2.0-6 version
 * **CMake:** 3.17+ version
 
