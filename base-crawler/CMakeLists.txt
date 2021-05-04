@@ -5,8 +5,12 @@ set(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
 
-include_directories(include)
+include_directories(include ${CURL_INCLUDE_DIRS})
 add_executable(main src/main.cpp)
+
+find_package(CURL REQUIRED)
+target_link_libraries(main ${CURL_LIBRARIES})
+
 
 # TODO: PVS-studio, sanitizers
 # PVS-Studio

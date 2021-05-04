@@ -14,4 +14,5 @@ mkdir build
 
 ```
 ## Requirements:
+* [curlpp](https://www.curlpp.org/)
 
