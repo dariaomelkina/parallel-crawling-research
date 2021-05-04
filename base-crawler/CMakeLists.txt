@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(base_crawler)
 
 set(CMAKE_CXX_STANDARD 20)
-#SET(CMAKE_CXX_COMPILER /usr/bin/gcc)
+SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
 
 include_directories(include)
