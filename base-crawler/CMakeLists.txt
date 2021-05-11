@@ -2,14 +2,13 @@ cmake_minimum_required(VERSION 3.17)
 project(base_crawler)
 
 set(CMAKE_CXX_STANDARD 20)
-SET(CMAKE_CXX_COMPILER /usr/bin/g++)
+#SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
+include_directories(include)
+add_executable(main src/main.cpp src/BaseCrawler.cpp include/BaseCrawler.h)
 
-include_directories(include ${CURL_INCLUDE_DIRS})
-add_executable(main src/main.cpp)
-
-find_package(CURL REQUIRED)
-target_link_libraries(main ${CURL_LIBRARIES})
+find_package(TBB REQUIRED COMPONENTS tbb)
+target_link_libraries(main TBB::tbb)
 
 
 # TODO: PVS-studio, sanitizers

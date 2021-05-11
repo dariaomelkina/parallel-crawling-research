@@ -7,21 +7,17 @@
 #include <vector>
 #include <queue>
 #include <sstream>
-/* Trying out an http library (?) for c++
- * (a c++ wrapper for libcurl) */
-#include <curlpp/cURLpp.hpp>
-#include <curlpp/Options.hpp>
+#include "tbb/concurrent_queue.h"
+
 
 int main(int argc, char **argv) {
-    std::queue<std::string> test_url_queue;
+    tbb::concurrent_queue<std::string> test_url_queue;
     test_url_queue.push("https://en.wikipedia.org/wiki/Greek_language");
-//    test_queue.push("https://en.wikipedia.org/wiki/Cartography");
+    test_url_queue.push("https://en.wikipedia.org/wiki/Cartography");
+    test_url_queue.push("");
+    test_url_queue.push("");
+    test_url_queue.push("");
 
-    curlpp::Cleanup myCleanup;
-    std::ostringstream os;
-    os << curlpp::options::Url(std::string("https://en.wikipedia.org/wiki/Greek_language"));
-
-    std::cout << os.str() << std::endl;
 
     return 0;
 }
