@@ -8,7 +8,8 @@ include_directories(include)
 add_executable(main src/main.cpp src/BaseCrawler.cpp include/BaseCrawler.h)
 
 find_package(TBB REQUIRED COMPONENTS tbb)
-target_link_libraries(main TBB::tbb)
+find_package(Threads REQUIRED)
+target_link_libraries(main TBB::tbb Threads::Threads)
 
 
 # TODO: PVS-studio, sanitizers

@@ -12,15 +12,14 @@
 
 /* For testing and demonstration purposes. */
 int main(int argc, char **argv) {
-    tbb::concurrent_queue<std::string> test_url_queue;
-    test_url_queue.push("https://en.wikipedia.org/wiki/Green_anarchism");
-    test_url_queue.push("https://en.wikipedia.org/wiki/IUCN_Red_List");
-    test_url_queue.push("https://en.wikipedia.org/wiki/BirdLife_International");
-    test_url_queue.push("https://en.wikipedia.org/wiki/Greek_language");
-    test_url_queue.push("https://en.wikipedia.org/wiki/Cartography");
-    test_url_queue.push("https://en.wikipedia.org/wiki/Gecko");
+    std::vector<std::string> test_urls = {"https://en.wikipedia.org/wiki/Green_anarchism",
+                                          "https://en.wikipedia.org/wiki/IUCN_Red_List",
+                                          "https://en.wikipedia.org/wiki/BirdLife_International",
+                                          "https://en.wikipedia.org/wiki/Greek_language",
+                                          "https://en.wikipedia.org/wiki/Cartography",
+                                          "https://en.wikipedia.org/wiki/Gecko"};
 
-    BaseCrawler crawler = BaseCrawler(test_url_queue, 1, 2);
+    BaseCrawler crawler = BaseCrawler(test_urls, 2, 2);
 
     crawler.run();
 
