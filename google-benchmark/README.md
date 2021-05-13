@@ -42,3 +42,13 @@ If you want to install the library globally, also run:
 ```
 sudo cmake --build "build" --config Release --target install
 ```
+
+### Usage:
+After all of the above is completed, benchmark main.cpp:
+
+```bash
+cd google-benchmark
+mkdir bin && cd bin
+cmake .. && make
+./google-benchmark
+``` 

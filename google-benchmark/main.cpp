@@ -6,11 +6,10 @@ static void BM_StringCreation(benchmark::State& state) {
         state.PauseTiming();
         // preparing data if needed here
         state.ResumeTiming();
-        // fell free to call your function here and benchmark it
+        // feel free to call your function here and benchmark it
 //        std::cout << 'dskfkdsf' << std::endl;
         for (int i = 0; i < state.range(0); ++i) {
             std::string empty_string;
-
         }
     }
 }
