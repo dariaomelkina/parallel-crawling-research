@@ -20,8 +20,7 @@ void *ThreadCrawler::parsing_thread(void *item) {
     // increasing the number of available threads
     sem_post(args->sem_ptr);
 
-    // increasing the number of collected items
-    sem_post(args->finish_sem_ptr);
+    delete args;
     return nullptr;
 }
 
@@ -33,7 +32,6 @@ void ThreadCrawler::process_url() {
     args->sem_ptr = &sem;
     args->mutex_ptr = &mutex;
     args->result_ptr = &output_queue;
-    args->finish_sem_ptr = &finish_sem;
 
     pthread_t thread;
     pthread_create(&thread, nullptr, ThreadCrawler::parsing_thread, (void *) args);
@@ -51,10 +49,6 @@ ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) 
     if (sem_init(&sem, 0, max_workers) != 0) {
         throw std::runtime_error("Can't init the thread limit semaphore");
     }
-    // semaphore for counting the number of processed items (will be used later to wait for all threads to finish)
-    if (sem_init(&finish_sem, 0, 0) != 0) {
-        throw std::runtime_error("Can't init the finish semaphore");
-    }
 }
 
 
@@ -68,13 +62,12 @@ void ThreadCrawler::process_queue() {
     }
 
     // waiting for all workers to finish
-    for (size_t i = 0; i < items_count; i++) {
-        sem_wait(&finish_sem);
+    for (size_t i = 0; i < max_workers; i++) {
+        sem_wait(&sem);
     }
 }
 
 ThreadCrawler::~ThreadCrawler() {
     pthread_mutex_destroy(&mutex);
     sem_destroy(&sem);
-    sem_destroy(&finish_sem);
 }
