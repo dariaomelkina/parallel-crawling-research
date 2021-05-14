@@ -5,14 +5,20 @@ set(CMAKE_CXX_STANDARD 20)
 # TODO: we should use a specific version of gcc for benchmarking
 #SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
-include_directories(requests/inc thread-per-socket/inc)
-add_executable(main-test thread-per-socket/src/main.cpp requests/inc/requests.h requests/src/requests.cpp
+include_directories(requests/inc thread-per-socket/inc abstract-crawler/inc)
+
+add_executable(main-test
+        # Main file (currently from thread-per-socket crawler directory) TODO: change
+        thread-per-socket/src/main.cpp
+        # Requests functions
+        requests/inc/requests.h requests/src/requests.cpp
+        # Thread-per-socket crawler
         thread-per-socket/inc/ThreadCrawler.h thread-per-socket/src/ThreadCrawler.cpp
+        # Abstract crawler
         abstract-crawler/inc/AbstractCrawler.h abstract-crawler/src/AbstractCrawler.cpp)
 
 find_package(Threads REQUIRED)
 target_link_libraries(main-test Threads::Threads)
-
 
 # TODO: sanitizers
 # PVS-Studio: uncomment code below for testing
