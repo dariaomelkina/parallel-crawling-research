@@ -30,6 +30,8 @@ void BaseCrawler::run() {
     }
 }
 
+// The function for a synchronous worker, we can just change it to version_2 but provide 
+// a limit for the queue
 void BaseCrawler::worker_version_1() {
     while (!this->url_queue.empty()) {
         std::string url;
@@ -48,6 +50,7 @@ void BaseCrawler::worker_version_1() {
     }
 }
 
+// A function for an asynchronous worker
 void BaseCrawler::worker_version_2() {
     while (!this->url_queue.empty()) {
         std::vector<std::string> urls_to_connect;
