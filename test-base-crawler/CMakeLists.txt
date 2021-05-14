@@ -5,11 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 #SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
 include_directories(include)
-add_executable(main src/main.cpp src/BaseCrawler.cpp include/BaseCrawler.h)
+add_executable(test-base-crawler src/main.cpp src/BaseCrawler.cpp include/BaseCrawler.h)
 
 find_package(TBB REQUIRED COMPONENTS tbb)
 find_package(Threads REQUIRED)
-target_link_libraries(main TBB::tbb Threads::Threads)
+target_link_libraries(test-base-crawler TBB::tbb Threads::Threads)
 
 
 # TODO: PVS-studio, sanitizers
