@@ -19,9 +19,9 @@ void BaseCrawler::run() {
     std::vector<std::thread> workers;
     workers.reserve(this->number_of_workers);
 
-    /* Wake up workers. */
+    /* Wake up asynchronous workers. */
     for (int i = 0; i < this->number_of_workers; i++) {
-        workers.emplace_back(&BaseCrawler::worker_version_2, this);
+        workers.emplace_back(&BaseCrawler::async_worker, this);
     }
 
     /* Workers go back to eternal sleep. */
@@ -32,7 +32,7 @@ void BaseCrawler::run() {
 
 // The function for a synchronous worker, we can just change it to version_2 but provide 
 // a limit for the queue
-void BaseCrawler::worker_version_1() {
+void BaseCrawler::sync_worker() {
     while (!this->url_queue.empty()) {
         std::string url;
         bool successful_connection;
@@ -51,7 +51,7 @@ void BaseCrawler::worker_version_1() {
 }
 
 // A function for an asynchronous worker
-void BaseCrawler::worker_version_2() {
+void BaseCrawler::async_worker() {
     while (!this->url_queue.empty()) {
         std::vector<std::string> urls_to_connect;
         urls_to_connect.reserve(this->urls_per_worker);

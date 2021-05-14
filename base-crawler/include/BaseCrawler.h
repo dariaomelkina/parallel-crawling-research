@@ -26,11 +26,11 @@ public:
     void run();
 
     /* Pops urls from the queue and tries to connect to them. */
-    void worker_version_1();
+    void sync_worker();
 
     /* TODO: I am not sure, which of these workers should be used,
      *  perhaps run() function should be different, too. */
-    void worker_version_2();
+    void async_worker();
 
     /* Establishes connection to server at the given url.
      * That function is going to depend on the chose method.
