@@ -11,4 +11,4 @@ add_executable(process src/main.cpp ../requests/inc/requests.h ../requests/src/r
         ../abstract-crawler/src/AbstractCrawler.cpp src/ProcessCrawler.cpp)
 
 target_link_libraries(process ${CMAKE_THREAD_LIBS_INIT})
-target_link_libraries(threads ${Boost_LIBRARIES} rt)
+target_link_libraries(process ${Boost_LIBRARIES} rt)
