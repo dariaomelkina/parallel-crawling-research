@@ -3,13 +3,13 @@
 //
 #include "requests.h"
 
-parsed_url_t parse_url(const std::string& url) {
+parsed_url_t parse_url(const std::string &url) {
     parsed_url_t parsed_url;
 
     const std::string separator = "://";
     std::string::const_iterator protocol_itr = std::search(
-        url.begin(), url.end(),
-        separator.begin(), separator.end()
+            url.begin(), url.end(),
+            separator.begin(), separator.end()
     );
     if (protocol_itr == url.end()) {
         throw std::runtime_error("Invalid url");
@@ -18,30 +18,28 @@ parsed_url_t parse_url(const std::string& url) {
     parsed_url.protocol = url.substr(0, protocol_index);
 
     size_t domain_index = url.find(
-        '/', protocol_index + 3
+            '/', protocol_index + 3
     );
 
     parsed_url.domain = url.substr(protocol_index + 3, domain_index - protocol_index - 3);
     if (domain_index == std::string::npos) {
         parsed_url.path = "/";
-    }
-    else {
+    } else {
         parsed_url.path = url.substr(domain_index, std::string::npos);
     }
 
 
-    return  parsed_url;
+    return parsed_url;
 
 }
 
 
-std::string get_html(const std::string& url, const std::string& additional_params) {
+std::string get_html(const std::string &url, const std::string &additional_params) {
     parsed_url_t parsed_url = parse_url(url);
     uint16_t port;
     if (parsed_url.protocol == "http") {
         port = HTTP_PORT;
-    }
-    else {
+    } else {
         throw std::runtime_error("Only http");
     }
 
@@ -51,37 +49,36 @@ std::string get_html(const std::string& url, const std::string& additional_param
     struct sockaddr_in server{};
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    server.sin_addr.s_addr = *((unsigned long*)host->h_addr);
+    server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
 
-    //if(inet_pton ( AF_INET, inet_ntoa(*(struct in_addr*)host->h_addr), &server.sin_addr)<=0)
-    //{
-    //    printf ( "\nInvalid address ! This IP Address is not supported !\n" );
-    //    return -1;
-    //}
-    //std::cout << inet_ntoa(*(struct in_addr*)host->h_addr) << std::endl;
 
+    // creating socket descriptor
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
         throw std::runtime_error("Can't create socket");
     }
 
-    if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
+    // establishing a connection
+    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
         throw std::runtime_error("Can't connect to host");
     }
 
+    // building a http request that takes html from the given website
     std::stringstream req_stream;
     req_stream << "GET " << parsed_url.path << " HTTP/1.1\r\n"
-               << "Host: " <<  parsed_url.domain << "\r\n"
+               << "Host: " << parsed_url.domain << "\r\n"
                << additional_params
                << "Connection: close\r\n"
                << "\r\n";
     std::string request = req_stream.str();
 
 
+    // sending http request
     if (send(sock, request.c_str(), request.size(), 0) < 0) {
         throw std::runtime_error("Error while sending request");
     }
 
+    // saving response to buffer by parts and then appending it to the string object
     std::string response{};
     char buffer[RESPONSE_BUFFER_SIZE];
     while (true) {

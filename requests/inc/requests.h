@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <algorithm>
 #include <exception>
+#include <semaphore.h>
+#include <pthread.h>
 
 
 #define RESPONSE_BUFFER_SIZE 512

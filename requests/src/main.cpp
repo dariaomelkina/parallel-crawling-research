@@ -1,7 +1,7 @@
 #include <iostream>
 #include "requests.h"
 
-
+/* For testing and demonstration purposes. */
 int main() {
 
     std::string url = "http://google.com/";

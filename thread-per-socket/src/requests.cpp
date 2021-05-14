@@ -3,13 +3,13 @@
 //
 #include "requests.h"
 
-parsed_url_t parse_url(const std::string& url) {
+parsed_url_t parse_url(const std::string &url) {
     parsed_url_t parsed_url;
 
     const std::string separator = "://";
     std::string::const_iterator protocol_itr = std::search(
-        url.begin(), url.end(),
-        separator.begin(), separator.end()
+            url.begin(), url.end(),
+            separator.begin(), separator.end()
     );
     if (protocol_itr == url.end()) {
         throw std::runtime_error("Invalid url");
@@ -18,30 +18,28 @@ parsed_url_t parse_url(const std::string& url) {
     parsed_url.protocol = url.substr(0, protocol_index);
 
     size_t domain_index = url.find(
-        '/', protocol_index + 3
+            '/', protocol_index + 3
     );
 
     parsed_url.domain = url.substr(protocol_index + 3, domain_index - protocol_index - 3);
     if (domain_index == std::string::npos) {
         parsed_url.path = "/";
-    }
-    else {
+    } else {
         parsed_url.path = url.substr(domain_index, std::string::npos);
     }
 
 
-    return  parsed_url;
+    return parsed_url;
 
 }
 
 
-std::string get_html(const std::string& url, const std::string& additional_params) {
+std::string get_html(const std::string &url, const std::string &additional_params) {
     parsed_url_t parsed_url = parse_url(url);
     uint16_t port;
     if (parsed_url.protocol == "http") {
         port = HTTP_PORT;
-    }
-    else {
+    } else {
         throw std::runtime_error("Only http");
     }
 
@@ -51,7 +49,7 @@ std::string get_html(const std::string& url, const std::string& additional_param
     struct sockaddr_in server{};
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    server.sin_addr.s_addr = *((unsigned long*)host->h_addr);
+    server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
 
 
     // creating socket descriptor
@@ -61,14 +59,14 @@ std::string get_html(const std::string& url, const std::string& additional_param
     }
 
     // establishing a connection
-    if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
+    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
         throw std::runtime_error("Can't connect to host");
     }
 
     // building a http request that takes html from the given website
     std::stringstream req_stream;
     req_stream << "GET " << parsed_url.path << " HTTP/1.1\r\n"
-               << "Host: " <<  parsed_url.domain << "\r\n"
+               << "Host: " << parsed_url.domain << "\r\n"
                << additional_params
                << "Connection: close\r\n"
                << "\r\n";
