@@ -44,11 +44,20 @@ sudo cmake --build "build" --config Release --target install
 ```
 
 ### Usage:
-After all of the above is completed, benchmark main.cpp:
+
+###### Enable maximal CPU frequency
+```bash
+sudo cpupower frequency-set --governor performance
+```
+
+###### After all of the above is completed, benchmark main.cpp:
 
 ```bash
 cd google-benchmark
 mkdir bin && cd bin
 cmake .. && make
-./google-benchmark
+./google-benchmark --benchmark_format=console
+
+# Alternatively, if you want to output to file(csv/json) for easier plotting, use the following:
+./google-benchmark --benchmark_format=json --benchmark_out=result.json
 ``` 

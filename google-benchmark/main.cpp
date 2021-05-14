@@ -13,7 +13,23 @@ static void BM_StringCreation(benchmark::State& state) {
         }
     }
 }
-// Register the function as a benchmark and passing an argument
-BENCHMARK(BM_StringCreation)->Args({10, 0})->Arg(100)->Arg(1000);
+// Register the function as a benchmark and passing an argument, number of iterations as a constraint
+// BENCHMARK(BM_StringCreation)->Args({10, 0})->Arg(100)->Arg(1000)->Iterations(100);
+// Time in seconds, as a constraint
+BENCHMARK(BM_StringCreation)->Args({10, 0})->Arg(100)->Arg(1000)->MinTime(1);
+
+//// function to benchmark multiple thread programs
+//static void BM_MultiThreaded(benchmark::State& state) {
+//    if (state.thread_index == 0) {
+//        // Setup code here.
+//    }
+//    for (auto _ : state) {
+//        // Run the test as normal.
+//    }
+//    if (state.thread_index == 0) {
+//        // Teardown code here.
+//    }
+//}
+//BENCHMARK(BM_MultiThreaded)->Threads(2);
 
 BENCHMARK_MAIN();
