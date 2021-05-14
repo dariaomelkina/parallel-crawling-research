@@ -9,7 +9,7 @@ include_directories(requests/inc thread-per-socket/inc abstract-crawler/inc)
 
 add_executable(main-test
         # Main file (currently from thread-per-socket crawler directory) TODO: change
-        thread-per-socket/src/main.cpp
+        google-benchmark/main.cpp
         # Requests functions
         requests/inc/requests.h requests/src/requests.cpp
         # Thread-per-socket crawler

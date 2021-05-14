@@ -22,9 +22,9 @@ int main() {
     x.process_queue();
 
     // getting the output
-    while (!x.is_empty()) {
-        std::cout << x.get_processed_item() << std::endl;
-    }
+    //while (!x.is_empty()) {
+        //std::cout << x.get_processed_item() << std::endl;
+    //}
 
     return 0;
 }
