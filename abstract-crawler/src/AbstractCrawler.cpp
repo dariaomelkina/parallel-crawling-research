@@ -6,11 +6,11 @@
 #include "AbstractCrawler.h"
 
 
-void  AbstractCrawler::add_url(std::string& url) {
+void AbstractCrawler::add_url(std::string &url) {
     input_queue.emplace(std::move(url));
 }
 
-std::string AbstractCrawler::send_request(const std::string& url) {
+std::string AbstractCrawler::send_request(const std::string &url) {
     return get_html(url, ADDITIONAL_PARAMS);
 }
 

@@ -4,17 +4,16 @@
 #include "ThreadCrawler.h"
 
 
-
 int main() {
     std::vector<std::string> test_urls = {"http://www.example.com/",
                                           "http://www.example.com/",
                                           "http://www.example.com/"};
 
 
-    ThreadCrawler x  = ThreadCrawler(4);
+    ThreadCrawler x = ThreadCrawler(4);
 
     // adding links to the crawler
-    for (auto& url: test_urls) {
+    for (auto &url: test_urls) {
         std::cout << url << std::endl;
         x.add_url(url);
     }

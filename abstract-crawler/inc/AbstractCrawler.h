@@ -10,7 +10,7 @@
 #include <exception>
 #include <utility>
 
-/* template for a crawle */
+/* Template for a crawler */
 class AbstractCrawler {
 protected:
     std::queue<std::string> input_queue;
@@ -20,13 +20,13 @@ protected:
     virtual void process_url() = 0;
 
 public:
-    explicit AbstractCrawler(size_t _max_workers) : max_workers(_max_workers){};
+    explicit AbstractCrawler(size_t _max_workers) : max_workers(_max_workers) {};
 
     const static std::string ADDITIONAL_PARAMS;
 
-    static std::string send_request(const std::string& url);
+    static std::string send_request(const std::string &url);
 
-    void add_url(std::string& url);
+    void add_url(std::string &url);
 
     bool is_empty();
 
@@ -36,7 +36,6 @@ public:
 
 
 };
-
 
 
 #endif //THREADS_ABSTRACTCRAWLER_H

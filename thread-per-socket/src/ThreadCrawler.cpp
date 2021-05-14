@@ -5,10 +5,8 @@
 #include "ThreadCrawler.h"
 
 
-
-
-void* ThreadCrawler::parsing_thread(void* item) {
-    auto args = (parsing_args_t*) item;
+void *ThreadCrawler::parsing_thread(void *item) {
+    auto args = (parsing_args_t *) item;
 
     //getting html using http request TODO: error handling
     auto html = send_request(args->url);
@@ -28,7 +26,7 @@ void* ThreadCrawler::parsing_thread(void* item) {
 }
 
 void ThreadCrawler::process_url() {
-    auto* args = new parsing_args_t;
+    auto *args = new parsing_args_t;
     // getting url from the queue and passing args to the thread
     args->url = std::move(input_queue.front());
     input_queue.pop();
@@ -38,13 +36,13 @@ void ThreadCrawler::process_url() {
     args->finish_sem_ptr = &finish_sem;
 
     pthread_t thread;
-    pthread_create(&thread, nullptr, ThreadCrawler::parsing_thread, (void*) args);
+    pthread_create(&thread, nullptr, ThreadCrawler::parsing_thread, (void *) args);
     // detaching thread so that we don't need to store it later
     pthread_detach(thread);
     items_count += 1;
 }
 
-ThreadCrawler::ThreadCrawler(size_t max_workers): AbstractCrawler(max_workers) {
+ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
     // mutex for output queue
     if (pthread_mutex_init(&mutex, nullptr) != 0) {
         throw std::runtime_error("Can't init the mutex");
