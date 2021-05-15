@@ -2,16 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 project(google-benchmark CXX)
 
 set(CMAKE_CXX_STANDARD 14)
-# set (CMAKE_CXX_FLAGS "--benchmark_format=json")
-# add_compile_options(--benchmark_format=json)
+
+add_executable(google-benchmark main.cpp)
 
 find_package(benchmark REQUIRED)
 
-ADD_LIBRARY(LibsModule main.cpp)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(google-benchmark benchmark::benchmark Threads::Threads)
 
-target_link_libraries(LibsModule benchmark::benchmark)
 
-add_executable(google-benchmark main.cpp)
-# target_compile_options(google-benchmark PRIVATE --benchmark_format=json)
-
-target_link_libraries(google-benchmark LibsModule)
