@@ -11,9 +11,9 @@ parsed_url_t parse_url(const std::string &url) {
             url.begin(), url.end(),
             separator.begin(), separator.end()
     );
-    if (protocol_itr == url.end()) {
-        throw std::runtime_error("Invalid url");
-    }
+    //if (protocol_itr == url.end()) {
+        //throw std::runtime_error("Invalid url");
+    //}
     size_t protocol_index = protocol_itr - url.begin();
     parsed_url.protocol = url.substr(0, protocol_index);
 

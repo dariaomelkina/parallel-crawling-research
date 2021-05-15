@@ -3,7 +3,9 @@ project(google-benchmark CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(google-benchmark main.cpp)
+include_directories(../thread-per-socket/inc ../abstract-crawler/inc ../requests/inc ../process-per-socket/inc)
+add_executable(google-benchmark main.cpp ../thread-per-socket/src/ThreadCrawler.cpp
+	../abstract-crawler/src/AbstractCrawler.cpp ../requests/src/requests.cpp ../process-per-socket/src/ProcessCrawler.cpp)
 
 find_package(benchmark REQUIRED)
 
