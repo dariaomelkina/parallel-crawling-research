@@ -6,8 +6,8 @@
 #include "AbstractCrawler.h"
 
 
-void AbstractCrawler::add_url(std::string &url) {
-    input_queue.emplace(std::move(url));
+void AbstractCrawler::add_url(const std::string &url) {
+    input_queue.emplace(url);
 }
 
 std::string AbstractCrawler::send_request(const std::string &url) {

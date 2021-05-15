@@ -26,7 +26,7 @@ public:
 
     static std::string send_request(const std::string &url);
 
-    void add_url(std::string &url);
+    void add_url(const std::string &url);
 
     bool is_empty();
 
