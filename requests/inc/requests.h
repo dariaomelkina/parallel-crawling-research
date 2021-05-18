@@ -31,6 +31,6 @@ struct parsed_url_t {
 parsed_url_t parse_url(const std::string &url);
 
 
-std::string get_html(const std::string &url, const std::string &additional_params);
+int send_request(const std::string &url, const std::string &additional_params);
 
 #endif //CRAWLERS_REQUESTS_H

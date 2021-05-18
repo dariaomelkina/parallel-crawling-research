@@ -34,7 +34,7 @@ parsed_url_t parse_url(const std::string &url) {
 }
 
 
-std::string get_html(const std::string &url, const std::string &additional_params) {
+int send_request(const std::string &url, const std::string &additional_params) {
     parsed_url_t parsed_url = parse_url(url);
     uint16_t port;
     if (parsed_url.protocol == "http") {
@@ -78,19 +78,6 @@ std::string get_html(const std::string &url, const std::string &additional_param
         throw std::runtime_error("Error while sending request");
     }
 
-    // saving response to buffer by parts and then appending it to the string object
-    std::string response{};
-    char buffer[RESPONSE_BUFFER_SIZE];
-    while (true) {
-        size_t char_read = read(sock, buffer, RESPONSE_BUFFER_SIZE);
-        if (char_read == 0) {
-            break;
-        }
-        response.append(buffer, char_read);
-    }
-
-    close(sock);
-
-    return response;
+    return sock;
 
 }
