@@ -30,7 +30,6 @@
 
 class ProcessCrawler: public AbstractCrawler {
 protected:
-    static size_t id;
     static void* create_mmap(size_t size);
 
     sem_t* workers_sem_ptr;
