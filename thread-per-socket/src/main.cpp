@@ -6,8 +6,8 @@
 
 int main() {
     std::vector<std::string> test_urls = {"http://www.example.com/",
-                                          "http://www.example.com/",
-                                          "http://www.example.com/"};
+                                          "http://www.exmple.com/",
+                                          "http://www.exmple.com/"};
 
 
     ThreadCrawler x = ThreadCrawler(4);
@@ -22,9 +22,9 @@ int main() {
     x.process_queue();
 
     // getting the output
-    //while (!x.is_empty()) {
-        //std::cout << x.get_processed_item() << std::endl;
-    //}
+    while (!x.is_empty()) {
+        std::cout << x.get_processed_item() << std::endl;
+    }
 
     return 0;
 }

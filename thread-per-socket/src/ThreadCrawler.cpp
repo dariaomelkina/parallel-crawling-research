@@ -9,12 +9,24 @@ void *ThreadCrawler::parsing_thread(void *item) {
     auto args = (parsing_args_t *) item;
 
     //getting html using http request TODO: error handling
-    auto html = send_request(args->url);
 
+    int sock = get_socket(args->url);
+
+    std::string response{};
+    char buffer[RESOPONSE_BUFFER_SIZE];
+    while (true) {
+        size_t char_read = read(sock, buffer, RESOPONSE_BUFFER_SIZE);
+        if (char_read == 0) {
+            break;
+        }
+        response.append(buffer, char_read);
+    }
+
+    close(sock);
 
     // sending result to result queue
     pthread_mutex_lock(args->mutex_ptr);
-    args->result_ptr->emplace(std::move(html));
+    args->result_ptr->emplace(std::move(response));
     pthread_mutex_unlock(args->mutex_ptr);
 
     // increasing the number of available threads

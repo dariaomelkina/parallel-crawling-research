@@ -5,9 +5,12 @@
 #ifndef THREADS_THREADCRAWLER_H
 #define THREADS_THREADCRAWLER_H
 
-#include "AbstractCrawler.h"
 #include "semaphore.h"
 #include "pthread.h"
+
+#include "AbstractCrawler.h"
+
+#define RESOPONSE_BUFFER_SIZE 512
 
 struct parsing_args_t {
     std::string url;

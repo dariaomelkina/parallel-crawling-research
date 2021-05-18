@@ -25,17 +25,21 @@
 #include<sys/wait.h>
 #include <iostream>
 
+#define PROCESS_BUFFER_SIZE 512
+#define MAX_SIZE 10000
 
 class ProcessCrawler: public AbstractCrawler {
 protected:
-    std::string workers_sem_name;
-    std::string pipe_mut_name;
     static size_t id;
+    static void* create_mmap(size_t size);
+
     sem_t* workers_sem_ptr;
     pthread_mutex_t* pipe_mut_ptr;
+    pthread_mutex_t* items_mut_ptr;
     int pipe_ends[2]{};
+    int* available_items;
 
-
+    void move_to_queue();
     virtual void process_url();
 
 public:

@@ -3,149 +3,133 @@
 //
 
 #include "ProcessCrawler.h"
-
-
+#include <bitset>
 
 
 void ProcessCrawler::process_url() {
     std::string url = std::move(input_queue.front());
     input_queue.pop();
+
+    char* shared_html = (char*) create_mmap(MAX_SIZE);
+
     int pid = fork();
-    if (pid == 0) {
-
-        std::string html = send_request(url);
-        char  digits[sizeof(size_t)];
-        for (size_t i = 0; i < sizeof(size_t); i++) {
-            digits[i] = (char) (html.length() >> (8 * i));
-        }
-
-        pthread_mutex_lock(pipe_mut_ptr);
-        write(pipe_ends[1], digits, sizeof(size_t));
-
-        write(pipe_ends[1], html.c_str(), html.length());
-        close(pipe_ends[1]);
-        pthread_mutex_unlock(pipe_mut_ptr);
-        sem_post(workers_sem_ptr);
-        exit(0);
+    if (pid != 0) {
+        return;
     }
+
+
+    int sock = get_socket(url);
+    char buffer[MAX_SIZE];
+    size_t len = read(sock, buffer, MAX_SIZE);
+    close(sock);
+
+    memcpy(shared_html, buffer, len);
+
+    close(pipe_ends[0]);
+    pthread_mutex_lock(pipe_mut_ptr);
+    write(pipe_ends[1], &shared_html, sizeof(char*));
+    pthread_mutex_unlock(pipe_mut_ptr);
+
+    close(pipe_ends[1]);
+
+    pthread_mutex_lock(items_mut_ptr);
+    *available_items += 1;
+    pthread_mutex_unlock(items_mut_ptr);
+
+    sem_post(workers_sem_ptr);
+    exit(0);
 }
 
 ProcessCrawler::ProcessCrawler(size_t max_workers): AbstractCrawler(max_workers) {
-    workers_sem_name = "/sem" + std::to_string(id);
-    pipe_mut_name = "/mut" + std::to_string(id);
-    shm_unlink(pipe_mut_name.c_str());
-    shm_unlink(workers_sem_name.c_str());
-    id += 1;
-    int pipe_mutex_descriptor = shm_open(pipe_mut_name.c_str(), O_CREAT | O_RDWR | O_TRUNC, S_IRWXU | S_IRWXG);
+    pipe_mut_ptr = (pthread_mutex_t*) create_mmap(sizeof(pthread_mutex_t));
+    items_mut_ptr = (pthread_mutex_t*) create_mmap(sizeof(pthread_mutex_t));
+    workers_sem_ptr = (sem_t*) create_mmap(sizeof(sem_t));
 
-    if (pipe_mutex_descriptor < 0) {
-        throw std::runtime_error("Can't create mutex descriptor");
-    }
+    // making mutexes shared
+    pthread_mutexattr_t mutex_attr;
+    pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
+    pthread_mutex_init(pipe_mut_ptr, &mutex_attr);
+    pthread_mutex_init(items_mut_ptr, &mutex_attr);
 
-    if (ftruncate(pipe_mutex_descriptor, sizeof(pthread_mutex_t)) == -1) {
-        throw std::runtime_error("Can't ftruncate to the size of mutex");
-    }
-
-
-    pipe_mut_ptr = (pthread_mutex_t*) mmap(
-        nullptr,
-        sizeof(pthread_mutex_t),
-        PROT_READ | PROT_WRITE,
-        MAP_SHARED,
-        pipe_mutex_descriptor,
-        0
-    );
-
-
-    if (pipe_mut_ptr == MAP_FAILED) {
-        throw std::runtime_error("Can't allocate shared memory block");
-    }
-
-    pthread_mutexattr_t pipe_mutex_attr;
-    pthread_mutexattr_setpshared(&pipe_mutex_attr, PTHREAD_PROCESS_SHARED);
-    pthread_mutex_init(pipe_mut_ptr, &pipe_mutex_attr);
-
-
-
-    int sem_descriptor = shm_open(workers_sem_name.c_str(), O_CREAT | O_RDWR | O_TRUNC, S_IRWXU | S_IRWXG);
-
-    if (sem_descriptor < 0) {
-        throw std::runtime_error("Can't create semaphore descriptor");
-    }
-
-    if (ftruncate(sem_descriptor, sizeof(sem_t)) == -1) {
-        throw std::runtime_error("Can't ftruncate to the size of semaphore");
-    }
-
-
-    workers_sem_ptr = (sem_t*) mmap(
-        NULL,
-        sizeof(sem_t),
-        PROT_READ | PROT_WRITE,
-        MAP_SHARED,
-        sem_descriptor,
-        0
-    );
-
-
-    if (workers_sem_ptr == MAP_FAILED) {
-        throw std::runtime_error("Can't allocate shared memory block");
-    }
 
     // shared semaphore
     sem_init(workers_sem_ptr, 1, max_workers);
 
     pipe(pipe_ends);
+    available_items = (int*) create_mmap(sizeof(int));
+    *available_items = 0;
 }
 
 
 void ProcessCrawler::process_queue() {
-    size_t processes = 0;
 
     while (!input_queue.empty()) {
         // wait till we can create a new worker
         sem_wait(workers_sem_ptr);
         // processing the url
         process_url();
-        processes += 1;
+
+        // getting the output if it is available
+        move_to_queue();
+
     }
 
     // waiting for all workers to finish
-    for(size_t j = processes; j > 0; j--){
-        wait(nullptr);
+    for(size_t j = max_workers; j > 0; j--){
+        sem_wait(workers_sem_ptr);
+        move_to_queue();
     }
 
-
-    for (size_t i = 0; i < processes; i++) {
-        char digits[sizeof(size_t)];
-
-        // getting number of bytes to read
-        if (read(pipe_ends[0], digits, sizeof(size_t)) != sizeof(size_t)) {
-            throw std::runtime_error("Can't read number of bytes from buffer");
-        }
-        size_t num = 0;
-        for (size_t j = 0; j < sizeof(size_t); j++) {
-            num += (size_t) digits[j] << (8 * j);
-        }
-
-        char *html = new char[num];
-
-        if (read(pipe_ends[0], html, num) != num) {
-            throw std::runtime_error("Can't read html");
-        }
-
-        output_queue.emplace(html);
-        delete[] html;
-
-    }
+    close(pipe_ends[1]);
 
 }
 
 ProcessCrawler::~ProcessCrawler() {
     pthread_mutex_destroy(pipe_mut_ptr);
+    pthread_mutex_destroy(items_mut_ptr);
     sem_destroy(workers_sem_ptr);
-    shm_unlink(pipe_mut_name.c_str());
-    shm_unlink(workers_sem_name.c_str());
+    munmap(available_items, sizeof(int));
+
+}
+
+void* ProcessCrawler::create_mmap(size_t size) {
+
+    void* res = (pthread_mutex_t*) mmap(
+            nullptr,
+            size,
+            PROT_READ | PROT_WRITE,
+            MAP_SHARED | MAP_ANONYMOUS,
+            -1,
+            0
+    );
+
+
+    if (res == MAP_FAILED) {
+        throw std::runtime_error("Can't allocate shared memory block");
+    }
+
+    return res;
+}
+
+void ProcessCrawler::move_to_queue() {
+    bool available = false;
+    pthread_mutex_lock(items_mut_ptr);
+    if (*available_items > 0) {
+        *available_items -= 1;
+        available = true;
+    }
+    pthread_mutex_unlock(items_mut_ptr);
+
+    if (!available) {
+        return;
+    }
+
+    char* item_ptr;
+    read(pipe_ends[0], &item_ptr, sizeof(char*));
+
+
+    output_queue.emplace(item_ptr);
+    munmap(item_ptr, MAX_SIZE);
 
 }
 
