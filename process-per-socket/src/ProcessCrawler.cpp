@@ -117,7 +117,7 @@ ProcessCrawler::~ProcessCrawler() {
 
 void* ProcessCrawler::create_mmap(size_t size) {
     // static method to created shared block of memory
-    void* res = (pthread_mutex_t*) mmap(
+    void* res = (void*) mmap(
             nullptr,
             size,
             PROT_READ | PROT_WRITE,
