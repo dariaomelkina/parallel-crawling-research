@@ -14,7 +14,7 @@ int main() {
 
     // adding links to the crawler
     for (auto &url: test_urls) {
-        std::cout << url << std::endl;
+        //std::cout << url << std::endl;
         x.add_url(url);
     }
 
