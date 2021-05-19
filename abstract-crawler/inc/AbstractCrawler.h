@@ -13,18 +13,16 @@
 /* Template for a crawler */
 class AbstractCrawler {
 protected:
-    std::queue<std::string> input_queue;
-    std::queue<std::string> output_queue;
+    std::deque<std::string> input_queue;
+    std::deque<std::string> output_queue;
     size_t max_workers;
-
-    virtual void process_url() = 0;
 
 public:
     explicit AbstractCrawler(size_t _max_workers) : max_workers(_max_workers) {};
 
     const static std::string ADDITIONAL_PARAMS;
 
-    static std::string send_request(const std::string &url);
+    static int get_socket(const std::string &url);
 
     void add_url(const std::string &url);
 

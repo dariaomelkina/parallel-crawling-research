@@ -7,11 +7,11 @@
 
 
 void AbstractCrawler::add_url(const std::string &url) {
-    input_queue.emplace(url);
+    input_queue.emplace_back(url);
 }
 
-std::string AbstractCrawler::send_request(const std::string &url) {
-    return get_html(url, ADDITIONAL_PARAMS);
+int AbstractCrawler::get_socket(const std::string &url) {
+    return send_request(url, ADDITIONAL_PARAMS);
 }
 
 bool AbstractCrawler::is_empty() {
@@ -23,7 +23,7 @@ std::string AbstractCrawler::get_processed_item() {
         throw std::runtime_error("Crawler is empty");
     }
     auto html = std::move(output_queue.front());
-    output_queue.pop();
+    output_queue.pop_front();
     return html;
 }
 
