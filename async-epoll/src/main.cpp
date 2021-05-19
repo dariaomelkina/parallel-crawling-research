@@ -7,11 +7,10 @@
 int main() {
   std::string test_url = "http://www.example.com/";
 
-
   EpollCrawler x = EpollCrawler(4);
 
   // adding links to the crawler
-  for (size_t i = 0; i < 100; ++i) {
+  for (size_t i = 0; i < 35; ++i) {
     x.add_url(test_url);
   }
 

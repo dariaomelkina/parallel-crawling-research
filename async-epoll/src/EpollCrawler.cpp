@@ -8,6 +8,9 @@ void *EpollCrawler::parsing_thread(void *args) {
   std::queue<std::string> urls = *(std::queue<std::string> *)args;
   // Initialize epoll structures
   epoll_event event;
+  // Tell the kernel we are waiting for inputs
+  event.events = EPOLLIN;
+
   epoll_event events[MAX_EVENTS];
   int epoll_fd = epoll_create1(0);
 
@@ -16,11 +19,6 @@ void *EpollCrawler::parsing_thread(void *args) {
     exit(-1);
   }
 
-  // Tell the kernel we are waiting for inputs
-  event.events = EPOLLIN;
-  event.data.fd = 0;
-
-  bool running = true;
   size_t event_count;
   size_t total_urls = urls.size();
   size_t finished = 0;
@@ -28,26 +26,25 @@ void *EpollCrawler::parsing_thread(void *args) {
 
   size_t bytes_read;
   char read_buffer[READ_SIZE + 1];
+  std::unordered_map<int, std::string> responses;
   while (finished != total_urls) {
     // If we are able to, open up a new socket and add it to the wait list
     if (events_waiting < MAX_EVENTS) {
       int socket = get_socket(urls.front());
       urls.pop();
+      event.data.fd = socket;
       epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
       ++events_waiting;
     }
-
-    std::string response{};
 
     // Wait and test whether the connections are ready and have transmitted some
     // data
     event_count = epoll_wait(epoll_fd, events, MAX_EVENTS, 30000);
     for (size_t i = 0; i < event_count; i++) {
-
-      // std::cout << "Reading file descriptor " << events[i].data.fd <<
-      // std::endl;
+      std::cout << "Reading file descriptor " << events[i].data.fd << std::endl;
       bytes_read = read(events[i].data.fd, read_buffer, READ_SIZE);
       if (bytes_read == 0) {
+        std::cout << "Closing file descriptor " << events[i].data.fd << std::endl;
         // I think (?) we can consider this socket's fully read?
         // I have no idea how to understand whether we've read all of the
         // data, this 'if' will probably never get called due to how epoll
@@ -57,7 +54,7 @@ void *EpollCrawler::parsing_thread(void *args) {
         close(events[i].data.fd);
         continue;
       }
-      response.append(read_buffer, bytes_read);
+      responses[events[i].data.fd].append(read_buffer, bytes_read);
     }
   }
 
@@ -97,6 +94,8 @@ void EpollCrawler::process_queue() {
   }
   pthread_create(&threads[max_workers - 1], nullptr,
                  EpollCrawler::parsing_thread, (void *)&urls);
+
+  std::cout << "Created " << max_workers << " threads" << std::endl;
 
   void *retval;
   // Waiting for all workers to finish

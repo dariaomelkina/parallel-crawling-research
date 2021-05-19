@@ -40,7 +40,7 @@ void ThreadCrawler::process_url() {
     auto *args = new parsing_args_t;
     // getting url from the queue and passing args to the thread
     args->url = std::move(input_queue.front());
-    input_queue.pop();
+    input_queue.pop_front();
     args->sem_ptr = &sem;
     args->mutex_ptr = &mutex;
     args->result_ptr = &output_queue;

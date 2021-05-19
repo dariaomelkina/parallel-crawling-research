@@ -10,7 +10,7 @@ void ProcessCrawler::process_url() {
 
     // getting link from input queue
     std::string url = std::move(input_queue.front());
-    input_queue.pop();
+    input_queue.pop_front();
 
     // allocating block of memory shared between processes
     char* shared_html = (char*) create_mmap(MAX_SIZE);
