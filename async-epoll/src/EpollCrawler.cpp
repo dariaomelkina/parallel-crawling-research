@@ -23,18 +23,20 @@ void *EpollCrawler::parsing_thread(void *args) {
   size_t total_urls = urls.size();
   size_t finished = 0;
   size_t events_waiting = 0;
+  size_t processing = 0;
 
   size_t bytes_read;
   char read_buffer[READ_SIZE + 1];
   std::unordered_map<int, std::string> responses;
   while (finished != total_urls) {
     // If we are able to, open up a new socket and add it to the wait list
-    if (events_waiting < MAX_EVENTS) {
+    if (events_waiting < MAX_EVENTS && processing < total_urls) {
       int socket = get_socket(urls.front());
       urls.pop();
       event.data.fd = socket;
       epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
       ++events_waiting;
+      ++processing;
     }
 
     // Wait and test whether the connections are ready and have transmitted some
@@ -59,6 +61,10 @@ void *EpollCrawler::parsing_thread(void *args) {
   }
 
   // TODO: parse the result on our own, without sending it to the main thread
+
+  for (auto& resp: responses) {
+      std::cout << resp.second;
+  }
 
   // Once no urls are available anymore, finish working
   if (close(epoll_fd)) {
