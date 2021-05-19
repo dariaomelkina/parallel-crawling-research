@@ -15,14 +15,14 @@
 struct parsing_args_t {
     std::deque <std::string>* output_ptr;
     std::deque <std::string>* input_ptr;
-    pthread_mutex_t* input_mutex_ptr;
     pthread_mutex_t* output_mutex_ptr;
+    size_t threads_num;
+    size_t threads_index;
 };
 
 
 class ThreadCrawler : public AbstractCrawler {
 protected:
-    pthread_mutex_t input_mutex{};
     pthread_mutex_t output_mutex{};
 
     static void* parsing_thread(void *args);
