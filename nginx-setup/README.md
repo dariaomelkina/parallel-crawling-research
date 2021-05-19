@@ -69,7 +69,7 @@ sudo systemctl restart nginx
 Now, if You used our example directory, at localhost/website1, localhost/website2 and localhost/website3.html You will be able to see
 three slightly different websites.
 
-On the localhost You will index of the hosted websites:
+On the localhost You will see index of the hosted websites:
 ![index of the hosted websites](../media/nginx-index-example.png)
 
 If You need to stop nginx:
