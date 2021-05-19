@@ -3,162 +3,134 @@
 //
 
 #include "ProcessCrawler.h"
-#include <bitset>
 
 
-void ProcessCrawler::process_url() {
-
-    // getting link from input queue
-    std::string url = std::move(input_queue.front());
-    input_queue.pop_front();
-
-    // allocating block of memory shared between processes
-    char* shared_html = (char*) create_mmap(MAX_SIZE);
-
-    int pid = fork();
-
-    // main process returns here
-    if (pid != 0) {
-        return;
-    }
-
-    // getting socket descriptor
-    int sock = get_socket(url);
-
-    // reading data to buffer
-    // TODO: remove the buffer and read directly into shared memory
-    char buffer[MAX_SIZE];
-    size_t len = read(sock, buffer, MAX_SIZE);
-
-    // closing connection
-    close(sock);
-
-    // copying data to shared memory (!!will be changed)
-    memcpy(shared_html, buffer, len);
-
-    // closing one end of pipe
+void ProcessCrawler::parsing_process(size_t index) {
+    // closing reading end
     close(pipe_ends[0]);
 
+    // getting link from input queue
+    for (size_t i = index; i < input_queue.size(); i += max_workers) {
+        std::string url = std::move(input_queue[i]);
 
-    pthread_mutex_lock(pipe_mut_ptr);
-    // sending pointer to the shared data to the main process
-    write(pipe_ends[1], &shared_html, sizeof(char*));
-    pthread_mutex_unlock(pipe_mut_ptr);
+        // getting socket descriptor
+        int sock = get_socket(url);
+
+        // reading data to buffer
+        std::string response{};
+        char buffer[RESPONSE_BUFFER_SIZE];
+        while (true) {
+            size_t char_read = read(sock, buffer, RESPONSE_BUFFER_SIZE);
+            if (char_read == 0) {
+                break;
+            }
+            response.append(buffer, char_read);
+        }
+        close(sock);
+
+        size_t len = response.size();
+
+
+        pthread_mutex_lock(pipe_mut_ptr);
+        write(pipe_ends[1], &len, 8);
+        write(pipe_ends[1], &response[0], response.size());
+        pthread_mutex_unlock(pipe_mut_ptr);
+
+    }
 
     close(pipe_ends[1]);
-
-
-    pthread_mutex_lock(items_mut_ptr);
-    // adding one available item
-    *available_items += 1;
-    pthread_mutex_unlock(items_mut_ptr);
-
-    // notifying the main process that this worker has finished
-    sem_post(workers_sem_ptr);
-    exit(0);
 }
 
 ProcessCrawler::ProcessCrawler(size_t max_workers): AbstractCrawler(max_workers) {
 
+
     // allocating shared memory
-    pipe_mut_ptr = (pthread_mutex_t*) create_mmap(sizeof(pthread_mutex_t));
-    items_mut_ptr = (pthread_mutex_t*) create_mmap(sizeof(pthread_mutex_t));
-    workers_sem_ptr = (sem_t*) create_mmap(sizeof(sem_t));
-
-    // shared mutexes
-    pthread_mutexattr_t mutex_attr;
-    pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
-    pthread_mutex_init(pipe_mut_ptr, &mutex_attr);
-    pthread_mutex_init(items_mut_ptr, &mutex_attr);
-
-
-    // shared semaphore
-    sem_init(workers_sem_ptr, 1, max_workers);
-
-    // initializing pipe
-    pipe(pipe_ends);
-
-    // creating shared memory block to store the number of available items
-    available_items = (int*) create_mmap(sizeof(int));
-    *available_items = 0;
-}
-
-
-void ProcessCrawler::process_queue() {
-
-    while (!input_queue.empty()) {
-        // wait till we can create a new worker
-        sem_wait(workers_sem_ptr);
-        // processing the url
-        process_url();
-
-        // getting the output if it is available
-        move_to_queue();
-
-    }
-
-    // waiting for all workers to finish
-    for(size_t j = max_workers; j > 0; j--){
-        sem_wait(workers_sem_ptr);
-        move_to_queue();
-    }
-
-    close(pipe_ends[1]);
-
-}
-
-ProcessCrawler::~ProcessCrawler() {
-    pthread_mutex_destroy(pipe_mut_ptr);
-    pthread_mutex_destroy(items_mut_ptr);
-    sem_destroy(workers_sem_ptr);
-    munmap(available_items, sizeof(int));
-
-}
-
-void* ProcessCrawler::create_mmap(size_t size) {
-    // static method to created shared block of memory
-    void* res = (void*) mmap(
+    pipe_mut_ptr = (pthread_mutex_t*) mmap(
             nullptr,
-            size,
-            PROT_READ | PROT_WRITE,
+            sizeof(pthread_mutex_t),
+            PROT_READ | PROT_WRITE | PROT_EXEC,
             MAP_SHARED | MAP_ANONYMOUS,
             -1,
             0
     );
 
-
-    if (res == MAP_FAILED) {
+    if (pipe_mut_ptr == MAP_FAILED) {
         throw std::runtime_error("Can't allocate shared memory block");
     }
 
-    return res;
-}
+    // sharing the mutex
+    pthread_mutexattr_t mutex_attr;
+    pthread_mutexattr_init(&mutex_attr);
+    pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
+    pthread_mutex_init(pipe_mut_ptr, &mutex_attr);
+    pthread_mutexattr_destroy(&mutex_attr);
 
-void ProcessCrawler::move_to_queue() {
-    // checks if item is available
-    bool available = false;
-    pthread_mutex_lock(items_mut_ptr);
-    if (*available_items > 0) {
-        *available_items -= 1;
-        available = true;
-    }
-    pthread_mutex_unlock(items_mut_ptr);
 
-    // returns if there are no available items
-    if (!available) {
-        return;
-    }
-
-    // reading pointer to shared data
-    char* item_ptr;
-    read(pipe_ends[0], &item_ptr, sizeof(char*));
-
-    // sending item to the output
-    output_queue.emplace(item_ptr);
-
-    // freeing allocated memory
-    munmap(item_ptr, MAX_SIZE);
+    // initializing pipe
+    pipe(pipe_ends);
 
 }
+
+
+void ProcessCrawler::process_queue() {
+
+    for (size_t i = 0; i < max_workers; i++) {
+        int id = fork();
+        if (id < 0) {
+            throw std::runtime_error("Can't fork");
+        }
+
+        else if (id == 0) {
+            parsing_process(i);
+            exit(0);
+        }
+
+    }
+
+    // closing writing end
+    close(pipe_ends[1]);
+
+
+    // waiting for all items
+    for(size_t i = 0; i < input_queue.size(); i++){
+        size_t html_size = 0;
+        size_t chars_read;
+
+        // getting the length of html file
+        chars_read = read(pipe_ends[0], &html_size, sizeof(size_t));
+        if (chars_read != sizeof(size_t)) {
+            throw std::runtime_error("Can't read html size from pipe");
+        }
+
+        // allocating memory for html
+
+        auto html_chars = new char[html_size];
+
+        // reading html file from file
+        chars_read = read(pipe_ends[0], html_chars, html_size);
+        if (chars_read != html_size) {
+            throw std::runtime_error("Can't read html from pipe");
+        }
+        output_queue.emplace_back(html_chars);
+        delete[] html_chars;
+
+    }
+
+    // closing reading end
+    close(pipe_ends[0]);
+
+    for (size_t i = 0; i < max_workers; i++) {
+        wait(nullptr);
+    }
+
+}
+
+ProcessCrawler::~ProcessCrawler() {
+    pthread_mutex_destroy(pipe_mut_ptr);
+    munmap(pipe_mut_ptr, sizeof(pthread_mutex_t));
+
+}
+
+
 
 
