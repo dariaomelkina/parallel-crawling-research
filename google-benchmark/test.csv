@@ -1,0 +1,5 @@
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_thread_per_socket/2/iterations:5",5,4.00187e+08,152189,ns,,,,,
+"benchmark_thread_per_socket/4/iterations:5",5,2.91942e+08,235654,ns,,,,,
+"benchmark_thread_per_socket/8/iterations:5",5,7.8038e+08,458485,ns,,,,,
+"benchmark_thread_per_socket/16/iterations:5",5,2.44189e+09,1.23897e+06,ns,,,,,
