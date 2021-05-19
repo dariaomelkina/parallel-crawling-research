@@ -44,6 +44,24 @@ void* ThreadCrawler::parsing_thread(void* args) {
     }
 }
 
+<<<<<<< HEAD
+=======
+void ThreadCrawler::process_url() {
+    auto *args = new parsing_args_t;
+    // getting url from the queue and passing args to the thread
+    args->url = std::move(input_queue.front());
+    input_queue.pop_front();
+    args->sem_ptr = &sem;
+    args->mutex_ptr = &mutex;
+    args->result_ptr = &output_queue;
+
+    pthread_t thread;
+    pthread_create(&thread, nullptr, ThreadCrawler::parsing_thread, (void *) args);
+    // detaching thread so that we don't need to store it later
+    pthread_detach(thread);
+    items_count += 1;
+}
+>>>>>>> 353c1f11795f93eea6a80ec9215f3051a3bed0a4
 
 ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
     // mutex for the input queue
