@@ -39,8 +39,8 @@ sudo vi /etc/nginx/sites-enabled/default
 Replaces content of that file by such lines:
 ```bash
 server {
-        listen 81 default_server;
-        listen [::]:81 default_server;
+        listen 80 default_server;
+        listen [::]:80 default_server;
         
         # That path should be replaced by the correct one:
         root /home/user/test-websites; 
