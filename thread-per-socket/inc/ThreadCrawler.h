@@ -10,25 +10,22 @@
 
 #include "AbstractCrawler.h"
 
-#define RESOPONSE_BUFFER_SIZE 512
+#define RESPONSE_BUFFER_SIZE 512
 
 struct parsing_args_t {
-    std::string url;
-    std::queue <std::string> *result_ptr;
-    pthread_mutex_t *mutex_ptr;
-    sem_t *sem_ptr;
+    std::deque <std::string>* output_ptr;
+    std::deque <std::string>* input_ptr;
+    pthread_mutex_t* input_mutex_ptr;
+    pthread_mutex_t* output_mutex_ptr;
 };
 
 
 class ThreadCrawler : public AbstractCrawler {
 protected:
-    sem_t sem{};
-    pthread_mutex_t mutex{};
-    size_t items_count = 0;
+    pthread_mutex_t input_mutex{};
+    pthread_mutex_t output_mutex{};
 
-    static void *parsing_thread(void *item);
-
-    virtual void process_url();
+    static void* parsing_thread(void *args);
 
 public:
     explicit ThreadCrawler(size_t max_workers);

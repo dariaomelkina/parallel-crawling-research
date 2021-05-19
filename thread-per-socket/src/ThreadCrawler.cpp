@@ -5,81 +5,83 @@
 #include "ThreadCrawler.h"
 
 
-void *ThreadCrawler::parsing_thread(void *item) {
-    auto args = (parsing_args_t *) item;
+void* ThreadCrawler::parsing_thread(void* args) {
+    auto params = (parsing_args_t*) args;
+    std::deque<std::string> *input_ptr = params->input_ptr;
+    std::deque<std::string> *output_ptr = params->output_ptr;
+    pthread_mutex_t *input_mutex_ptr = params->input_mutex_ptr;
+    pthread_mutex_t *output_mutex_ptr = params->output_mutex_ptr;
 
-    //getting html using http request TODO: error handling
-
-    int sock = get_socket(args->url);
-
-    std::string response{};
-    char buffer[RESOPONSE_BUFFER_SIZE];
     while (true) {
-        size_t char_read = read(sock, buffer, RESOPONSE_BUFFER_SIZE);
-        if (char_read == 0) {
+        pthread_mutex_lock(params->input_mutex_ptr);
+        if (params->input_ptr->empty()) {
+            pthread_mutex_unlock(input_mutex_ptr);
             break;
         }
-        response.append(buffer, char_read);
+        std::string url = std::move(input_ptr->front());
+        input_ptr->pop_front();
+        pthread_mutex_unlock(input_mutex_ptr);
+
+        int sock = get_socket(url);
+
+        std::string response{};
+        char buffer[RESPONSE_BUFFER_SIZE];
+        while (true) {
+            size_t char_read = read(sock, buffer, RESPONSE_BUFFER_SIZE);
+            if (char_read == 0) {
+                break;
+            }
+            response.append(buffer, char_read);
+        }
+
+        close(sock);
+
+
+        pthread_mutex_lock(output_mutex_ptr);
+        output_ptr->emplace_back(std::move(response));
+        pthread_mutex_unlock(output_mutex_ptr);
+
     }
-
-    close(sock);
-
-    // sending result to result queue
-    pthread_mutex_lock(args->mutex_ptr);
-    args->result_ptr->emplace(std::move(response));
-    pthread_mutex_unlock(args->mutex_ptr);
-
-    // increasing the number of available threads
-    sem_post(args->sem_ptr);
-
-    delete args;
-    return nullptr;
 }
 
-void ThreadCrawler::process_url() {
-    auto *args = new parsing_args_t;
-    // getting url from the queue and passing args to the thread
-    args->url = std::move(input_queue.front());
-    input_queue.pop();
-    args->sem_ptr = &sem;
-    args->mutex_ptr = &mutex;
-    args->result_ptr = &output_queue;
-
-    pthread_t thread;
-    pthread_create(&thread, nullptr, ThreadCrawler::parsing_thread, (void *) args);
-    // detaching thread so that we don't need to store it later
-    pthread_detach(thread);
-    items_count += 1;
-}
 
 ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
-    // mutex for output queue
-    if (pthread_mutex_init(&mutex, nullptr) != 0) {
-        throw std::runtime_error("Can't init the mutex");
+    // mutex for the input queue
+    if (pthread_mutex_init(&input_mutex, nullptr) != 0) {
+        throw std::runtime_error("Can't init the input mutex ");
     }
-    // semaphore for the number of available workers
-    if (sem_init(&sem, 0, max_workers) != 0) {
-        throw std::runtime_error("Can't init the thread limit semaphore");
+
+    // mutex for the output queue
+    if (pthread_mutex_init(&output_mutex, nullptr) != 0) {
+        throw std::runtime_error("Can't init the output mutex");
     }
 }
 
 
 void ThreadCrawler::process_queue() {
+    parsing_args_t args{};
+    args.input_mutex_ptr = &input_mutex;
+    args.output_mutex_ptr = &output_mutex;
+    args.input_ptr = &input_queue;
+    args.output_ptr = &output_queue;
+    void* args_ptr =  (void*) &args;
 
-    while (!input_queue.empty()) {
-        // wait till we can create a new worker
-        sem_wait(&sem);
-        // processing the url
-        process_url();
-    }
+    auto threads = new pthread_t[max_workers];
 
-    // waiting for all workers to finish
+
     for (size_t i = 0; i < max_workers; i++) {
-        sem_wait(&sem);
+        pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, args_ptr);
     }
+
+
+    for (size_t i = 0; i < max_workers; i++) {
+        pthread_join(threads[i], nullptr);
+    }
+
+
 }
 
 ThreadCrawler::~ThreadCrawler() {
-    pthread_mutex_destroy(&mutex);
-    sem_destroy(&sem);
+    pthread_mutex_destroy(&input_mutex);
+    pthread_mutex_destroy(&output_mutex);
 }
