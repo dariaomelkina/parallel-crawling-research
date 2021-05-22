@@ -1,8 +1,1 @@
-/www.quote.com/bmc.html
-/www.quote.com/csc.html
-/www.quote.com/a.html
-/18/details.html
-/18/pictures.html
-/1/reviews_4.html
-/1/reviews_2.html
-/1/reviews_3.html
+192.168.0.107/fake_articles/news_articles_427.html
