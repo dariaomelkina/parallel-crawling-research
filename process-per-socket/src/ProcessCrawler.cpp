@@ -3,6 +3,7 @@
 //
 
 #include "ProcessCrawler.h"
+#include <iostream>
 
 
 void ProcessCrawler::parsing_process(size_t index) {
@@ -32,6 +33,7 @@ void ProcessCrawler::parsing_process(size_t index) {
 
 
 
+
     }
 
 }
@@ -40,8 +42,11 @@ ProcessCrawler::ProcessCrawler(size_t max_workers): AbstractCrawler(max_workers)
 
 
 void ProcessCrawler::process_queue() {
+    if (max_workers == 0) {
+        std::runtime_error("There are no workers");
+    }
 
-    for (size_t i = 0; i < max_workers; i++) {
+    for (size_t i = 0; i < max_workers - 1; i++) {
         int id = fork();
         if (id < 0) {
             throw std::runtime_error("Can't fork");
@@ -54,11 +59,15 @@ void ProcessCrawler::process_queue() {
 
     }
 
+    parsing_process(max_workers - 1);
 
 
-    for (size_t i = 0; i < max_workers; i++) {
+
+    for (size_t i = 0; i < max_workers - 1; i++) {
         wait(nullptr);
     }
+
+    input_queue.clear();
 
 }
 

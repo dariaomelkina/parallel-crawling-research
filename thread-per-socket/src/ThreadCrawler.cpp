@@ -49,11 +49,14 @@ ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) 
 
 
 void ThreadCrawler::process_queue() {
+    if (max_workers < 1) {
+        throw std::runtime_error("There are no workers");
+    }
 
-    auto threads = new pthread_t[max_workers];
+    auto threads = new pthread_t[max_workers - 1];
 
 
-    for (size_t i = 0; i < max_workers; i++) {
+    for (size_t i = 0; i < max_workers - 1; i++) {
         auto args = new parsing_args_t;
         args->input_ptr = &input_queue;
         args->threads_num = max_workers;
@@ -61,12 +64,20 @@ void ThreadCrawler::process_queue() {
         pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, (void*) args);
     }
 
+    auto args = new parsing_args_t;
+    args->input_ptr = &input_queue;
+    args->threads_num = max_workers;
+    args->threads_index = max_workers - 1;
 
-    for (size_t i = 0; i < max_workers; i++) {
+    ThreadCrawler::parsing_thread((void*) args);
+
+
+    for (size_t i = 0; i < max_workers - 1; i++) {
         pthread_join(threads[i], nullptr);
     }
 
     input_queue.clear();
+
 
 }
 

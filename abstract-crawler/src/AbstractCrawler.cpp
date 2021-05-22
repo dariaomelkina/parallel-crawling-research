@@ -51,6 +51,21 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 
 }
 
+#include <iostream>
+
+void AbstractCrawler::add_from_file(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Can't open file");
+    }
+    std::string word;
+    while(file >> word){
+        add_url(word);
+    }
+
+}
+
+
 
 const std::string AbstractCrawler::ADDITIONAL_PARAMS = "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64)"
                                                        " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97"

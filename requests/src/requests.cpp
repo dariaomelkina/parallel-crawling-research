@@ -2,6 +2,7 @@
 // Created by Maksym Protsyk on 5/5/21.
 //
 #include "requests.h"
+#include <iostream>
 
 parsed_url_t parse_url(const std::string &url) {
     parsed_url_t parsed_url;
