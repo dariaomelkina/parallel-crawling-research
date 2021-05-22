@@ -10,7 +10,9 @@
 static void benchmark_thread_per_socket(benchmark::State& state) {
     ThreadCrawler x = ThreadCrawler(4);
 	for (auto _ : state) {
+        state.PauseTiming();
         x.add_from_file("../test.txt");
+        state.ResumeTiming();
 		// processing links
 		x.process_queue();
 	}
@@ -20,7 +22,9 @@ static void benchmark_process_per_socket(benchmark::State& state) {
     ProcessCrawler x = ProcessCrawler(4);
 
 	for (auto _ : state) {
+        state.PauseTiming();
         x.add_from_file("../test.txt");
+        state.ResumeTiming();
 		// processing links
 		x.process_queue();
 	}
@@ -28,8 +32,8 @@ static void benchmark_process_per_socket(benchmark::State& state) {
 
 // Register the function as a benchmark and passing an argument, number of
 // iterations as a constraint
-BENCHMARK(benchmark_process_per_socket)->Iterations(5);
-BENCHMARK(benchmark_thread_per_socket)->Iterations(5);
+BENCHMARK(benchmark_process_per_socket)->Iterations(2);
+BENCHMARK(benchmark_thread_per_socket)->Iterations(2);
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(3);
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(4);
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(5);
