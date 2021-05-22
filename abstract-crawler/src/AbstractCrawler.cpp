@@ -29,6 +29,9 @@ std::string AbstractCrawler::get_processed_item() {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
+    if (html_size <= 1) {
+        return 0;
+    }
     size_t tags = 0;
     bool in_tag = false;
     for (size_t i = 0; i < html_size - 1; i++) {
