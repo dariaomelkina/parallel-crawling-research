@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(inc)
 
-add_executable(parser src/main)
+add_executable(parser src/main src/directory_parser.cpp inc/directory_parser.h)
 
 # TODO: sanitizers
 # PVS-Studio: uncomment code below for testing
