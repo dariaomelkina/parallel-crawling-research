@@ -13,15 +13,16 @@ void* ThreadCrawler::parsing_thread(void* args) {
 
     size_t size = input_ptr->size();
 
+    char* buffer = new char[MAX_SIZE];
+
 
     for (size_t i = params->threads_index; i < size; i += params->threads_num) {
         std::string url = std::move((*input_ptr)[i]);
 
         int sock = get_socket(url);
 
-        char buffer[MAX_SIZE];
         size_t index = 0;
-        while (index < MAX_SIZE) {
+        while (index < MAX_SIZE - ONE_READ_SIZE) {
             size_t char_read = read(sock, buffer + index, ONE_READ_SIZE);
             index += char_read;
             if (char_read == 0) {
@@ -39,6 +40,7 @@ void* ThreadCrawler::parsing_thread(void* args) {
     }
 
     delete[] params;
+    delete[] buffer;
 
     return nullptr;
 

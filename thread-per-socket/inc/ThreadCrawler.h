@@ -16,8 +16,6 @@ struct parsing_args_t {
     size_t threads_index;
 };
 
-#define MAX_SIZE 500000
-#define ONE_READ_SIZE 1000
 
 
 class ThreadCrawler : public AbstractCrawler {

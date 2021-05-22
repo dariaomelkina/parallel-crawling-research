@@ -7,6 +7,7 @@
 
 
 void ProcessCrawler::parsing_process(size_t index) {
+    char* buffer = new char[MAX_SIZE];
 
     // getting link from input queue
     for (size_t i = index; i < input_queue.size(); i += max_workers) {
@@ -16,9 +17,9 @@ void ProcessCrawler::parsing_process(size_t index) {
         int sock = get_socket(url);
 
         // reading data to buffer
-        char buffer[MAX_SIZE];
+
         size_t index = 0;
-        while (index < MAX_SIZE) {
+        while (index < MAX_SIZE - ONE_READ_SIZE) {
             size_t char_read = read(sock, buffer + index, ONE_READ_SIZE);
             index += char_read;
             if (char_read == 0) {
@@ -30,11 +31,9 @@ void ProcessCrawler::parsing_process(size_t index) {
 
         size_t tags =  count_tags(buffer, index);
 
-
-
-
-
     }
+
+    delete[] buffer;
 
 }
 

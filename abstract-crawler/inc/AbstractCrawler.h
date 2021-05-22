@@ -14,7 +14,7 @@
 #include "requests.h"
 
 
-#define MAX_SIZE 500000
+#define MAX_SIZE 2000000
 #define ONE_READ_SIZE 1000
 
 /* Template for a crawler */
