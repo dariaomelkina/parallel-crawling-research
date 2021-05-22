@@ -7,7 +7,7 @@ void directory_parser(std::string &server_ip, std::string &directory_path, std::
     for (std::filesystem::recursive_directory_iterator itr(directory_path); itr != end_itr; ++itr) {
         /* Extracting path for crawling: */
         if (itr->path().extension().string() == ".html") {
-            output_file << server_ip << itr->path().string().replace(0, directory_path.length(), "") << "\n";
+            output_file << "http://" << server_ip << itr->path().string().replace(0, directory_path.length(), "") << "\n";
         }
     }
 }
