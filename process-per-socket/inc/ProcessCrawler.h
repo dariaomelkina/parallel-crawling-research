@@ -16,13 +16,10 @@
 #include <iostream>
 #include<sys/wait.h>
 
-#define RESPONSE_BUFFER_SIZE 512
 
 class ProcessCrawler: public AbstractCrawler {
 protected:
 
-    pthread_mutex_t* pipe_mut_ptr;
-    int pipe_ends[2]{};
 
     virtual void parsing_process(size_t index);
 
@@ -31,7 +28,6 @@ public:
 
     virtual void process_queue();
 
-    ~ProcessCrawler();
 
 };
 

@@ -12,7 +12,9 @@
 
 #include "requests.h"
 
-#define READ_SIZE 500000
+
+#define MAX_SIZE 500000
+#define ONE_READ_SIZE 1000
 
 /* Template for a crawler */
 class AbstractCrawler {
