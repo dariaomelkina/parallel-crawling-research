@@ -4,6 +4,7 @@
 
 
 #include "AbstractCrawler.h"
+#include "iostream"
 
 
 void AbstractCrawler::add_url(const std::string &url) {
@@ -29,29 +30,69 @@ std::string AbstractCrawler::get_processed_item() {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
-    if (html_size <= 1) {
-        return 0;
-    }
-    size_t tags = 0;
-    bool in_tag = false;
-    for (size_t i = 0; i < html_size - 1; i++) {
-        if (!in_tag) {
-            if (html[i] == '<' && html[i+1] != '/' && html[i+1] != '!') {
-                tags += 1;
-                in_tag = true;
+    std::vector<std::pair<size_t, size_t>> indeces;
+    std::vector<std::string> tag_names;
+
+    std::stack<std::pair<std::string, size_t>> tags;
+
+    bool in_tag_name = false;
+    bool in_closing_tag = false;
+    size_t tag_start = 0;
+
+
+    for (size_t i = 0; i < html_size - 2; i++) {
+        if (in_tag_name) {
+            if (html[i] == '>' || html[i] == ' ') {
+                std::string current_tag;
+                in_tag_name = false;
+                current_tag.append(html + tag_start + 1, i - tag_start - 1);
+                tags.emplace(current_tag, tag_start);
             }
-        } else {
-            if (html[i] == '>') {
-                in_tag = false;
+            else if (html[i] == '/' && html[i+1] == '>') {
+                std::string current_tag;
+                in_tag_name = false;
+                indeces.emplace_back(tag_start, i+1);
+                current_tag.append(html + tag_start + 1, i - tag_start - 1);
+                tag_names.emplace_back(std::move(current_tag));
             }
+            continue;
         }
+
+        if (in_closing_tag) {
+            if (html[i] == '>' ) {
+                auto closed_tag = std::move(tags.top());
+                tags.pop();
+                indeces.emplace_back(closed_tag.second, i);
+                tag_names.emplace_back(std::move(closed_tag.first));
+                in_closing_tag = false;
+            }
+            continue;
+        }
+
+
+
+        if (html[i] == '<') {
+            if (html[i + 1] == '/') {
+                in_closing_tag = true;
+            }
+            else {
+                  in_tag_name = true;
+                  tag_start = i;
+            }
+
+        }
+
+
     }
 
-    return tags;
+
+
+
+    return 0;
+
 
 }
 
-#include <iostream>
 
 void AbstractCrawler::add_from_file(const std::string& filename) {
     std::ifstream file(filename);

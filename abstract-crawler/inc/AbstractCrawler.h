@@ -10,6 +10,7 @@
 #include <utility>
 #include <string>
 #include <fstream>
+#include <stack>
 
 #include "requests.h"
 

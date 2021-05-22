@@ -10,7 +10,7 @@ int main() {
                                           "http://www.exmple.com/"};
 
 
-    ThreadCrawler x = ThreadCrawler(2);
+    ThreadCrawler x = ThreadCrawler(1);
 
     // adding links to the crawler
     for (auto &url: test_urls) {

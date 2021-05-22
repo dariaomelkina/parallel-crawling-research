@@ -29,6 +29,7 @@ void ProcessCrawler::parsing_process(size_t index) {
         close(sock);
 
 
+
         size_t tags =  count_tags(buffer, index);
 
     }

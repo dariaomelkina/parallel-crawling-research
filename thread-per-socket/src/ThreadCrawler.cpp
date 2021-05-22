@@ -30,11 +30,15 @@ void* ThreadCrawler::parsing_thread(void* args) {
             }
         }
 
+
         close(sock);
 
 
 
         size_t tags =  count_tags(buffer, index);
+        tags =  count_tags(buffer, index);
+        tags =  count_tags(buffer, index);
+
 
 
     }
@@ -66,12 +70,12 @@ void ThreadCrawler::process_queue() {
         pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, (void*) args);
     }
 
-    auto args = new parsing_args_t;
-    args->input_ptr = &input_queue;
-    args->threads_num = max_workers;
-    args->threads_index = max_workers - 1;
+    auto main_args = new parsing_args_t;
+    main_args->input_ptr = &input_queue;
+    main_args->threads_num = max_workers;
+    main_args->threads_index = max_workers - 1;
 
-    ThreadCrawler::parsing_thread((void*) args);
+    ThreadCrawler::parsing_thread((void*) main_args);
 
 
     for (size_t i = 0; i < max_workers - 1; i++) {

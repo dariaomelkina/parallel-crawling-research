@@ -32,8 +32,9 @@ static void benchmark_process_per_socket(benchmark::State& state) {
 
 // Register the function as a benchmark and passing an argument, number of
 // iterations as a constraint
-BENCHMARK(benchmark_process_per_socket)->Iterations(1);
 BENCHMARK(benchmark_thread_per_socket)->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)->Iterations(1);
+
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(3);
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(4);
 //BENCHMARK(benchmark_thread_per_socket)->Iterations(10)->Arg(5);
