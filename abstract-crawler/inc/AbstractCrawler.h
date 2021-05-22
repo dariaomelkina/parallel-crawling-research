@@ -6,9 +6,15 @@
 #define THREADS_ABSTRACTCRAWLER_H
 
 #include <queue>
-#include <requests.h>
 #include <exception>
 #include <utility>
+#include <string>
+
+#include "requests.h"
+
+
+#define MAX_SIZE 500000
+#define ONE_READ_SIZE 1000
 
 /* Template for a crawler */
 class AbstractCrawler {
@@ -31,6 +37,8 @@ public:
     std::string get_processed_item();
 
     virtual void process_queue() = 0;
+
+    static size_t count_tags(const char* html, size_t html_size);
 
 
 };
