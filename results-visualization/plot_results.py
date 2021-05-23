@@ -5,7 +5,8 @@ import plotly.express as px
 
 NUMBER_OF_PARAMETER_ROWS = 9
 NUMBER_OF_WARNING_ROWS = 1
-ITERATIONS = 3
+ITERATIONS = 5
+NAME_PARAMETER = 'ethernet'
 
 if __name__ == "__main__":
     file = sys.argv[1]
@@ -19,28 +20,30 @@ if __name__ == "__main__":
                                      cells=dict(values=[general_parameters.parameters],
                                                 fill_color='lavender',
                                                 align='left'))])
-    table.write_image("result_plots/new_parameters.png")
+    table.write_image(f"result_plots/{NAME_PARAMETER}_parameters.png")
 
     # Plots for different number of iterations (real time)
     data[['crawler', 'websites', 'additional_iterations']] = data.name.str.split("/", expand=True)
+    data['cpu_time'] = data['cpu_time'] / 1000000000
+    data['real_time'] = data['real_time'] / 1000000000
 
     colorsIdx = {'benchmark_epoll': 'epoll', 'benchmark_process_per_socket': 'process per socket',
                  'benchmark_thread_per_socket': 'thread per socket'}
     cols = data[data["iterations"] == ITERATIONS]['crawler'].map(colorsIdx)
 
     fig1 = px.line(data[data["iterations"] == ITERATIONS], x="websites", y="real_time",
-                   title=f'Real Time plot for {ITERATIONS} iterations',
+                   title=f'Real Time plot for {ITERATIONS} iterations ({NAME_PARAMETER})',
                    color=cols,
                    labels={"color": "Crawler:",
-                           "real_time": "real time (ns)",
+                           "real_time": "real time (s)",
                            "websites": "number of crawled websites"})
-    fig1.write_image("result_plots/new_real_time.png")
+    fig1.write_image(f"result_plots/{NAME_PARAMETER}_real_time.png")
 
     # Plots for different number of iterations (cpu time)
     fig2 = px.line(data[data["iterations"] == ITERATIONS], x="websites", y="cpu_time",
-                   title=f'CPU Time plot for {ITERATIONS} iterations',
+                   title=f'CPU Time plot for {ITERATIONS} iterations ({NAME_PARAMETER})',
                    color=cols,
                    labels={"color": "Crawler:",
-                           "cpu_time": "cpu time (ns)",
+                           "cpu_time": "cpu time (s)",
                            "websites": "number of crawled websites"})
-    fig2.write_image("result_plots/new_cpu_time.png")
+    fig2.write_image(f"result_plots/{NAME_PARAMETER}_cpu_time.png")
