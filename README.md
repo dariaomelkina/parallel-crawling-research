@@ -12,7 +12,7 @@ In order for testing of the crawlers to be consistent and representative we have
 set some parameters, which should be the same for all the crawlers:
 * **OS (for benchmarking):** Ubuntu (_which one?_)
 * **Compiler:** gcc 10.2.0-6 version (_perhaps, we are not sure yet_)
-* **CMake:** 3.17+ version
+* **CMake:** 3.16/3.17+ version
 
 ## Credits:
 * Oleg Farenyuk
