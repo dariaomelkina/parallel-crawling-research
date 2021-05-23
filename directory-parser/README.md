@@ -1,4 +1,4 @@
-Example usage from root
+Example usage from that directory:
 ```bash
 cmake -Bbuild && make -C ./build
 ./build/parser 192.168.0.107 ./sample ./test.txt
