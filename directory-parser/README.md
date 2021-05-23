@@ -1,3 +1,22 @@
+#### If you want python to generate a specific percentile of website size and give statistics:
+
+Execute the following from directory-parser directory:
+```bash
+python3 get_html_list.py 0 25 test-websites ../google-benchmark/test.txt 10.42.0.1 plot=False
+```
+##### where:
+0, 25  - the start and the end of the percentile. In this case it is 25% percentile.
+
+test-websites - directory to be parsed
+
+../google-benchmark/test.txt  - dir to write the result
+
+10.42.0.1 - ip address
+
+plot=True or plot=False to plot the distribution of file sizes
+
+#### Using C++
+
 Example usage from that directory:
 ```bash
 cmake -Bbuild && make -C ./build
