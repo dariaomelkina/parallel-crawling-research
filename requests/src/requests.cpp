@@ -37,6 +37,7 @@ parsed_url_t parse_url(const std::string &url) {
 
 int send_request(const std::string &url, const std::string &additional_params) {
     parsed_url_t parsed_url = parse_url(url);
+
     uint16_t port;
     if (parsed_url.protocol == "http") {
         port = HTTP_PORT;
@@ -53,7 +54,6 @@ int send_request(const std::string &url, const std::string &additional_params) {
 
     // std::cout << *((unsigned long *) host->h_addr) << std::endl;
     server.sin_addr.s_addr = 16787978;//*((unsigned long *) host->h_addr);
-
 
     // creating socket descriptor
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -80,6 +80,7 @@ int send_request(const std::string &url, const std::string &additional_params) {
     if (send(sock, request.c_str(), request.size(), 0) < 0) {
         throw std::runtime_error("Error while sending request");
     }
+
 
     return sock;
 

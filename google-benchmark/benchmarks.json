@@ -1,0 +1,328 @@
+{
+  "context": {
+    "date": "2021-05-23T15:38:23+03:00",
+    "host_name": "google-TechnicPro",
+    "executable": "./google-benchmark",
+    "num_cpus": 4,
+    "mhz_per_cpu": 3389,
+    "cpu_scaling_enabled": false,
+    "caches": [
+      {
+        "type": "Data",
+        "level": 1,
+        "size": 32768,
+        "num_sharing": 1
+      },
+      {
+        "type": "Instruction",
+        "level": 1,
+        "size": 32768,
+        "num_sharing": 1
+      },
+      {
+        "type": "Unified",
+        "level": 2,
+        "size": 262144,
+        "num_sharing": 1
+      },
+      {
+        "type": "Unified",
+        "level": 3,
+        "size": 6291456,
+        "num_sharing": 4
+      }
+    ],
+    "load_avg": [2.12,3.32,2.85],
+    "library_build_type": "debug"
+  },
+  "benchmarks": [
+    {
+      "name": "benchmark_epoll/16/iterations:3",
+      "run_name": "benchmark_epoll/16/iterations:3",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 3,
+      "real_time": 1.7387126633063114e+08,
+      "cpu_time": 5.8595213333333343e+07,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/64/iterations:3",
+      "run_name": "benchmark_epoll/64/iterations:3",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 3,
+      "real_time": 6.4765171300192988e+08,
+      "cpu_time": 2.1586778000000000e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/512/iterations:3",
+      "run_name": "benchmark_epoll/512/iterations:3",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 3,
+      "real_time": 3.6171377949989014e+09,
+      "cpu_time": 1.2687998780000002e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/1024/iterations:3",
+      "run_name": "benchmark_epoll/1024/iterations:3",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 3,
+      "real_time": 6.3531638503360834e+09,
+      "cpu_time": 2.5316326760000005e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/16/iterations:1",
+      "run_name": "benchmark_epoll/16/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.8852921799407339e+08,
+      "cpu_time": 5.7387262000000663e+07,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/64/iterations:1",
+      "run_name": "benchmark_epoll/64/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 6.2149662500451088e+08,
+      "cpu_time": 2.0352058100000113e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/512/iterations:1",
+      "run_name": "benchmark_epoll/512/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 3.7507077539994497e+09,
+      "cpu_time": 1.2383484710000000e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/4096/iterations:1",
+      "run_name": "benchmark_epoll/4096/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.5753974622995884e+10,
+      "cpu_time": 6.5421286730000010e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/16/iterations:1",
+      "run_name": "benchmark_process_per_socket/16/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 4.9929032599902713e+08,
+      "cpu_time": 3.0806931200000066e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/64/iterations:1",
+      "run_name": "benchmark_process_per_socket/64/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.4322522720030975e+09,
+      "cpu_time": 6.2527294800000274e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/512/iterations:1",
+      "run_name": "benchmark_process_per_socket/512/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 7.5156893809980831e+09,
+      "cpu_time": 2.8064047759999971e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/4096/iterations:1",
+      "run_name": "benchmark_process_per_socket/4096/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 3.3026606191997417e+10,
+      "cpu_time": 1.3511180659000000e+10,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_thread_per_socket/16/iterations:1",
+      "run_name": "benchmark_thread_per_socket/16/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.8163108400040072e+08,
+      "cpu_time": 5.8492090000001438e+07,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_thread_per_socket/64/iterations:1",
+      "run_name": "benchmark_thread_per_socket/64/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 6.1855134300276399e+08,
+      "cpu_time": 2.1950256299999893e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_thread_per_socket/512/iterations:1",
+      "run_name": "benchmark_thread_per_socket/512/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 3.8086838680028448e+09,
+      "cpu_time": 1.2904289270000079e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_thread_per_socket/4096/iterations:1",
+      "run_name": "benchmark_thread_per_socket/4096/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.6569281660005800e+10,
+      "cpu_time": 6.7031320099999971e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/16/iterations:1",
+      "run_name": "benchmark_process_per_socket/16/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 4.1214301099535078e+08,
+      "cpu_time": 3.1968450400000137e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/64/iterations:1",
+      "run_name": "benchmark_process_per_socket/64/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.3750977660019999e+09,
+      "cpu_time": 6.2097568000000083e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/512/iterations:1",
+      "run_name": "benchmark_process_per_socket/512/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 7.4964067760010948e+09,
+      "cpu_time": 2.8017090599999933e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_process_per_socket/4096/iterations:1",
+      "run_name": "benchmark_process_per_socket/4096/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 3.2950959857007545e+10,
+      "cpu_time": 1.3556616650999998e+10,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/16/iterations:1",
+      "run_name": "benchmark_epoll/16/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.8191875100455946e+08,
+      "cpu_time": 5.9213123000006363e+07,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/64/iterations:1",
+      "run_name": "benchmark_epoll/64/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 6.4636433699342883e+08,
+      "cpu_time": 2.0692737700000662e+08,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/512/iterations:1",
+      "run_name": "benchmark_epoll/512/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 3.9720644239932880e+09,
+      "cpu_time": 1.2589208740000045e+09,
+      "time_unit": "ns"
+    },
+    {
+      "name": "benchmark_epoll/4096/iterations:1",
+      "run_name": "benchmark_epoll/4096/iterations:1",
+      "run_type": "iteration",
+      "repetitions": 0,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 1,
+      "real_time": 1.6683321179996710e+10,
+      "cpu_time": 6.4925657600000048e+09,
+      "time_unit": "ns"
+    }
+  ]
+}

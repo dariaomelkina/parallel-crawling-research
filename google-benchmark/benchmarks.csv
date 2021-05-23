@@ -1,0 +1,12 @@
+2021-05-23T17:59:12+03:00
+Running ./google-benchmark
+Run on (4 X 3391.92 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 32 KiB (x4)
+  L2 Unified 256 KiB (x4)
+  L3 Unified 6144 KiB (x1)
+Load Average: 0.60, 3.14, 4.30
+***WARNING*** Library was built as DEBUG. Timings may be affected.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_epoll/2000/iterations:3",3,5.74483e+09,3.00659e+09,ns,,,,,

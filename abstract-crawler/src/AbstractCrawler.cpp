@@ -96,7 +96,7 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 }
 
 
-void AbstractCrawler::add_from_file(const std::string& filename, int16_t num_websites) {
+void AbstractCrawler::add_from_file(const std::string& filename, int num_websites) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Can't open file");
@@ -111,7 +111,7 @@ void AbstractCrawler::add_from_file(const std::string& filename, int16_t num_web
         counter++;
     }
 
-    // if there is less than num_websites urls in the file, notify the user:
+    // if there is less than num_websites urls in the file, notify the user
     if (counter < num_websites) {
         std::cout << "Added only " << counter << " websites from desired " << num_websites << " websites" << std::endl;
     }
