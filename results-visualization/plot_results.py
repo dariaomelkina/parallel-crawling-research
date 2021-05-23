@@ -5,8 +5,8 @@ import plotly.express as px
 
 NUMBER_OF_PARAMETER_ROWS = 9
 NUMBER_OF_WARNING_ROWS = 1
-ITERATIONS = 5
-NAME_PARAMETER = 'ethernet'
+ITERATIONS = 3
+NAME_PARAMETER = 'internet'
 
 if __name__ == "__main__":
     file = sys.argv[1]
