@@ -99,13 +99,12 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 
 }
 
-
-void AbstractCrawler::add_from_file(const std::string& filename, int num_websites) {
+void AbstractCrawler::add_from_file(const std::string& filename, int64_t num_websites) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Can't open file");
     }
-    int counter = 0; // to add a specific number of websites
+    int64_t counter = 0; // to add a specific number of websites
     std::string word;
     while(file >> word){
         if (counter == num_websites) {

@@ -11,9 +11,6 @@
 
 static void benchmark_thread_per_socket(benchmark::State& state) {
     ThreadCrawler x = ThreadCrawler(16);
-
-static void benchmark_thread(benchmark::State& state) {
-    ThreadCrawler x = ThreadCrawler(4);
 	for (auto _ : state) {
         state.PauseTiming();
         x.add_from_file("../test.txt", state.range(0));
@@ -52,14 +49,14 @@ static void benchmark_epoll(benchmark::State& state) {
 
 // Register the function as a benchmark and passing an argument, number of
 // iterations as a constraint
-// BENCHMARK(benchmark_process_per_socket)->Arg(100)->Iterations(1);
-// BENCHMARK(benchmark_thread_per_socket)->Arg(100)->Iterations(1);
-// BENCHMARK(benchmark_epoll)->Arg(100)->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)->Arg(100)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket)->Arg(100)->Iterations(1);
+BENCHMARK(benchmark_epoll)->Arg(100)->Iterations(1);
 
 int iters = 3;
 int args = 2000;
 
-BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(iters);
+// BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(iters);
 // BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(iters);
 // BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(iters);
 
