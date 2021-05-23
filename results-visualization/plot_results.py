@@ -5,6 +5,7 @@ import plotly.express as px
 
 NUMBER_OF_PARAMETER_ROWS = 9
 NUMBER_OF_WARNING_ROWS = 1
+ITERATIONS = 3
 
 if __name__ == "__main__":
     file = sys.argv[1]
@@ -18,26 +19,28 @@ if __name__ == "__main__":
                                      cells=dict(values=[general_parameters.parameters],
                                                 fill_color='lavender',
                                                 align='left'))])
-    table.write_image("result_plots/parameters.png")
+    table.write_image("result_plots/new_parameters.png")
 
     # Plots for different number of iterations (real time)
     data[['crawler', 'websites', 'additional_iterations']] = data.name.str.split("/", expand=True)
 
     colorsIdx = {'benchmark_epoll': 'epoll', 'benchmark_process_per_socket': 'process per socket',
                  'benchmark_thread_per_socket': 'thread per socket'}
-    cols = data[data["iterations"] == 5]['crawler'].map(colorsIdx)
+    cols = data[data["iterations"] == ITERATIONS]['crawler'].map(colorsIdx)
 
-    fig1 = px.line(data[data["iterations"] == 5], x="websites", y="real_time", title='Real Time plot for 5 iterations',
+    fig1 = px.line(data[data["iterations"] == ITERATIONS], x="websites", y="real_time",
+                   title=f'Real Time plot for {ITERATIONS} iterations',
                    color=cols,
                    labels={"color": "Crawler:",
                            "real_time": "real time (ns)",
                            "websites": "number of crawled websites"})
-    fig1.write_image("result_plots/real_time.png")
+    fig1.write_image("result_plots/new_real_time.png")
 
     # Plots for different number of iterations (cpu time)
-    fig2 = px.line(data[data["iterations"] == 5], x="websites", y="cpu_time", title='CPU Time plot for 5 iterations',
+    fig2 = px.line(data[data["iterations"] == ITERATIONS], x="websites", y="cpu_time",
+                   title=f'CPU Time plot for {ITERATIONS} iterations',
                    color=cols,
                    labels={"color": "Crawler:",
                            "cpu_time": "cpu time (ns)",
                            "websites": "number of crawled websites"})
-    fig2.write_image("result_plots/cpu_time.png")
+    fig2.write_image("result_plots/new_cpu_time.png")

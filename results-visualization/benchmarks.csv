@@ -1,0 +1,26 @@
+2021-05-23T19:25:50+03:00
+Running ./google-benchmark
+Run on (4 X 3390.97 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 32 KiB (x4)
+  L2 Unified 256 KiB (x4)
+  L3 Unified 6144 KiB (x1)
+Load Average: 2.23, 1.41, 1.12
+***WARNING*** Library was built as DEBUG. Timings may be affected.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_process_per_socket/100/iterations:1",1,1.06654e+09,1.83727e+08,ns,,,,,
+"benchmark_thread_per_socket/100/iterations:1",1,9.72539e+08,1.82758e+08,ns,,,,,
+"benchmark_epoll/100/iterations:1",1,1.10635e+09,7.71629e+08,ns,,,,,
+"benchmark_thread_per_socket/16/iterations:3",3,1.7992e+08,1.65691e+07,ns,,,,,
+"benchmark_thread_per_socket/64/iterations:3",3,6.35954e+08,1.57869e+08,ns,,,,,
+"benchmark_thread_per_socket/512/iterations:3",3,3.71288e+09,7.71919e+08,ns,,,,,
+"benchmark_thread_per_socket/4096/iterations:3",3,1.85192e+10,4.23591e+09,ns,,,,,
+"benchmark_process_per_socket/16/iterations:3",3,1.99087e+08,2.54136e+07,ns,,,,,
+"benchmark_process_per_socket/64/iterations:3",3,6.94299e+08,1.66501e+08,ns,,,,,
+"benchmark_process_per_socket/512/iterations:3",3,3.74586e+09,7.80197e+08,ns,,,,,
+"benchmark_process_per_socket/4096/iterations:3",3,1.84491e+10,4.24858e+09,ns,,,,,
+"benchmark_epoll/16/iterations:3",3,1.95738e+08,1.5116e+08,ns,,,,,
+"benchmark_epoll/64/iterations:3",3,7.56791e+08,4.90526e+08,ns,,,,,
+"benchmark_epoll/512/iterations:3",3,4.45001e+09,2.90945e+09,ns,,,,,
+"benchmark_epoll/4096/iterations:3",3,1.9609e+10,1.55837e+10,ns,,,,,
