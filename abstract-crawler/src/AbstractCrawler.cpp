@@ -30,7 +30,7 @@ std::string AbstractCrawler::get_processed_item() {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
-    for (size_t j = 0; j < 15; j++) {
+    for (size_t j = 0; j < 18; j++) {
         std::vector<std::pair<size_t, size_t>> indeces;
         std::vector<std::string> tag_names;
 
@@ -96,16 +96,25 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 }
 
 
-void AbstractCrawler::add_from_file(const std::string& filename) {
+void AbstractCrawler::add_from_file(const std::string& filename, int16_t num_websites) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Can't open file");
     }
+    int counter = 0; // to add a specific number of websites
     std::string word;
     while(file >> word){
+        if (counter == num_websites) {
+            break;
+        }
         add_url(word);
+        counter++;
     }
 
+    // if there is less than num_websites urls in the file, notify the user:
+    if (counter < num_websites) {
+        std::cout << "Added only " << counter << " websites from desired " << num_websites << " websites" << std::endl;
+    }
 }
 
 

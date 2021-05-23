@@ -50,7 +50,9 @@ int send_request(const std::string &url, const std::string &additional_params) {
     struct sockaddr_in server{};
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
+
+    // std::cout << *((unsigned long *) host->h_addr) << std::endl;
+    server.sin_addr.s_addr = 16787978;//*((unsigned long *) host->h_addr);
 
 
     // creating socket descriptor
