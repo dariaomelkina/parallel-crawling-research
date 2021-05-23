@@ -3,7 +3,7 @@ project(asyncepoll)
 
 set(CMAKE_CXX_STANDARD 17)
 find_package(Threads)
-include_directories(inc ../abstract-crawler/inc ../requests/inc ../thread-per-socket/inc)
+include_directories(inc ../abstract-crawler/inc ../requests/inc ../thread-crawler/inc)
 
 add_executable(asyncepoll src/main.cpp ../requests/src/requests.cpp
         ../abstract-crawler/src/AbstractCrawler.cpp src/EpollCrawler.cpp)

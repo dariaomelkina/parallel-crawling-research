@@ -17,10 +17,9 @@ void ProcessCrawler::parsing_process(size_t index) {
         int sock = get_socket(url);
 
         // reading data to buffer
-
         size_t index = 0;
-        while (index < MAX_SIZE - ONE_READ_SIZE) {
-            size_t char_read = read(sock, buffer + index, ONE_READ_SIZE);
+        while (index < MAX_SIZE) {
+            size_t char_read = read(sock, buffer + index, MAX_SIZE);
             index += char_read;
             if (char_read == 0) {
                 break;

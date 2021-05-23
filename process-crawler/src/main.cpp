@@ -1,11 +1,11 @@
-#include "ProcessSocketCrawler.h"
+#include "ProcessCrawler.h"
 #include <string>
 #include <vector>
 
 
 
 int main() {
-    std::vector<std::string> test_urls = {"http://www.example.com/", "http://www.exmple.com/", "http://www.exmple.com/", "http://www.example.com/", "http://www.example.com/"};
+    std::vector<std::string> test_urls = {"http://www.example.com/", "http://www.example.com/", "http://www.example.com/", "http://www.exmple.com/", "http://www.exmple.com/", "http://www.example.com/", "http://www.example.com/"};
 
     //size_t x = 0b11111100011111100101010101010111;
   //  for (size_t i = 0; i < sizeof(size_t); i++) {
@@ -15,7 +15,7 @@ int main() {
 
 
 
-    ProcessSocketCrawler x  = ProcessSocketCrawler(2);
+    ProcessCrawler x  = ProcessCrawler(2);
 
     for (auto& url: test_urls) {
         std::cout << url << std::endl;

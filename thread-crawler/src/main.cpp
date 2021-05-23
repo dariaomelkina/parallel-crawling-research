@@ -1,7 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
-#include "TreadSocketCrawler.h"
+#include "ThreadCrawler.h"
 
 
 int main() {
@@ -10,7 +10,7 @@ int main() {
                                           "http://www.exmple.com/"};
 
 
-    TreadSocketCrawler x = TreadSocketCrawler(4);
+    ThreadCrawler x = ThreadCrawler(1);
 
     // adding links to the crawler
     for (auto &url: test_urls) {
@@ -23,7 +23,7 @@ int main() {
 
     // getting the output
     while (!x.is_empty()) {
-        std::cout << x.get_processed_item() << std::endl;
+        std::cout << x.get_processed_item() << "\n\n\n\n\n\n" << std::endl;
     }
 
     return 0;

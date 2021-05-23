@@ -85,6 +85,10 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 
 
         }
+        if (j > 0) {
+            continue;
+        }
+
 
     }
 
