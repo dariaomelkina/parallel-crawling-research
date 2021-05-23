@@ -1,13 +1,19 @@
 #include <iostream>
 #include <benchmark/benchmark.h>
+#include "ThreadSocketCrawler.h"
 #include "ThreadCrawler.h"
 #include "ProcessCrawler.h"
 #include "EpollCrawler.h"
+#include "ProcessSocketCrawler.h"
+
+
 
 
 static void benchmark_thread_per_socket(benchmark::State& state) {
     ThreadCrawler x = ThreadCrawler(16);
 
+static void benchmark_thread(benchmark::State& state) {
+    ThreadCrawler x = ThreadCrawler(4);
 	for (auto _ : state) {
         state.PauseTiming();
         x.add_from_file("../test.txt", state.range(0));

@@ -3,9 +3,13 @@ project(google-benchmark CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(../thread-per-socket/inc ../abstract-crawler/inc ../requests/inc ../process-per-socket/inc ../async-epoll/inc)
-add_executable(google-benchmark src/main.cpp ../thread-per-socket/src/ThreadCrawler.cpp
-	../abstract-crawler/src/AbstractCrawler.cpp ../requests/src/requests.cpp ../process-per-socket/src/ProcessCrawler.cpp ../async-epoll/src/EpollCrawler.cpp)
+include_directories(../thread-crawler/inc ../abstract-crawler/inc ../requests/inc
+		../process-crawler/inc ../async-epoll/inc ../thread-per-socket/inc
+		../process-per-socket/inc)
+add_executable(google-benchmark src/main.cpp ../thread-crawler/src/ThreadCrawler.cpp
+	../abstract-crawler/src/AbstractCrawler.cpp ../requests/src/requests.cpp
+		../process-crawler/src/ProcessCrawler.cpp ../async-epoll/src/EpollCrawler.cpp
+		../thread-per-socket/src/ThreadSocketCrawler.cpp ../process-per-socket/src/ProcessSocketCrawler.cpp)
 
 find_package(benchmark REQUIRED)
 

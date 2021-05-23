@@ -22,8 +22,8 @@ void* ThreadCrawler::parsing_thread(void* args) {
         int sock = get_socket(url);
 
         size_t index = 0;
-        while (index < MAX_SIZE - ONE_READ_SIZE) {
-            size_t char_read = read(sock, buffer + index, ONE_READ_SIZE);
+        while (index < MAX_SIZE) {
+            size_t char_read = read(sock, buffer + index, MAX_SIZE);
             index += char_read;
             if (char_read == 0) {
                 break;

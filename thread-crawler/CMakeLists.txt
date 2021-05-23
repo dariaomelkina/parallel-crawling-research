@@ -6,7 +6,7 @@ find_package(Threads)
 include_directories(inc ../abstract-crawler/inc ../requests/inc)
 
 add_executable(threads src/main.cpp ../requests/inc/requests.h ../requests/src/requests.cpp
-        ../abstract-crawler/inc/AbstractCrawler.h inc/ThreadSocketCrawler.h
-        ../abstract-crawler/src/AbstractCrawler.cpp src/ThreadSocketCrawler.cpp)
+        ../abstract-crawler/inc/AbstractCrawler.h inc/ThreadCrawler.h
+        ../abstract-crawler/src/AbstractCrawler.cpp src/ThreadCrawler.cpp)
 
 target_link_libraries(threads ${CMAKE_THREAD_LIBS_INIT})
