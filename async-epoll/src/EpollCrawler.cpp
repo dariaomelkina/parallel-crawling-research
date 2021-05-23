@@ -23,19 +23,23 @@ void *EpollCrawler::parsing_thread(void *args) {
     size_t events_waiting = 0;
     size_t current_index = params->threads_index;
 
+    for (size_t i = 0; i < max_events; i++) {
+        if (current_index >= input_ptr->size()) {
+            break;
+        }
+        int socket = get_socket((*input_ptr)[current_index]);
+        current_index += params->threads_num;
+        responses[socket] = std::make_pair(0, new char [MAX_SIZE]);
+        event.data.fd = socket;
+        epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
+        ++events_waiting;
+    }
+
+
     size_t bytes_read;
 
+
     while (current_index < input_ptr->size() || events_waiting != 0) {
-          //std::cout << current_index << " ";
-        // If we are able to, open up a new socket and add it to the wait list
-        if (events_waiting < max_events && current_index < input_ptr->size()) {
-            int socket = get_socket((*input_ptr)[current_index]);
-            current_index += params->threads_num;
-            responses[socket] = std::make_pair(0, new char [MAX_SIZE]);
-            event.data.fd = socket;
-            epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
-            ++events_waiting;
-        }
 
         // Wait and test whether the connections are ready and have transmitted some
         // data
@@ -51,7 +55,18 @@ void *EpollCrawler::parsing_thread(void *args) {
                 --events_waiting;
                 close(events[i].data.fd);
                 size_t tags = count_tags(responses[events[i].data.fd].second, responses[events[i].data.fd].first);
+
+                // starting a new connection
+                if (current_index < input_ptr->size()) {
+                    int socket = get_socket((*input_ptr)[current_index]);
+                    current_index += params->threads_num;
+                    responses[socket] = std::make_pair(0, new char [MAX_SIZE]);
+                    event.data.fd = socket;
+                    epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
+                    ++events_waiting;
+                }
             }
+
 
         }
     }
