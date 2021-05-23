@@ -36,8 +36,6 @@ void* ThreadCrawler::parsing_thread(void* args) {
 
 
         size_t tags =  count_tags(buffer, index);
-        tags =  count_tags(buffer, index);
-        tags =  count_tags(buffer, index);
 
 
 
@@ -83,6 +81,8 @@ void ThreadCrawler::process_queue() {
     }
 
     input_queue.clear();
+
+    delete[] threads;
 
 
 }

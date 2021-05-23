@@ -2,19 +2,28 @@
 #define ASYNC_EPOLL_H
 
 #include "pthread.h"
+#include <unordered_map>
+#include <iostream>
+#include <sys/epoll.h>
+#include <unistd.h>
+
 
 #include "AbstractCrawler.h"
 
-#define RESPONSE_BUFFER_SIZE 512
-#define MAX_EVENTS 25
-#define READ_SIZE 1024*1024
+struct async_parsing_args_t {
+    std::deque <std::string>* input_ptr;
+    size_t threads_num;
+    size_t threads_index;
+    size_t max_requests;
+};
 
 class EpollCrawler : public AbstractCrawler {
 protected:
+    size_t _max_requests;
   static void* parsing_thread(void* args);
 
 public:
-  explicit EpollCrawler(size_t max_workers);
+    EpollCrawler(size_t max_workers, size_t max_requests);
 
   virtual void process_queue();
 };
