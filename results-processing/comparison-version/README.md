@@ -1,6 +1,6 @@
-# Results visualization
+# Results visualization (an older version, was used for preparation and intermediate testing)
 
-Usage example from that directory:
+Usage example from this directory:
 
 ```bash
 python3 plot_results.py example_benchmarks.csv
