@@ -37,6 +37,7 @@ if __name__ == "__main__":
                    labels={"color": "Crawler:",
                            "real_time": "real time (s)",
                            "websites": "number of crawled websites"})
+    fig1.update_xaxes(type='linear')
     fig1.write_image(f"result_plots/{NAME_PARAMETER}_real_time.png")
 
     # Plots for different number of iterations (cpu time)
@@ -46,4 +47,5 @@ if __name__ == "__main__":
                    labels={"color": "Crawler:",
                            "cpu_time": "cpu time (s)",
                            "websites": "number of crawled websites"})
+    fig2.update_xaxes(type='linear')
     fig2.write_image(f"result_plots/{NAME_PARAMETER}_cpu_time.png")
