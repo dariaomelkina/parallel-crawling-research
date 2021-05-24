@@ -1,3 +1,10 @@
+# TODO: there should be used "load average" unit
+#  check for better metrics or their description (number of websites -->> bytes ?)
+#  add info on the webpage sizes
+#  or use two datasets of webpages as constants (there will be their full descriptions in the paper “сумарний розмір
+#  такий то, кількість файлів така то, медіанний розмір такий то, середнє квадратичне по розміру таке то”)
+#
+
 import sys
 import pandas as pd
 import plotly.graph_objects as go
