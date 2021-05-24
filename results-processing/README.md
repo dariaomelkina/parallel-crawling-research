@@ -3,9 +3,8 @@
 Usage example from this directory:
 
 ```bash
-python3 process_results.py benchmarks1.csv ethernet epoll
-python3 process_results.py benchmarks2.csv internet process
-# etc...
+python3 process_results.py epoll_benchmarks.csv process_benchmarks.csv thread_benchmarks.csv
+
 ```
 
 ## Prerequisites
@@ -13,4 +12,5 @@ python3 process_results.py benchmarks2.csv internet process
 pip install -U kaleido
 pip install plotly
 pip install pandas
+pip install scipy
 ```
