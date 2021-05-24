@@ -15,6 +15,18 @@ test-websites - directory to be parsed
 
 plot=True or plot=False to plot the distribution of file sizes
 
+
+#### Get the stats of files from the list of crawling html files
+```bash
+ python3.9 html_stats_from_file.py ../google-benchmark/test.txt test-webpages plot=True
+ ```
+##### where:
+../google-benchmark/test.txt  - file with the list of urls in the form of http://10.42.0.1/wikipedia/Free_Software_Foundation.html
+
+test-webpages - directory where the files from the above mentioned list could be found
+
+plot=True or plot=False to plot the distribution of file sizes
+
 #### Using C++
 
 Example usage from that directory:
