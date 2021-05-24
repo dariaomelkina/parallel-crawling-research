@@ -15,7 +15,7 @@ echo "Hello, googlers!"
 
 # RAM DISK setup:
 sudo mkdir -p /mnt/ramdisk
-sudo mount -t tmpfs -o rw,size=2G tmpfs /mnt/ramdisk
+sudo mount -t tmpfs -o rw,size=3G tmpfs /mnt/ramdisk
 
 
 # copy files to the ram disk as it is volatile

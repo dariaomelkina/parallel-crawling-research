@@ -37,17 +37,21 @@ void* ThreadSocketCrawler::parsing_thread(void *item) {
 
 ThreadSocketCrawler::ThreadSocketCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
     // semaphore for the number of available workers
-    if (sem_init(&sem, 0, max_workers) != 0) {
+    if (sem_init(&sem, 0, 0) != 0) {
         throw std::runtime_error("Can't init the thread limit semaphore");
     }
 }
-
+#include <iostream>
 
 void ThreadSocketCrawler::process_queue() {
+    for (size_t i = 0; i < max_workers; i++) {
+        sem_post(&sem);
+    }
 
     for (size_t i = 0; i < input_queue.size(); i++) {
         // wait till we can create a new worker
         sem_wait(&sem);
+
         // processing the url
         auto args = new socket_parsing_args_t;
         args->sem_ptr = &sem;

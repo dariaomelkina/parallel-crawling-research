@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import sys
+import random
 
 
 def density_plot(result_sizes):
@@ -61,16 +62,29 @@ def main():
     result_names = [i[0] for i in result]
     result_sizes = [i[1] for i in result]
 
-    df_describe = pd.DataFrame(result_sizes)
+
+    combined_result_names = []
+    for i in range(10):
+        for name in result_names:
+            combined_result_names.append(name)
+
+    df_describe = pd.DataFrame(combined_result_names)
     print("The following stats, except for count, are in Kilobytes:", df_describe.describe())
-    print("Total size of", len(result_sizes), "html files is", sum(result_sizes), "Kb")
+    # print("Total size of", len(combined_result_names), "html files is", sum(combined_result_names), "Kb")
+
+    # print(combined_result_names[:5])
+    random.shuffle(combined_result_names)
+    # print(combined_result_names[:5])
+    # print(len(combined_result_names))
+    # print(len(result_names))
 
     with open(result_file, 'w') as write_file:
-        for website in result_names:
-            write_file.write("http://" + ip_address + '/' + website + '\n')
+        for website in combined_result_names:
+            # print(website[14:])
+            write_file.write("http://" + ip_address + '/' + website[14:] + '\n')
 
     if sys.argv[-1] == "plot=True":
-        density_plot(result_sizes)
+        density_plot(combined_result_names)
 
 
 if __name__ == '__main__':

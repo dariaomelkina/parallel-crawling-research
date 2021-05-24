@@ -1,14 +1,14 @@
-2021-05-23T19:22:31+03:00
+2021-05-24T20:02:42+03:00
 Running ./google-benchmark
-Run on (4 X 3330.7 MHz CPU s)
+Run on (8 X 3900 MHz CPU s)
 CPU Caches:
   L1 Data 32 KiB (x4)
   L1 Instruction 32 KiB (x4)
   L2 Unified 256 KiB (x4)
   L3 Unified 6144 KiB (x1)
-Load Average: 2.24, 1.31, 1.06
-***WARNING*** Library was built as DEBUG. Timings may be affected.
+Load Average: 0.43, 0.90, 1.98
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
 name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
-"benchmark_process_per_socket/100/iterations:1",1,1.04767e+09,1.90096e+08,ns,,,,,
-"benchmark_thread_per_socket/100/iterations:1",1,9.71716e+08,1.79687e+08,ns,,,,,
-"benchmark_epoll/100/iterations:1",1,1.06657e+09,7.76943e+08,ns,,,,,
+"benchmark_epoll/2000/iterations:1",1,6.24203e+08,1.97481e+08,ns,,,,,
+"benchmark_epoll/10000/iterations:1",1,2.86738e+09,1.16861e+09,ns,,,,,
+"benchmark_epoll/375000/iterations:1",1,1.13981e+11,5.04478e+10,ns,,,,,

@@ -30,7 +30,7 @@ std::string AbstractCrawler::get_processed_item() {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
-    for (size_t j = 0; j < 18; j++) {
+    for (size_t j = 0; j < 8; j++) {
         std::vector<std::pair<size_t, size_t>> indeces;
         std::vector<std::string> tag_names;
 

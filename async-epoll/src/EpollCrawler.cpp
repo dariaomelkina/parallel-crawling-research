@@ -55,7 +55,8 @@ void *EpollCrawler::parsing_thread(void *args) {
                 --events_waiting;
                 close(events[i].data.fd);
                 size_t tags = count_tags(responses[events[i].data.fd].second, responses[events[i].data.fd].first);
-
+                delete[] responses[events[i].data.fd].second;
+                responses.erase(events[i].data.fd);
                 // starting a new connection
                 if (current_index < input_ptr->size()) {
                     int socket = get_socket((*input_ptr)[current_index]);
@@ -71,10 +72,6 @@ void *EpollCrawler::parsing_thread(void *args) {
         }
     }
 
-
-    for (auto& resp: responses) {
-        delete[] resp.second.second;
-    }
     delete[] events;
 
     // Once no urls are available anymore, finish working
