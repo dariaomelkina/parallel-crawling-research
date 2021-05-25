@@ -21,26 +21,19 @@ if __name__ == "__main__":
     thread_df = pd.read_csv(sys.argv[3],
                             skiprows=range(0, NUMBER_OF_PARAMETER_ROWS))
 
-    epoll_data = epoll_df['real_time'][NUMBER_Of_SKIP_ROWS:]
-    process_data = process_df['real_time'][NUMBER_Of_SKIP_ROWS:]
-    thread_data = thread_df['real_time'][NUMBER_Of_SKIP_ROWS:]
+    epoll_data = epoll_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
+    process_data = process_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
+    thread_data = thread_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
 
     ###################################################################################################################
     # Plot customizations
-    custom_labels = {"x": "Time, ns",
+    custom_labels = {"x": "Time, s",
                      "y": "Number of iterations"}
 
     ###################################################################################################################
     # Creating bar plots of the distributions
-    # Create outlay for three plots
-    # TODO:
-    # bar_figs = make_subplots(rows=1, cols=3)
 
     # Epoll plot
-    # TODO: replace by a function
-    # epoll_fig_test = go.Bar(x=epoll_data['real_time'][NUMBER_Of_SKIP_ROWS:],
-    #                         y=[i for i in range(0, len(epoll_data['real_time'][NUMBER_Of_SKIP_ROWS:]))])
-
     epoll_fig = px.histogram(x=epoll_data,
                              nbins=50,
                              title="Epoll results distribution",
@@ -61,13 +54,53 @@ if __name__ == "__main__":
                               labels=custom_labels)
     thread_fig.write_image("result-plots/thread-distribution.png")
 
-    # Add subplots to the main plot
-    # TODO:
-    # bar_figs.add_trace(
-    #     epoll_fig_test,
-    #     row=1, col=1
-    # )
-    # bar_figs.write_image("result-plots/distributions.png")
+    # Three crawlers together on one plot
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=epoll_data,
+        name='epoll',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='steelblue',
+        opacity=0.75
+    ))
+    fig.add_trace(go.Histogram(
+        x=process_data,
+        name='process per socket',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='blueviolet',
+        opacity=0.75
+    ))
+    fig.add_trace(go.Histogram(
+        x=thread_data,
+        name='thread per socket',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='deeppink',
+        opacity=0.75
+    ))
+
+    fig.update_layout(
+        title_text='Benchmarking Results',
+        xaxis_title_text='Time, s',
+        yaxis_title_text='Count',
+        bargap=0.2,
+        bargroupgap=0.1
+    )
+    fig.write_image("result-plots/distributions.png")
 
     ###################################################################################################################
     # Testing normality
@@ -99,14 +132,23 @@ if __name__ == "__main__":
     if normal_thread:
         print(f"Normal distribution, with p = {thread_p}\n" + "*" * 50)
     else:
-        print(f"Not a normal distribution, with p = {thread_p}\n")
+        print(f"Not a normal distribution, with p = {thread_p}\n" + "*" * 50)
 
     ###################################################################################################################
-    # if normal_epoll and normal_process and normal_thread:
-    #     # Hypotheses that all the data has normal distribution cannot be rejected
-    #     # Performing Student t-test:
-    #     t_stat, p = stats.ttest_ind(epoll_data, process_data)
-    # else:
-    #     # Hypotheses that all the data has normal distribution can be rejected (or at least some of the data)
-    #     # Performing Wilcoxon test:
-    #     stat, p = stats.wilcoxon(epoll_data, process_data)
+    if normal_epoll and normal_process and normal_thread:
+        # Hypotheses that all the data has normal distribution cannot be rejected
+        # Performing Student t-test:
+        t_stat1, p1 = stats.ttest_ind(epoll_data, process_data)
+        t_stat2, p2 = stats.ttest_ind(epoll_data, thread_data)
+        t_stat3, p3 = stats.ttest_ind(process_data, thread_data)
+
+        # Displaying test results
+        print("\nSTUDENT T-TEST\n" + "*" * 95)
+        print(f"Epoll and Process per socket: t = {t_stat1} , p = {p1}\n" + "*" * 95)
+        print(f"Epoll and Thread per socket: t = {t_stat2} , p = {p2}\n" + "*" * 95)
+        print(f"Process per socket and Thread per socket: t = {t_stat3} , p = {p3}\n" + "*" * 95)
+
+    else:
+        # Hypotheses that all the data has normal distribution can be rejected (or at least some of the data)
+        # Performing Wilcoxon test:
+        stat, p = stats.wilcoxon(epoll_data, process_data)
