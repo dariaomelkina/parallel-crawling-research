@@ -2,16 +2,23 @@
 
 Execute the following from directory-parser directory:
 ```bash
-python3 get_html_list.py 0 25 test-websites ../google-benchmark/test.txt 10.42.0.1 plot=False
+python3 get_html_list.py db_directory result_file ip_address multiplier percentile_start percentile_end plot=False
+
+# Or, in real world, to get 0-25 percentile, with each element repeating 2 times, and plotting, copy-paste the following:
+python3 get_html_list.py test-websites ../google-benchmark/test.txt 10.42.0.150 2 0 25 plot=True
+
 ```
 ##### where:
-0, 25  - the start and the end of the percentile. In this case it is 25% percentile.
 
-test-websites - directory to be parsed
+test-websites - db_directory- directory to be parsed
 
-../google-benchmark/test.txt  - dir to write the result
+../google-benchmark/test.txt  - result_file - dir to write the result
 
 10.42.0.1 - ip address
+
+2- multiplier - number of times, each file fill occur in the result_file
+
+0, 25  - percentile_start and percentile_end. In this case it is 25% percentile.
 
 plot=True or plot=False to plot the distribution of file sizes
 

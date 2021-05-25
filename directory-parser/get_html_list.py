@@ -27,13 +27,13 @@ def main():
     file_list = []
 
     # reading command line arguments:
-    if len(sys.argv) not in (6, 7):
+    if len(sys.argv) not in (7, 8):
         print("Wrong number of system arguments. To get 0-25 percentile,")
         print("try sth like: python3 get_html_list.py 0 25 test-websites "
               "../google-benchmark/test.txt 10.42.0.1 plot=False")
         return
-    percentile_start, percentile_end, db_directory, result_file, ip_address = sys.argv[1:6]
-    print(percentile_start, percentile_end, db_directory, result_file, ip_address)
+    db_directory, result_file, ip_address, multiplier, percentile_start, percentile_end = sys.argv[1:7]
+    print(db_directory, result_file, ip_address, multiplier, percentile_start, percentile_end)
 
     # recursively walking through all files:
     for subdir, dirs, files in os.walk(db_directory):
@@ -44,7 +44,7 @@ def main():
             if filepath.endswith(".html"):
                 file_stats = os.stat(filepath)
                 # size of the file in Kilobytes
-                file_size = round(file_stats.st_size / 1024)
+                file_size = file_stats.st_size / 1024
                 # print(filepath, file_size)
                 file_list.append((filepath, file_size))
 
@@ -58,33 +58,43 @@ def main():
     # getting that percentile slice
     result = file_list[start:end]
 
+    print(len(result))
+
+    # Multiplicating the result list here:
+    if int(multiplier) > 0:
+        multiplier_list = []
+        for _ in range(int(multiplier)):
+            multiplier_list.extend(result.copy())
+        result = multiplier_list
+
+    print(len(result))
+
     # splitting array of tuples into two
     result_names = [i[0] for i in result]
     result_sizes = [i[1] for i in result]
 
 
-    combined_result_names = []
-    for i in range(10):
-        for name in result_names:
-            combined_result_names.append(name)
+    # combined_result_names = []
+    # for i in range(10):
+    #     for name in result_names:
+    #         combined_result_names.append(name)
 
-    df_describe = pd.DataFrame(combined_result_names)
+    df_describe = pd.DataFrame(result_sizes)
     print("The following stats, except for count, are in Kilobytes:", df_describe.describe())
-    # print("Total size of", len(combined_result_names), "html files is", sum(combined_result_names), "Kb")
+    print("Total size of", len(result_sizes), "html files is", round(sum(result_sizes)), "Kb, or",
+    round(sum(result_sizes) / 1024, 3), "Mb \n\n")
 
-    # print(combined_result_names[:5])
-    random.shuffle(combined_result_names)
-    # print(combined_result_names[:5])
-    # print(len(combined_result_names))
-    # print(len(result_names))
+    # Shuffling randomly the names list:
+    random.shuffle(result_names)
+
 
     with open(result_file, 'w') as write_file:
-        for website in combined_result_names:
+        for website in result_names:
             # print(website[14:])
             write_file.write("http://" + ip_address + '/' + website[14:] + '\n')
 
     if sys.argv[-1] == "plot=True":
-        density_plot(combined_result_names)
+        density_plot(result_sizes)
 
 
 if __name__ == '__main__':
