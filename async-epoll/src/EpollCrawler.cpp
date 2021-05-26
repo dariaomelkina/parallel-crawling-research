@@ -2,6 +2,10 @@
 
 void *EpollCrawler::parsing_thread(void *args) {
     auto params = (async_parsing_args_t *) args;
+
+    pthread_barrier_wait(params->start_barrier_ptr);
+
+
     std::deque<std::string> *input_ptr = params->input_ptr;
     size_t max_events = params->max_requests;
 
@@ -79,6 +83,8 @@ void *EpollCrawler::parsing_thread(void *args) {
         throw std::runtime_error("Failed to close epoll file descriptor");
     }
 
+    delete params;
+
     return nullptr;
 }
 
@@ -91,6 +97,10 @@ void EpollCrawler::process_queue() {
         throw std::runtime_error("There are no workers");
     }
 
+    pthread_barrier_t start_barrier;
+    pthread_barrier_init(&start_barrier, nullptr, max_workers);
+
+
     auto threads = new pthread_t[max_workers - 1];
 
 
@@ -100,6 +110,7 @@ void EpollCrawler::process_queue() {
         args->threads_num = max_workers;
         args->threads_index = i;
         args->max_requests = _max_requests;
+        args->start_barrier_ptr = &start_barrier;
         pthread_create(&threads[i], nullptr, EpollCrawler::parsing_thread, (void *) args);
     }
 
@@ -108,6 +119,7 @@ void EpollCrawler::process_queue() {
     main_args->threads_num = max_workers;
     main_args->threads_index = max_workers - 1;
     main_args->max_requests = _max_requests;
+    main_args->start_barrier_ptr = &start_barrier;
 
     EpollCrawler::parsing_thread((void *) main_args);
 
@@ -119,4 +131,5 @@ void EpollCrawler::process_queue() {
     input_queue.clear();
 
     delete[] threads;
+    pthread_barrier_destroy(&start_barrier);
 }

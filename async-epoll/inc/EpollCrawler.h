@@ -15,6 +15,7 @@ struct async_parsing_args_t {
     size_t threads_num;
     size_t threads_index;
     size_t max_requests;
+    pthread_barrier_t* start_barrier_ptr;
 };
 
 class EpollCrawler : public AbstractCrawler {
@@ -26,7 +27,7 @@ protected:
 public:
     EpollCrawler(size_t max_workers, size_t max_requests);
 
-    virtual void process_queue();
+    void process_queue() override;
 };
 
 #endif

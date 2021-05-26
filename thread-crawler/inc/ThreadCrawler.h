@@ -14,13 +14,12 @@ struct parsing_args_t {
     std::deque<std::string> *input_ptr;
     size_t threads_num;
     size_t threads_index;
-    pthread_barrier_t* start_barrier;
+    pthread_barrier_t* start_barrier_ptr;
 };
 
 
 class ThreadCrawler : public AbstractCrawler {
 protected:
-    pthread_barrier_t* start_barrier;
 
     static void *parsing_thread(void *args);
 
