@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 from scipy import stats
+import numpy
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -144,6 +145,62 @@ if __name__ == "__main__":
         print(f"Epoll and Process per socket: t = {t_stat1} , p = {p1}\n" + "*" * 95)
         print(f"Epoll and Thread per socket: t = {t_stat2} , p = {p2}\n" + "*" * 95)
         print(f"Process per socket and Thread per socket: t = {t_stat3} , p = {p3}\n" + "*" * 95)
+
+        # Checking if we have same distributions (testing null hypotheses)
+        print("\nCOMPARING DISTRIBUTIONS\n" + "*" * 95)
+
+        same_e_p = p1 >= alpha
+        same_e_t = p2 >= alpha
+        same_t_p = p3 >= alpha
+
+        if same_e_p:
+            print("We cannot reject hypotheses, that Epoll and Process per socket "
+                  "are not significantly different \nfrom each other.\n" + "*" * 95)
+        else:
+            print("We reject hypotheses, that Epoll and Process per socket "
+                  "are not significantly different \nfrom each other. (they are different, in other words)")
+            print("Comparing means:")
+            m1 = numpy.mean(epoll_data)
+            m2 = numpy.mean(process_data)
+            print(f"Epoll mean = {m1}")
+            print(f"Process per socket mean = {m2}")
+            if m1 < m2:
+                print(f"Epoll has mean smaller by {100 - (m1 / m2) * 100}%\n" + "*" * 95)
+            else:
+                print(f"Process per socket has mean smaller by {100 - (m2 / m1) * 100}%\n" + "*" * 95)
+
+        if same_e_t:
+            print("We cannot reject hypotheses, that Epoll and Thread per socket "
+                  "are not significantly different \nfrom each other.\n" + "*" * 95)
+        else:
+            print("We reject hypotheses, that Epoll and Thread per socket "
+                  "are not significantly different \nfrom each other. (they are different, in other words)")
+            print("Comparing means:")
+            m1 = numpy.mean(epoll_data)
+            m2 = numpy.mean(thread_data)
+            print(f"Epoll mean = {m1}")
+            print(f"Thread per socket mean = {m2}")
+            if m1 < m2:
+                print(f"Epoll has mean smaller by {100 - (m1 / m2) * 100}%\n" + "*" * 95)
+            else:
+                print(f"Thread per socket has mean smaller by {100 - (m2 / m1) * 100}%\n" + "*" * 95)
+
+        if same_t_p:
+            print("We cannot reject hypotheses, that Thread per socket and Process per socket "
+                  "are not significantly \ndifferent from each other.\n" + "*" * 95)
+        else:
+            print("We reject hypotheses, that Thread per socket and Process per socket "
+                  "are not significantly \ndifferent from each other. (they are different, in other words)")
+            print("Comparing means:")
+            m1 = numpy.mean(thread_data)
+            m2 = numpy.mean(process_data)
+            print(f"Thread per socket mean = {m1}")
+            print(f"Process per socket mean = {m2}")
+            if m1 < m2:
+                print(f"Thread per socket has mean smaller by {100 - (m1 / m2) * 100}%\n" + "*" * 95)
+            else:
+                print(f"Process per socket has mean smaller by {100 - (m2 / m1) * 100}%\n" + "*" * 95)
+
 
     else:
         # Hypotheses that all the data has normal distribution can be rejected (or at least some of the data)

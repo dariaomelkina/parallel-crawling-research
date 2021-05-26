@@ -13,6 +13,6 @@ pip install -U kaleido
 pip install plotly
 pip install pandas
 pip install scipy
-pip install seaborn
+pip install numpy
 pip install matplotlib
 ```
