@@ -151,4 +151,12 @@ if __name__ == "__main__":
     else:
         # Hypotheses that all the data has normal distribution can be rejected (or at least some of the data)
         # Performing Wilcoxon test:
-        stat, p = stats.wilcoxon(epoll_data, process_data)
+        stat1, p1 = stats.wilcoxon(epoll_data, process_data)
+        stat2, p2 = stats.wilcoxon(epoll_data, thread_data)
+        stat3, p3 = stats.wilcoxon(process_data, thread_data)
+        
+        # Displaying test results
+        print("\nWILCOXON TEST\n" + "*" * 95)
+        print(f"Epoll and Process per socket: t = {stat1} , p = {p1}\n" + "*" * 95)
+        print(f"Epoll and Thread per socket: t = {stat2} , p = {p2}\n" + "*" * 95)
+        print(f"Process per socket and Thread per socket: t = {stat3} , p = {p3}\n" + "*" * 95)
