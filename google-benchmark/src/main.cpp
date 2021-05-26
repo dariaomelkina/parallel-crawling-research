@@ -6,7 +6,6 @@
 #include "EpollCrawler.h"
 #include "ProcessSocketCrawler.h"
 
-
 static void benchmark_thread_per_socket(benchmark::State &state) {
     ThreadCrawler x = ThreadCrawler(10000);
     for (auto _ : state) {
@@ -21,7 +20,7 @@ static void benchmark_thread_per_socket(benchmark::State &state) {
 
 
 static void benchmark_process_per_socket(benchmark::State &state) {
-    ProcessCrawler x = ProcessCrawler(10000);
+    ProcessCrawler x = ProcessCrawler(1);
 
     for (auto _ : state) {
         state.PauseTiming();
@@ -50,73 +49,14 @@ static void benchmark_epoll(benchmark::State &state) {
 int iters = 5;
 int args = 132859;
 int args_small = 50000;
-int args_rozigriv = 1300;
+int args_rozigriv = 5;
 
 // BENCHMARK(benchmark_epoll)->Arg(2000)->Iterations(1);
 // BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(1);
 
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_rozigriv)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_rozigriv)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_rozigriv)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_rozigriv)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_rozigriv)
-->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
 
-
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)
-->
-Arg(args_small)
-->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);

@@ -1,11 +1,8 @@
-//
-// Created by Maksym Protsyk on 5/13/21.
-//
-
-
 #include "AbstractCrawler.h"
 #include "iostream"
-
+#include <algorithm>
+#include <random>
+#include <chrono>       // std::chrono::system_clock
 
 void AbstractCrawler::add_url(const std::string &url) {
     input_queue.emplace_back(url);
@@ -94,13 +91,27 @@ void AbstractCrawler::add_from_file(const std::string &filename, int64_t num_web
         throw std::runtime_error("Can't open file");
     }
     int64_t counter = 0; // to add a specific number of websites
+
+    std::vector<std::string> shuffle_array;
     std::string word;
+    // reading input of size counter from file to shuffle array
     while (file >> word) {
         if (counter == num_websites) {
             break;
         }
-        add_url(word);
+        shuffle_array.push_back(word);
         counter++;
+    }
+
+    // shuffling the vector of urls randomly, using the current time
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine e(seed);
+
+    std::shuffle(shuffle_array.begin(), shuffle_array.end(), e);
+
+    // adding shuffled elements to queue one by one:
+    for (size_t i = 0; i < shuffle_array.size(); i++) {
+        add_url(shuffle_array[i]);
     }
 
     // if there is less than num_websites urls in the file, notify the user
