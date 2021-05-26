@@ -1,11 +1,8 @@
 import sys
 import pandas as pd
-import matplotlib.pyplot as plt
 from scipy import stats
 import plotly.express as px
-from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import seaborn as sns
 
 NUMBER_OF_PARAMETER_ROWS = 9
 NUMBER_OF_WARNING_ROWS = 1
@@ -154,7 +151,7 @@ if __name__ == "__main__":
         stat1, p1 = stats.wilcoxon(epoll_data, process_data)
         stat2, p2 = stats.wilcoxon(epoll_data, thread_data)
         stat3, p3 = stats.wilcoxon(process_data, thread_data)
-        
+
         # Displaying test results
         print("\nWILCOXON TEST\n" + "*" * 95)
         print(f"Epoll and Process per socket: t = {stat1} , p = {p1}\n" + "*" * 95)
