@@ -13,7 +13,7 @@ parsed_url_t parse_url(const std::string &url) {
             separator.begin(), separator.end()
     );
     //if (protocol_itr == url.end()) {
-        //throw std::runtime_error("Invalid url");
+    //throw std::runtime_error("Invalid url");
     //}
     size_t protocol_index = protocol_itr - url.begin();
     parsed_url.protocol = url.substr(0, protocol_index);
@@ -31,7 +31,6 @@ parsed_url_t parse_url(const std::string &url) {
 
 
     return parsed_url;
-
 }
 
 
@@ -83,5 +82,4 @@ int send_request(const std::string &url, const std::string &additional_params) {
 
 
     return sock;
-
 }

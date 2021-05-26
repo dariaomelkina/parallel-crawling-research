@@ -7,7 +7,7 @@
 
 
 void ProcessCrawler::parsing_process(size_t index) {
-    char* buffer = new char[MAX_SIZE];
+    char *buffer = new char[MAX_SIZE];
 
     // getting link from input queue
     for (size_t i = index; i < input_queue.size(); i += max_workers) {
@@ -28,16 +28,14 @@ void ProcessCrawler::parsing_process(size_t index) {
         close(sock);
 
 
-
-        size_t tags =  count_tags(buffer, index);
+        size_t tags = count_tags(buffer, index);
 
     }
 
     delete[] buffer;
-
 }
 
-ProcessCrawler::ProcessCrawler(size_t max_workers): AbstractCrawler(max_workers) {}
+ProcessCrawler::ProcessCrawler(size_t max_workers) : AbstractCrawler(max_workers) {}
 
 
 void ProcessCrawler::process_queue() {
@@ -49,9 +47,7 @@ void ProcessCrawler::process_queue() {
         int id = fork();
         if (id < 0) {
             throw std::runtime_error("Can't fork");
-        }
-
-        else if (id == 0) {
+        } else if (id == 0) {
             parsing_process(i);
             exit(0);
         }
@@ -60,14 +56,11 @@ void ProcessCrawler::process_queue() {
 
     parsing_process(max_workers - 1);
 
-
-
     for (size_t i = 0; i < max_workers - 1; i++) {
         wait(nullptr);
     }
 
     input_queue.clear();
-
 }
 
 

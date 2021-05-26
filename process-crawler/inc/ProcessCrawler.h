@@ -17,9 +17,8 @@
 #include<sys/wait.h>
 
 
-class ProcessCrawler: public AbstractCrawler {
+class ProcessCrawler : public AbstractCrawler {
 protected:
-
 
     virtual void parsing_process(size_t index);
 
@@ -30,7 +29,6 @@ public:
 
 
 };
-
 
 
 #endif //THREADS_PROCESSCRAWLER_H

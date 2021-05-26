@@ -26,11 +26,11 @@
 #include <iostream>
 
 
-class ProcessSocketCrawler: public AbstractCrawler {
+class ProcessSocketCrawler : public AbstractCrawler {
 protected:
-    static void* create_mmap(size_t size);
+    static void *create_mmap(size_t size);
 
-    sem_t* workers_sem_ptr;
+    sem_t *workers_sem_ptr;
 
     virtual void parsing_process(size_t index);
 
@@ -42,7 +42,6 @@ public:
     ~ProcessSocketCrawler();
 
 };
-
 
 
 #endif //THREADS_PROCESSCRAWLER_H

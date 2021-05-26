@@ -7,35 +7,33 @@
 #include "ProcessSocketCrawler.h"
 
 
-
-
-static void benchmark_thread_per_socket(benchmark::State& state) {
+static void benchmark_thread_per_socket(benchmark::State &state) {
     ThreadCrawler x = ThreadCrawler(10000);
-	for (auto _ : state) {
+    for (auto _ : state) {
         state.PauseTiming();
         x.add_from_file("../test.txt", state.range(0));
         state.ResumeTiming();
-		// processing links
-		x.process_queue();
+        // processing links
+        x.process_queue();
 
-	}
+    }
 }
 
 
-static void benchmark_process_per_socket(benchmark::State& state) {
+static void benchmark_process_per_socket(benchmark::State &state) {
     ProcessCrawler x = ProcessCrawler(10000);
 
-	for (auto _ : state) {
+    for (auto _ : state) {
         state.PauseTiming();
         x.add_from_file("../test.txt", state.range(0));
         state.ResumeTiming();
 
-		// processing links
-		x.process_queue();
-	}
+        // processing links
+        x.process_queue();
+    }
 }
 
-static void benchmark_epoll(benchmark::State& state) {
+static void benchmark_epoll(benchmark::State &state) {
     EpollCrawler x = EpollCrawler(80, 100);
     for (auto _ : state) {
         state.PauseTiming();
@@ -57,26 +55,68 @@ int args_rozigriv = 1300;
 // BENCHMARK(benchmark_epoll)->Arg(2000)->Iterations(1);
 // BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(1);
 
-BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_rozigriv)->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_rozigriv)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_rozigriv)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_rozigriv)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_rozigriv)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_rozigriv)
+->Iterations(1);
 
 
-
-
-
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
+BENCHMARK(benchmark_process_per_socket)
+->
+Arg(args_small)
+->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);
 // BENCHMARK(benchmark_process_per_socket)->Arg(args_small)->Iterations(1);

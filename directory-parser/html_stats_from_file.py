@@ -35,7 +35,6 @@ def main():
     input_file, db_directory = sys.argv[1:3]
     print(input_file, db_directory)
 
-# http://10.42.0.1/wikipedia/Free_Software_Foundation.html
     # recursively walking through all files:
     with open(input_file, 'r') as file:
         # cutting the 'http://10.42.0.1/' from the path:

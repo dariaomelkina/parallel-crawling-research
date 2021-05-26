@@ -6,14 +6,14 @@
 #include <iostream>
 
 
-void* ThreadCrawler::parsing_thread(void* args) {
+void *ThreadCrawler::parsing_thread(void *args) {
 
-    auto params = (parsing_args_t*) args;
+    auto params = (parsing_args_t *) args;
     std::deque<std::string> *input_ptr = params->input_ptr;
 
     size_t size = input_ptr->size();
 
-    char* buffer = new char[MAX_SIZE];
+    char *buffer = new char[MAX_SIZE];
 
 
     for (size_t i = params->threads_index; i < size; i += params->threads_num) {
@@ -34,9 +34,7 @@ void* ThreadCrawler::parsing_thread(void* args) {
         close(sock);
 
 
-
-        size_t tags =  count_tags(buffer, index);
-
+        size_t tags = count_tags(buffer, index);
 
 
     }
@@ -65,7 +63,7 @@ void ThreadCrawler::process_queue() {
         args->input_ptr = &input_queue;
         args->threads_num = max_workers;
         args->threads_index = i;
-        pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, (void*) args);
+        pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, (void *) args);
     }
 
     auto main_args = new parsing_args_t;
@@ -73,7 +71,7 @@ void ThreadCrawler::process_queue() {
     main_args->threads_num = max_workers;
     main_args->threads_index = max_workers - 1;
 
-    ThreadCrawler::parsing_thread((void*) main_args);
+    ThreadCrawler::parsing_thread((void *) main_args);
 
 
     for (size_t i = 0; i < max_workers - 1; i++) {
@@ -83,7 +81,5 @@ void ThreadCrawler::process_queue() {
     input_queue.clear();
 
     delete[] threads;
-
-
 }
 

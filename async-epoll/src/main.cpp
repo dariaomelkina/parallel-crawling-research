@@ -5,21 +5,21 @@
 
 
 int main() {
-  std::string test_url = "http://www.example.com/";
+    std::string test_url = "http://www.example.com/";
 
-  EpollCrawler x = EpollCrawler(2, 1000);
+    EpollCrawler x = EpollCrawler(2, 1000);
 
-  // adding links to the crawler
-  for (size_t i = 0; i < 35; ++i) {
-    x.add_url(test_url);
-  }
+    // adding links to the crawler
+    for (size_t i = 0; i < 35; ++i) {
+        x.add_url(test_url);
+    }
 
-  // processing links
-  x.process_queue();
+    // processing links
+    x.process_queue();
 
-  while (!x.is_empty()) {
-      std::cout << x.get_processed_item() << std::endl;
-  }
+    while (!x.is_empty()) {
+        std::cout << x.get_processed_item() << std::endl;
+    }
 
-  return 0;
+    return 0;
 }

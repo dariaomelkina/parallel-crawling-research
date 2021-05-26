@@ -12,7 +12,7 @@ void ProcessSocketCrawler::parsing_process(size_t i) {
     std::string url = std::move(input_queue[i]);
 
 
-    char* buffer = new char[MAX_SIZE];
+    char *buffer = new char[MAX_SIZE];
 
     // getting socket descriptor
     int sock = get_socket(url);
@@ -36,10 +36,10 @@ void ProcessSocketCrawler::parsing_process(size_t i) {
     exit(0);
 }
 
-ProcessSocketCrawler::ProcessSocketCrawler(size_t max_workers): AbstractCrawler(max_workers) {
+ProcessSocketCrawler::ProcessSocketCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
 
     // allocating shared memory
-    workers_sem_ptr = (sem_t*) create_mmap(sizeof(sem_t));
+    workers_sem_ptr = (sem_t *) create_mmap(sizeof(sem_t));
 
     // shared semaphore
     sem_init(workers_sem_ptr, 1, max_workers);
@@ -58,27 +58,22 @@ void ProcessSocketCrawler::process_queue() {
             parsing_process(i);
         }
 
-
     }
 
     // waiting for all workers to finish
-    for(size_t j = max_workers; j > 0; j--){
+    for (size_t j = max_workers; j > 0; j--) {
         sem_wait(workers_sem_ptr);
     }
-
-
-
 }
 
 ProcessSocketCrawler::~ProcessSocketCrawler() {
     sem_destroy(workers_sem_ptr);
     munmap(workers_sem_ptr, sizeof(sem_t));
-
 }
 
-void* ProcessSocketCrawler::create_mmap(size_t size) {
+void *ProcessSocketCrawler::create_mmap(size_t size) {
     // static method to created shared block of memory
-    void* res = (void*) mmap(
+    void *res = (void *) mmap(
             nullptr,
             size,
             PROT_READ | PROT_WRITE,

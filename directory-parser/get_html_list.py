@@ -51,7 +51,7 @@ def main():
     file_list.sort(key=lambda x: x[1])
 
     # Deleting all files, that are bigger than 800 KB:
-    
+
     index = 0
     for i in file_list:
         if i[1] >= 820:
@@ -77,7 +77,6 @@ def main():
     result_names = [i[0] for i in result]
     result_sizes = [i[1] for i in result]
 
-
     # combined_result_names = []
     # for i in range(10):
     #     for name in result_names:
@@ -86,11 +85,10 @@ def main():
     df_describe = pd.DataFrame(result_sizes)
     print("The following stats, except for count, are in Kilobytes:", df_describe.describe())
     print("Total size of", len(result_sizes), "html files is", round(sum(result_sizes)), "Kb, or",
-    round(sum(result_sizes) / 1024, 3), "Mb \n\n")
+          round(sum(result_sizes) / 1024, 3), "Mb \n\n")
 
     # Shuffling randomly the names list:
     random.shuffle(result_names)
-
 
     with open(result_file, 'w') as write_file:
         for website in result_names:

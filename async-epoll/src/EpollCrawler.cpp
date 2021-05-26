@@ -1,7 +1,7 @@
 #include "EpollCrawler.h"
 
 void *EpollCrawler::parsing_thread(void *args) {
-    auto params = (async_parsing_args_t*) args;
+    auto params = (async_parsing_args_t *) args;
     std::deque<std::string> *input_ptr = params->input_ptr;
     size_t max_events = params->max_requests;
 
@@ -12,7 +12,7 @@ void *EpollCrawler::parsing_thread(void *args) {
     event.events = EPOLLIN;
 
     auto events = new epoll_event[max_events];
-    std::unordered_map<size_t, std::pair<size_t, char*>> responses;
+    std::unordered_map<size_t, std::pair<size_t, char *>> responses;
     int epoll_fd = epoll_create1(0);
 
     if (epoll_fd == -1) {
@@ -29,7 +29,7 @@ void *EpollCrawler::parsing_thread(void *args) {
         }
         int socket = get_socket((*input_ptr)[current_index]);
         current_index += params->threads_num;
-        responses[socket] = std::make_pair(0, new char [MAX_SIZE]);
+        responses[socket] = std::make_pair(0, new char[MAX_SIZE]);
         event.data.fd = socket;
         epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
         ++events_waiting;
@@ -49,7 +49,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                     events[i].data.fd,
                     responses[events[i].data.fd].second + responses[events[i].data.fd].first,
                     MAX_SIZE
-                    );
+            );
             responses[events[i].data.fd].first += bytes_read;
             if (bytes_read == 0) {
                 --events_waiting;
@@ -61,7 +61,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                 if (current_index < input_ptr->size()) {
                     int socket = get_socket((*input_ptr)[current_index]);
                     current_index += params->threads_num;
-                    responses[socket] = std::make_pair(0, new char [MAX_SIZE]);
+                    responses[socket] = std::make_pair(0, new char[MAX_SIZE]);
                     event.data.fd = socket;
                     epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socket, &event);
                     ++events_waiting;
@@ -82,7 +82,8 @@ void *EpollCrawler::parsing_thread(void *args) {
     return nullptr;
 }
 
-EpollCrawler::EpollCrawler(size_t max_workers, size_t max_requests) : AbstractCrawler(max_workers), _max_requests(max_requests){}
+EpollCrawler::EpollCrawler(size_t max_workers, size_t max_requests) : AbstractCrawler(max_workers),
+                                                                      _max_requests(max_requests) {}
 
 void EpollCrawler::process_queue() {
 
@@ -99,7 +100,7 @@ void EpollCrawler::process_queue() {
         args->threads_num = max_workers;
         args->threads_index = i;
         args->max_requests = _max_requests;
-        pthread_create(&threads[i], nullptr, EpollCrawler::parsing_thread, (void*) args);
+        pthread_create(&threads[i], nullptr, EpollCrawler::parsing_thread, (void *) args);
     }
 
     auto main_args = new async_parsing_args_t;
@@ -108,7 +109,7 @@ void EpollCrawler::process_queue() {
     main_args->threads_index = max_workers - 1;
     main_args->max_requests = _max_requests;
 
-    EpollCrawler::parsing_thread((void*) main_args);
+    EpollCrawler::parsing_thread((void *) main_args);
 
 
     for (size_t i = 0; i < max_workers - 1; i++) {

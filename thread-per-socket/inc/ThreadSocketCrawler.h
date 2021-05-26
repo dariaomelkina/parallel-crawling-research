@@ -12,7 +12,7 @@
 
 
 struct socket_parsing_args_t {
-    std::string* url;
+    std::string *url;
     sem_t *sem_ptr;
 };
 

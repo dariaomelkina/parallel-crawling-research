@@ -5,14 +5,14 @@
 #include "ThreadSocketCrawler.h"
 
 
-void* ThreadSocketCrawler::parsing_thread(void *item) {
+void *ThreadSocketCrawler::parsing_thread(void *item) {
     auto args = (socket_parsing_args_t *) item;
 
     //getting html using http request TODO: error handling
 
     int sock = get_socket(*(args->url));
 
-    char* buffer = new char[MAX_SIZE];
+    char *buffer = new char[MAX_SIZE];
 
     size_t index = 0;
     while (index < MAX_SIZE) {
@@ -41,6 +41,7 @@ ThreadSocketCrawler::ThreadSocketCrawler(size_t max_workers) : AbstractCrawler(m
         throw std::runtime_error("Can't init the thread limit semaphore");
     }
 }
+
 #include <iostream>
 
 void ThreadSocketCrawler::process_queue() {
@@ -57,7 +58,7 @@ void ThreadSocketCrawler::process_queue() {
         args->sem_ptr = &sem;
         args->url = &input_queue[i];
         pthread_t thread;
-        pthread_create(&thread, nullptr, ThreadSocketCrawler::parsing_thread, (void*) args);
+        pthread_create(&thread, nullptr, ThreadSocketCrawler::parsing_thread, (void *) args);
     }
 
     // waiting for all workers to finish

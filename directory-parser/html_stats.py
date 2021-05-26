@@ -41,6 +41,5 @@ plt.xlim((0, max(file_sizes)))
 plt.xticks(np.linspace(0, 3000, num=11))
 plt.show()
 
-
 df_describe = pd.DataFrame(file_sizes)
 print(df_describe.describe())

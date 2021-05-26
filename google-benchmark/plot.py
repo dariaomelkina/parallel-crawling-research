@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument(
         '-t', metavar='TRANSFORM', choices=TRANSFORMS.keys(), default='',
         help='transform to apply to the chosen metric, valid choices are: %s'
-        % ', '.join(list(TRANSFORMS)), dest='transform')
+             % ', '.join(list(TRANSFORMS)), dest='transform')
     parser.add_argument(
         '-r', metavar='RELATIVE_TO', type=str, default=None,
         dest='relative_to', help='plot metrics relative to this label')

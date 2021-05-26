@@ -39,9 +39,9 @@ public:
 
     virtual void process_queue() = 0;
 
-    static size_t count_tags(const char* html, size_t html_size);
+    static size_t count_tags(const char *html, size_t html_size);
 
-    void add_from_file(const std::string& filename, int64_t num_websites);
+    void add_from_file(const std::string &filename, int64_t num_websites);
 };
 
 

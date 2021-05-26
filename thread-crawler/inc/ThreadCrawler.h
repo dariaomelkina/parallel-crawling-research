@@ -11,23 +11,21 @@
 #include "AbstractCrawler.h"
 
 struct parsing_args_t {
-    std::deque <std::string>* input_ptr;
+    std::deque<std::string> *input_ptr;
     size_t threads_num;
     size_t threads_index;
 };
 
 
-
 class ThreadCrawler : public AbstractCrawler {
 protected:
 
-    static void* parsing_thread(void *args);
+    static void *parsing_thread(void *args);
 
 public:
     explicit ThreadCrawler(size_t max_workers);
 
     virtual void process_queue();
-
 
 };
 
