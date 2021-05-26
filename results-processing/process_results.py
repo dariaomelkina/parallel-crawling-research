@@ -1,55 +1,108 @@
 import sys
-import pandas
+import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
 import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 import seaborn as sns
 
+NUMBER_OF_PARAMETER_ROWS = 9
+NUMBER_OF_WARNING_ROWS = 1
+NUMBER_Of_SKIP_ROWS = 5
+
 if __name__ == "__main__":
-    # epoll_csv = sys.argv[1]
-    # process_csv = sys.argv[2]
-    # thread_csv = sys.argv[3]
-    # TODO: read csv file
+    ###################################################################################################################
+    # Read csv files
+    epoll_df = pd.read_csv(sys.argv[1],
+                           skiprows=range(0, NUMBER_OF_PARAMETER_ROWS))
+    process_df = pd.read_csv(sys.argv[2],
+                             skiprows=range(0, NUMBER_OF_PARAMETER_ROWS))
+    thread_df = pd.read_csv(sys.argv[3],
+                            skiprows=range(0, NUMBER_OF_PARAMETER_ROWS))
 
-    # TODO: change to real input data
-    epoll_data = [134, 456, 213, 234, 278, 190, 191, 135, 476, 223, 214, 178, 199, 171, 234, 356, 313, 334, 378, 290,
-                  291]
-    process_data = [134, 456, 213, 234, 278, 190, 191, 135, 476, 223, 214, 178, 199, 171, 234, 356, 313, 334, 378, 290,
-                    291]
-    thread_data = [134, 456, 213, 234, 278, 190, 191, 135, 476, 223, 214, 178, 199, 171, 234, 356, 313, 334, 378, 290,
-                   291]
+    epoll_data = epoll_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
+    process_data = process_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
+    thread_data = thread_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
 
+    ###################################################################################################################
     # Plot customizations
-    # TODO: which metrics do we have?
-    custom_labels = {"x": "time, ns",
-                     "y": "number of iterations"}
+    custom_labels = {"x": "Time, s",
+                     "y": "Number of iterations"}
 
+    ###################################################################################################################
     # Creating bar plots of the distributions
-    # TODO: replace by a function
-    epoll_fig = px.bar(x=epoll_data, y=range(0, len(epoll_data)), title="Epoll results distribution",
-                       labels=custom_labels)
-    epoll_fig.update_xaxes(type='linear')
+
+    # Epoll plot
+    epoll_fig = px.histogram(x=epoll_data,
+                             nbins=50,
+                             title="Epoll results distribution",
+                             labels=custom_labels)
     epoll_fig.write_image("result-plots/epoll-distribution.png")
 
-    process_fig = px.bar(x=process_data, y=range(0, len(process_data)), title="Process per socket results distribution",
-                         labels=custom_labels)
-    process_fig.update_xaxes(type='linear')
+    # Process per socket plot
+    process_fig = px.histogram(x=process_data,
+                               nbins=50,
+                               title="Process per socket results distribution",
+                               labels=custom_labels)
     process_fig.write_image("result-plots/process-distribution.png")
 
-    thread_fig = px.bar(x=thread_data, y=range(0, len(thread_data)), title="Thread per socket results distribution",
-                        labels=custom_labels)
-    thread_fig.update_xaxes(type='linear')
+    # Thread per socket plot
+    thread_fig = px.histogram(x=thread_data,
+                              nbins=50,
+                              title="Thread per socket results distribution",
+                              labels=custom_labels)
     thread_fig.write_image("result-plots/thread-distribution.png")
 
-    # Creating density plots and histograms
-    # TODO: finish
-    sns.distplot(epoll_data, hist=True, kde=True,
-                 bins=int(180 / 5), color='darkblue',
-                 hist_kws={'edgecolor': 'black'},
-                 kde_kws={'linewidth': 4})
+    # Three crawlers together on one plot
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=epoll_data,
+        name='epoll',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='steelblue',
+        opacity=0.75
+    ))
+    fig.add_trace(go.Histogram(
+        x=process_data,
+        name='process per socket',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='blueviolet',
+        opacity=0.75
+    ))
+    fig.add_trace(go.Histogram(
+        x=thread_data,
+        name='thread per socket',
+        xbins=dict(
+            start=0,
+            end=10,
+            size=0.01,
+        ),
+        autobinx=False,
+        marker_color='deeppink',
+        opacity=0.75
+    ))
 
-    plt.savefig("result-plots/seaborn-experiment.png")
+    fig.update_layout(
+        title_text='Benchmarking Results',
+        xaxis_title_text='Time, s',
+        yaxis_title_text='Count',
+        bargap=0.2,
+        bargroupgap=0.1
+    )
+    fig.write_image("result-plots/distributions.png")
 
+    ###################################################################################################################
     # Testing normality
     alpha = 1e-3
     epoll_k2, epoll_p = stats.normaltest(epoll_data)
@@ -60,6 +113,7 @@ if __name__ == "__main__":
     normal_process = process_p >= alpha
     normal_thread = thread_p >= alpha
 
+    ###################################################################################################################
     # Displaying normality results
     print("NORMALITY TESTING\n" + "*" * 50)
     print("Epoll:")
@@ -69,21 +123,31 @@ if __name__ == "__main__":
         print(f"Not a normal distribution, with p = {epoll_p}\n" + "*" * 50)
 
     print("Process per socket:")
-    if normal_epoll:
+    if normal_process:
         print(f"Normal distribution, with p = {process_p}\n" + "*" * 50)
     else:
         print(f"Not a normal distribution, with p = {process_p}\n" + "*" * 50)
 
     print("Thread per socket:")
-    if normal_epoll:
+    if normal_thread:
         print(f"Normal distribution, with p = {thread_p}\n" + "*" * 50)
     else:
-        print(f"Not a normal distribution, with p = {thread_p}\n")
+        print(f"Not a normal distribution, with p = {thread_p}\n" + "*" * 50)
 
+    ###################################################################################################################
     if normal_epoll and normal_process and normal_thread:
         # Hypotheses that all the data has normal distribution cannot be rejected
         # Performing Student t-test:
-        t_stat, p = stats.ttest_ind(epoll_data, process_data)
+        t_stat1, p1 = stats.ttest_ind(epoll_data, process_data)
+        t_stat2, p2 = stats.ttest_ind(epoll_data, thread_data)
+        t_stat3, p3 = stats.ttest_ind(process_data, thread_data)
+
+        # Displaying test results
+        print("\nSTUDENT T-TEST\n" + "*" * 95)
+        print(f"Epoll and Process per socket: t = {t_stat1} , p = {p1}\n" + "*" * 95)
+        print(f"Epoll and Thread per socket: t = {t_stat2} , p = {p2}\n" + "*" * 95)
+        print(f"Process per socket and Thread per socket: t = {t_stat3} , p = {p3}\n" + "*" * 95)
+
     else:
         # Hypotheses that all the data has normal distribution can be rejected (or at least some of the data)
         # Performing Wilcoxon test:
