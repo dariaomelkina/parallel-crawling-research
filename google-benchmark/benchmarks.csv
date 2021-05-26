@@ -1,4 +1,4 @@
-2021-05-24T20:02:42+03:00
+2021-05-25T20:05:16+03:00
 Running ./google-benchmark
 Run on (8 X 3900 MHz CPU s)
 CPU Caches:
@@ -6,9 +6,21 @@ CPU Caches:
   L1 Instruction 32 KiB (x4)
   L2 Unified 256 KiB (x4)
   L3 Unified 6144 KiB (x1)
-Load Average: 0.43, 0.90, 1.98
+Load Average: 135.78, 96.55, 39.53
 ***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
 name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
-"benchmark_epoll/2000/iterations:1",1,6.24203e+08,1.97481e+08,ns,,,,,
-"benchmark_epoll/10000/iterations:1",1,2.86738e+09,1.16861e+09,ns,,,,,
-"benchmark_epoll/375000/iterations:1",1,1.13981e+11,5.04478e+10,ns,,,,,
+"benchmark_process_per_socket/1300/iterations:1",1,1.21583e+09,7.87277e+08,ns,,,,,
+"benchmark_process_per_socket/1300/iterations:1",1,1.22277e+09,8.08985e+08,ns,,,,,
+"benchmark_process_per_socket/1300/iterations:1",1,1.18679e+09,7.86249e+08,ns,,,,,
+"benchmark_process_per_socket/1300/iterations:1",1,1.21214e+09,7.99332e+08,ns,,,,,
+"benchmark_process_per_socket/1300/iterations:1",1,1.20612e+09,8.03994e+08,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.82878e+10,1.79035e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.85608e+10,1.82337e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.85448e+10,1.82944e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.85235e+10,1.83249e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.86455e+10,1.96993e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.86217e+10,1.96172e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.86052e+10,1.97161e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.86061e+10,1.96551e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.86348e+10,1.96607e+09,ns,,,,,
+"benchmark_process_per_socket/50000/iterations:1",1,1.8614e+10,1.97722e+09,ns,,,,,

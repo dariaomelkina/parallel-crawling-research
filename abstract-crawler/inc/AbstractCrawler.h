@@ -15,7 +15,7 @@
 #include "requests.h"
 
 
-#define MAX_SIZE 40000000
+#define MAX_SIZE 1000000
 
 /* Template for a crawler */
 class AbstractCrawler {

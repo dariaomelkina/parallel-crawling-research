@@ -30,7 +30,7 @@ std::string AbstractCrawler::get_processed_item() {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
-    for (size_t j = 0; j < 8; j++) {
+    for (size_t j = 0; j < 6; j++) {
         std::vector<std::pair<size_t, size_t>> indeces;
         std::vector<std::string> tag_names;
 
@@ -80,23 +80,15 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
                     in_tag_name = true;
                     tag_start = i;
                 }
-
             }
-
 
         }
         if (j > 0) {
             continue;
         }
-
-
     }
 
-
-
     return 0;
-
-
 }
 
 void AbstractCrawler::add_from_file(const std::string& filename, int64_t num_websites) {

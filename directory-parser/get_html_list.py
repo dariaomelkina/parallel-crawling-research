@@ -33,7 +33,6 @@ def main():
               "../google-benchmark/test.txt 10.42.0.1 plot=False")
         return
     db_directory, result_file, ip_address, multiplier, percentile_start, percentile_end = sys.argv[1:7]
-    print(db_directory, result_file, ip_address, multiplier, percentile_start, percentile_end)
 
     # recursively walking through all files:
     for subdir, dirs, files in os.walk(db_directory):
@@ -51,6 +50,15 @@ def main():
     # sorting by the file_size
     file_list.sort(key=lambda x: x[1])
 
+    # Deleting all files, that are bigger than 800 KB:
+    
+    index = 0
+    for i in file_list:
+        if i[1] >= 820:
+            break
+        index += 1
+    file_list = file_list[:index]
+
     # calculating the start and end position in the sorted list
     start = len(file_list) * int(percentile_start) // 100
     end = len(file_list) * int(percentile_end) // 100
@@ -58,16 +66,12 @@ def main():
     # getting that percentile slice
     result = file_list[start:end]
 
-    print(len(result))
-
     # Multiplicating the result list here:
     if int(multiplier) > 0:
         multiplier_list = []
         for _ in range(int(multiplier)):
             multiplier_list.extend(result.copy())
         result = multiplier_list
-
-    print(len(result))
 
     # splitting array of tuples into two
     result_names = [i[0] for i in result]
