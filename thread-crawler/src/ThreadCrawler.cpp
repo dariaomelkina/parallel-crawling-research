@@ -9,6 +9,8 @@
 void *ThreadCrawler::parsing_thread(void *args) {
 
     auto params = (parsing_args_t *) args;
+
+    pthread_barrier_wait(params->start_barrier);
     std::deque<std::string> *input_ptr = params->input_ptr;
 
     size_t size = input_ptr->size();
@@ -51,9 +53,11 @@ ThreadCrawler::ThreadCrawler(size_t max_workers) : AbstractCrawler(max_workers) 
 
 
 void ThreadCrawler::process_queue() {
+    pthread_barrier_init(start_barrier, nullptr, max_workers);
     if (max_workers < 1) {
         throw std::runtime_error("There are no workers");
     }
+
 
     auto threads = new pthread_t[max_workers - 1];
 
@@ -63,6 +67,7 @@ void ThreadCrawler::process_queue() {
         args->input_ptr = &input_queue;
         args->threads_num = max_workers;
         args->threads_index = i;
+        args->start_barrier = start_barrier;
         pthread_create(&threads[i], nullptr, ThreadCrawler::parsing_thread, (void *) args);
     }
 
@@ -70,6 +75,7 @@ void ThreadCrawler::process_queue() {
     main_args->input_ptr = &input_queue;
     main_args->threads_num = max_workers;
     main_args->threads_index = max_workers - 1;
+    main_args->start_barrier = start_barrier;
 
     ThreadCrawler::parsing_thread((void *) main_args);
 
@@ -81,5 +87,6 @@ void ThreadCrawler::process_queue() {
     input_queue.clear();
 
     delete[] threads;
+    pthread_barrier_destroy(start_barrier);
 }
 
