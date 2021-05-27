@@ -34,7 +34,7 @@ parsed_url_t parse_url(const std::string &url) {
 }
 
 
-int send_request(const std::string &url, const std::string &additional_params) {
+int send_request(const std::string &url, const std::string &additional_params, bool nonblocking) {
     parsed_url_t parsed_url = parse_url(url);
 
     uint16_t port;
@@ -58,6 +58,11 @@ int send_request(const std::string &url, const std::string &additional_params) {
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
         throw std::runtime_error("Can't create socket");
+    }
+
+    if (nonblocking) {
+      int flags = fcntl(sock, F_GETFL, 0);
+      fcntl(sock, F_SETFL, flags | O_NONBLOCK);
     }
 
     // establishing a connection

@@ -14,6 +14,7 @@
 #include <exception>
 #include <semaphore.h>
 #include <pthread.h>
+#include <fcntl.h>
 
 
 #define RESPONSE_BUFFER_SIZE 512
@@ -30,7 +31,6 @@ struct parsed_url_t {
 
 parsed_url_t parse_url(const std::string &url);
 
-
-int send_request(const std::string &url, const std::string &additional_params);
+int send_request(const std::string &url, const std::string &additional_params, bool nonblocking=false);
 
 #endif //CRAWLERS_REQUESTS_H
