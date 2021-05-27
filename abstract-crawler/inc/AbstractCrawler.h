@@ -29,7 +29,7 @@ public:
 
     const static std::string ADDITIONAL_PARAMS;
 
-    static int get_socket(const std::string &url);
+    static int get_socket(const std::string &url, bool nonblocking=false);
 
     void add_url(const std::string &url);
 

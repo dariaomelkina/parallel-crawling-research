@@ -8,8 +8,8 @@ void AbstractCrawler::add_url(const std::string &url) {
     input_queue.emplace_back(url);
 }
 
-int AbstractCrawler::get_socket(const std::string &url) {
-    return send_request(url, ADDITIONAL_PARAMS);
+int AbstractCrawler::get_socket(const std::string &url, bool nonblocking) {
+    return send_request(url, ADDITIONAL_PARAMS, nonblocking);
 }
 
 bool AbstractCrawler::is_empty() {

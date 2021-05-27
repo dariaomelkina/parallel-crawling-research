@@ -31,7 +31,7 @@ void *EpollCrawler::parsing_thread(void *args) {
         if (current_index >= input_ptr->size()) {
             break;
         }
-        int socket = get_socket((*input_ptr)[current_index]);
+        int socket = get_socket((*input_ptr)[current_index], true);
         current_index += params->threads_num;
         responses[socket] = std::make_pair(0, new char[MAX_SIZE]);
         event.data.fd = socket;
