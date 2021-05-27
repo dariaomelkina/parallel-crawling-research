@@ -52,7 +52,7 @@ int send_request(const std::string &url, const std::string &additional_params, b
     server.sin_port = htons(port);
 
     // std::cout << *((unsigned long *) host->h_addr) << std::endl;
-    server.sin_addr.s_addr = 2516593162;//*((unsigned long *) host->h_addr);
+    server.sin_addr.s_addr = 16787978;//*((unsigned long *) host->h_addr);
 
     // creating socket descriptor
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
