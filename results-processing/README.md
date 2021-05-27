@@ -4,7 +4,7 @@ Usage example from this directory:
 
 ```bash
 python3 process_results.py epoll_benchmarks.csv process_benchmarks.csv thread_benchmarks.csv
-
+python3 one_plot.py epoll_benchmarks.csv
 ```
 
 ## Prerequisites
