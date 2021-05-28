@@ -10,6 +10,9 @@ void AbstractCrawler::add_url(const std::string &url) {
 
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
+    if (html_size < 2) {
+        return 1;
+    }
     for (size_t j = 0; j < 6; j++) {
         std::vector<std::pair<size_t, size_t>> indeces;
         std::vector<std::string> tag_names;
@@ -19,6 +22,7 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
         bool in_tag_name = false;
         bool in_closing_tag = false;
         size_t tag_start = 0;
+
 
 
         for (size_t i = 0; i < html_size - 2; i++) {

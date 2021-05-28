@@ -7,12 +7,9 @@
 int main() {
     std::string test_url = "http://www.example.com/";
 
-    EpollCrawler x = EpollCrawler(2, 10);
+    EpollCrawler x = EpollCrawler(4, 100);
+    x.add_from_file("../filtered_urls.txt", 400);
 
-    // adding links to the crawler
-    for (size_t i = 0; i < 35; ++i) {
-        x.add_url(test_url);
-    }
 
     // processing links
     x.process_queue();

@@ -52,7 +52,8 @@ int connect_to_host(int sock, const parsed_url_t& parsed_url) {
     server.sin_port = htons(port);
 
     if (!host || !host->h_addr) {
-        throw std::runtime_error("Host address is a null pointer");
+        std::cout << "ERROR: host adress is null {" << parsed_url.domain << "}" << std::endl;
+        return -1;
     }
 
     server.sin_addr.s_addr = *((unsigned long *) host->h_addr);

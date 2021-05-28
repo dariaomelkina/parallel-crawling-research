@@ -60,6 +60,7 @@ void *EpollCrawler::parsing_thread(void *args) {
     }
 
 
+
     size_t bytes_read;
 
 
@@ -73,10 +74,9 @@ void *EpollCrawler::parsing_thread(void *args) {
             bool need_new = false;
             if (responses[sock]->mode == SOCK_CONNECTING) {
                 if (send_request(sock, responses[sock]->parsed_url, ADDITIONAL_PARAMS)) {
-                    read_event.data.fd = sock;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &read_event);
-                    responses[sock]->mode = SOCK_READING;
-                    break;
+                    connect_event.data.fd = sock;
+                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &connect_event);
+                    responses[sock]->mode = SOCK_WRITING;
                 } else {
                     std::cout << "Can't send request in while loop" << std::endl;
                     need_new = true;
@@ -88,10 +88,17 @@ void *EpollCrawler::parsing_thread(void *args) {
                         MAX_SIZE - responses[sock]->index
                 );
                 responses[sock]->index += bytes_read;
-                if (bytes_read == 0) {
+                if (bytes_read == 0 && responses[sock]->index != 0) {
                     need_new = true;
                     size_t tags = count_tags(responses[sock]->buffer, responses[sock]->index);
+                } else if (bytes_read == 0) {
+                    std::cout << responses[sock]->parsed_url.domain << std::endl;
+                    need_new = true;
                 }
+            } else if (responses[sock]->mode == SOCK_WRITING) {
+                read_event.data.fd = sock;
+                epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &read_event);
+                responses[sock]->mode = SOCK_READING;
             }
 
             if (!need_new) {

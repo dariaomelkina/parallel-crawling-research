@@ -20,7 +20,7 @@ struct async_parsing_args_t {
 };
 
 
-enum sock_state{SOCK_IDLE, SOCK_CONNECTING, SOCK_READING};
+enum sock_state{SOCK_IDLE, SOCK_CONNECTING, SOCK_READING, SOCK_WRITING};
 
 
 struct html_getter_t {
