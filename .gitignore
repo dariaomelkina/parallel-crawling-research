@@ -1,6 +1,7 @@
 .build/
 
 directory-parser/test-websites/
+/google-benchmark/test.txt
 google-benchmark/test.txt
 
 ### C++ ###

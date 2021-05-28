@@ -1,12 +1,10 @@
 #include <iostream>
 #include <benchmark/benchmark.h>
-// #include "ThreadSocketCrawler.h"
 #include "ThreadCrawler.h"
 #include "ProcessCrawler.h"
 #include "EpollCrawler.h"
-// #include "ProcessSocketCrawler.h"
 
-static void benchmark_thread_per_socket(benchmark::State &state) {
+static void benchmark_thread_per_socket_10(benchmark::State &state) {
     ThreadCrawler x = ThreadCrawler(10);
     for (auto _ : state) {
         state.PauseTiming();
@@ -14,13 +12,57 @@ static void benchmark_thread_per_socket(benchmark::State &state) {
         state.ResumeTiming();
         // processing links
         x.process_queue();
+    }
+}
 
+static void benchmark_thread_per_socket_100(benchmark::State &state) {
+    ThreadCrawler x = ThreadCrawler(100);
+    for (auto _ : state) {
+        state.PauseTiming();
+        x.add_from_file("../test.txt", state.range(0));
+        state.ResumeTiming();
+        // processing links
+        x.process_queue();
+    }
+}
+
+static void benchmark_thread_per_socket_500(benchmark::State &state) {
+    ThreadCrawler x = ThreadCrawler(500);
+    for (auto _ : state) {
+        state.PauseTiming();
+        x.add_from_file("../test.txt", state.range(0));
+        state.ResumeTiming();
+        // processing links
+        x.process_queue();
+    }
+}
+
+static void benchmark_thread_per_socket_1000(benchmark::State &state) {
+    ThreadCrawler x = ThreadCrawler(1000);
+    for (auto _ : state) {
+        state.PauseTiming();
+        x.add_from_file("../test.txt", state.range(0));
+        state.ResumeTiming();
+        // processing links
+        x.process_queue();
+    }
+}
+
+static void benchmark_thread_per_socket_2000(benchmark::State &state) {
+    ThreadCrawler x = ThreadCrawler(2000);
+    for (auto _ : state) {
+        state.PauseTiming();
+        x.add_from_file("../test.txt", state.range(0));
+        state.ResumeTiming();
+        // processing links
+        x.process_queue();
     }
 }
 
 
+
 static void benchmark_process_per_socket(benchmark::State &state) {
-    ProcessCrawler x = ProcessCrawler(10);
+    ProcessCrawler x = ProcessCrawler(500);
 
     for (auto _ : state) {
         state.PauseTiming();
@@ -33,7 +75,7 @@ static void benchmark_process_per_socket(benchmark::State &state) {
 }
 
 static void benchmark_epoll(benchmark::State &state) {
-    EpollCrawler x = EpollCrawler(10, 10);
+    EpollCrawler x = EpollCrawler(1, 1);
     for (auto _ : state) {
         state.PauseTiming();
         x.add_from_file("../test.txt", state.range(0));
@@ -48,15 +90,112 @@ static void benchmark_epoll(benchmark::State &state) {
 // iterations as a constraint
 int iters = 5;
 int args = 132859;
-int args_small = 50000;
-int args_rozigriv = 5;
 
-// BENCHMARK(benchmark_epoll)->Arg(2000)->Iterations(1);
-// BENCHMARK(benchmark_epoll)->Arg(args)->Iterations(1);
+int args_small = 30000;
+int args_rozigriv = 10000;
 
-BENCHMARK(benchmark_thread_per_socket)->Arg(args_small)->Iterations(1);
-// BENCHMARK(benchmark_epoll)->Arg(args_rozigriv)->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_process_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_process_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
 
+
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_process_per_socket)->Arg(args)->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Arg(args)->Iterations(1);
+
+
+BENCHMARK(benchmark_thread_per_socket_10)->Arg(args_rozigriv)->Iterations(2);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+
+// BENCHMARK(benchmark_thread_per_socket_10)->Arg(args)->Iterations(4);
+// BENCHMARK(benchmark_thread_per_socket_100)->Arg(args)->Iterations(4);
+// BENCHMARK(benchmark_thread_per_socket_2000)->Arg(args)->Iterations(4);
+
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+BENCHMARK(benchmark_thread_per_socket_500)->Arg(args)->Iterations(1);
+
+// BENCHMARK(benchmark_thread_per_socket_1000)->Arg(args)->Iterations(4);
+
+// BENCHMARK(benchmark_thread_per_socket_2000)->Arg(args)->Iterations(4);
 
 
 // BENCHMARK(benchmark_process_per_socket)->Arg(args)->Iterations(iters);
