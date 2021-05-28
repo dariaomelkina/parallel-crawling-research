@@ -90,8 +90,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                 responses[sock]->index += bytes_read;
                 if (bytes_read == 0) {
                     need_new = true;
-                    std::cout << responses[sock]->index << std::endl;
-                    count_tags(responses[sock]->buffer, responses[sock]->index);
+                    size_t tags = count_tags(responses[sock]->buffer, responses[sock]->index);
                 }
             }
 
