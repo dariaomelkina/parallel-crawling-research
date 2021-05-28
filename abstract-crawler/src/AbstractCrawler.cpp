@@ -57,6 +57,10 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
 
             if (in_closing_tag) {
                 if (html[i] == '>') {
+                    if (tags.empty()) {
+                        in_closing_tag = false;
+                        continue;
+                    }
                     auto closed_tag = std::move(tags.top());
                     tags.pop();
                     indeces.emplace_back(closed_tag.second, i);
