@@ -8,23 +8,6 @@ void AbstractCrawler::add_url(const std::string &url) {
     input_queue.emplace_back(url);
 }
 
-int AbstractCrawler::get_socket(const std::string &url, bool nonblocking) {
-    return send_request(url, ADDITIONAL_PARAMS, nonblocking);
-}
-
-bool AbstractCrawler::is_empty() {
-    return output_queue.empty();
-}
-
-std::string AbstractCrawler::get_processed_item() {
-    if (is_empty()) {
-        throw std::runtime_error("Crawler is empty");
-    }
-    auto html = std::move(output_queue.front());
-    output_queue.pop_front();
-    return html;
-}
-
 
 size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
     for (size_t j = 0; j < 6; j++) {

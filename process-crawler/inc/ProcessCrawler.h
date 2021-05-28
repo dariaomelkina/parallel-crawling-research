@@ -15,6 +15,7 @@
 #include <string>
 #include <iostream>
 #include<sys/wait.h>
+#include "requests.h"
 
 
 class ProcessCrawler : public AbstractCrawler {

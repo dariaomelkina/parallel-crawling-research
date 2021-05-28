@@ -17,9 +17,5 @@ int main() {
     // processing links
     x.process_queue();
 
-    while (!x.is_empty()) {
-        std::cout << x.get_processed_item() << std::endl;
-    }
-
     return 0;
 }

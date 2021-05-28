@@ -25,8 +25,4 @@ int main() {
 
     x.process_queue();
 
-
-    while (!x.is_empty()) {
-        std::cout << x.get_processed_item() << std::endl;
-    }
 }

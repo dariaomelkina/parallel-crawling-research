@@ -21,10 +21,5 @@ int main() {
     // processing links
     x.process_queue();
 
-    // getting the output
-    while (!x.is_empty()) {
-        std::cout << x.get_processed_item() << "\n\n\n\n\n\n" << std::endl;
-    }
-
     return 0;
 }

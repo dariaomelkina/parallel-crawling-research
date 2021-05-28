@@ -17,8 +17,6 @@
 #include <fcntl.h>
 
 
-#define RESPONSE_BUFFER_SIZE 512
-
 const uint16_t HTTP_PORT = 80;
 
 
@@ -31,6 +29,10 @@ struct parsed_url_t {
 
 parsed_url_t parse_url(const std::string &url);
 
-int send_request(const std::string &url, const std::string &additional_params, bool nonblocking=false);
+int connect_to_host(int sock, const parsed_url_t& parsed_url);
+
+bool send_request(int sock, const parsed_url_t& parsed_url, const std::string& additional_params);
+
+size_t get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params);
 
 #endif //CRAWLERS_REQUESTS_H

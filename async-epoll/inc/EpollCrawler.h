@@ -9,6 +9,7 @@
 
 
 #include "AbstractCrawler.h"
+#include "requests.h"
 
 struct async_parsing_args_t {
     std::deque<std::string> *input_ptr;
@@ -16,6 +17,17 @@ struct async_parsing_args_t {
     size_t threads_index;
     size_t max_requests;
     pthread_barrier_t* start_barrier_ptr;
+};
+
+
+enum sock_state{SOCK_IDLE, SOCK_CONNECTING, SOCK_READING};
+
+
+struct html_getter_t {
+    sock_state mode;
+    char* buffer;
+    size_t index;
+    parsed_url_t parsed_url;
 };
 
 class EpollCrawler : public AbstractCrawler {

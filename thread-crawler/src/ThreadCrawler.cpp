@@ -19,25 +19,9 @@ void *ThreadCrawler::parsing_thread(void *args) {
 
 
     for (size_t i = params->threads_index; i < size; i += params->threads_num) {
-        std::string url = std::move((*input_ptr)[i]);
-
-        int sock = get_socket(url);
-
-        size_t index = 0;
-        while (index < MAX_SIZE) {
-            size_t char_read = read(sock, buffer + index, MAX_SIZE);
-            index += char_read;
-            if (char_read == 0) {
-                break;
-            }
-        }
-
-
-        close(sock);
-
-
-        size_t tags = count_tags(buffer, index);
-
+        size_t bytes_read = get_html(buffer, MAX_SIZE, (*input_ptr)[i], ADDITIONAL_PARAMS);
+        size_t tags = count_tags(buffer, bytes_read);
+        std::cout << bytes_read << std::endl;
 
     }
 

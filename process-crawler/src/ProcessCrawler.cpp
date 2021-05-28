@@ -11,27 +11,9 @@ void ProcessCrawler::parsing_process(size_t index, pthread_barrier_t* start_barr
 
     char *buffer = new char[MAX_SIZE];
 
-    // getting link from input queue
     for (size_t i = index; i < input_queue.size(); i += max_workers) {
-        std::string url = std::move(input_queue[i]);
-
-        // getting socket descriptor
-        int sock = get_socket(url);
-
-        // reading data to buffer
-        size_t curr_index = 0;
-        while (index < MAX_SIZE) {
-            size_t char_read = read(sock, buffer + curr_index, MAX_SIZE);
-            curr_index += char_read;
-            if (char_read == 0) {
-                break;
-            }
-        }
-        close(sock);
-
-
-        size_t tags = count_tags(buffer, curr_index);
-
+        size_t bytes_read = get_html(buffer, MAX_SIZE, input_queue[i], ADDITIONAL_PARAMS);
+        size_t tags = count_tags(buffer, bytes_read);
     }
 
     delete[] buffer;

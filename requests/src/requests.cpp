@@ -4,6 +4,7 @@
 #include "requests.h"
 #include <iostream>
 
+
 parsed_url_t parse_url(const std::string &url) {
     parsed_url_t parsed_url;
 
@@ -34,9 +35,8 @@ parsed_url_t parse_url(const std::string &url) {
 }
 
 
-int send_request(const std::string &url, const std::string &additional_params, bool nonblocking) {
-    parsed_url_t parsed_url = parse_url(url);
 
+int connect_to_host(int sock, const parsed_url_t& parsed_url) {
     uint16_t port;
     if (parsed_url.protocol == "http") {
         port = HTTP_PORT;
@@ -51,26 +51,18 @@ int send_request(const std::string &url, const std::string &additional_params, b
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
 
-    // std::cout << *((unsigned long *) host->h_addr) << std::endl;
-    server.sin_addr.s_addr = 16787978;//*((unsigned long *) host->h_addr);
-
-    // creating socket descriptor
-    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (sock < 0) {
-        throw std::runtime_error("Can't create socket");
+    if (!host || !host->h_addr) {
+        throw std::runtime_error("Host address is a null pointer");
     }
 
-    if (nonblocking) {
-      int flags = fcntl(sock, F_GETFL, 0);
-      fcntl(sock, F_SETFL, flags | O_NONBLOCK);
-    }
+    server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
 
-    // establishing a connection
-    if (connect(sock, (struct sockaddr *) &server, sizeof(server)) < 0) {
-        throw std::runtime_error("Can't connect to host");
-    }
+    return connect(sock, (struct sockaddr *) &server, sizeof(server));
 
-    // building a http request that takes html from the given website
+}
+
+
+bool send_request(int sock, const parsed_url_t& parsed_url, const std::string& additional_params) {
     std::stringstream req_stream;
     req_stream << "GET " << parsed_url.path << " HTTP/1.1\r\n"
                << "Host: " << parsed_url.domain << "\r\n"
@@ -81,10 +73,44 @@ int send_request(const std::string &url, const std::string &additional_params, b
 
 
     // sending http request
-    if (send(sock, request.c_str(), request.size(), 0) < 0) {
-        throw std::runtime_error("Error while sending request");
+    return send(sock, request.c_str(), request.size(), 0) == request.size();
+
+}
+
+
+
+size_t get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params) {
+    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    parsed_url_t parsed_url = parse_url(url);
+
+    if (connect_to_host(sock, parsed_url) < 0) {
+        std::cout << "ERROR: Can't connect to host {" << url << "}" << std::endl;
+        return 0;
     }
 
+    if (!send_request(sock, parsed_url, additional_params)) {
+        std::cout << "ERROR: Can't send request {" << url << "}" << std::endl;
+        return 0;
+    }
 
-    return sock;
+    size_t index = 0;
+    size_t bytes_read;
+    while (index < max_size) {
+        bytes_read = read(
+                sock,
+                buffer + index,
+                max_size - index
+        );
+        index += bytes_read;
+        if (bytes_read == 0) {
+            break;
+        }
+    }
+
+    close(sock);
+
+    return index;
+
 }
+
+
