@@ -1,0 +1,67 @@
+2021-05-29T00:26:53+03:00
+Running ./google-benchmark
+Run on (8 X 3900 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 32 KiB (x4)
+  L2 Unified 256 KiB (x4)
+  L3 Unified 6144 KiB (x1)
+Load Average: 7.80, 182.33, 312.63
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** Library was built as DEBUG. Timings may be affected.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_epoll/66429/iterations:1",1,1.54696e+10,2.82396e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.76521e+10,3.25548e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95138e+10,3.02369e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94815e+10,3.09826e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95004e+10,3.26943e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95378e+10,2.89124e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94958e+10,3.12209e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94666e+10,2.97913e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94806e+10,3.51885e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.946e+10,3.02647e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94095e+10,3.10621e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.99723e+10,3.34372e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.93903e+10,2.94132e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.96556e+10,3.14834e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95289e+10,2.98466e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94079e+10,3.36406e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95009e+10,2.8063e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95016e+10,3.36932e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94522e+10,2.92572e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9768e+10,3.25547e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94173e+10,3.23873e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.93931e+10,2.96751e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94958e+10,3.0141e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94147e+10,2.99163e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95872e+10,3.54749e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95316e+10,3.34021e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94098e+10,3.20301e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95859e+10,3.13816e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94648e+10,3.02988e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94825e+10,2.89747e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9472e+10,3.31296e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94468e+10,2.91071e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94793e+10,3.11153e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94234e+10,2.78899e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9547e+10,3.06926e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.96459e+10,2.82414e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.93934e+10,3.18233e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9553e+10,3.2471e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95078e+10,3.18101e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94381e+10,2.96514e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.96035e+10,2.93322e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94907e+10,2.99058e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94305e+10,3.32574e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9485e+10,2.91387e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94779e+10,2.95003e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95677e+10,3.23326e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94492e+10,3.52054e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95217e+10,2.90562e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.96381e+10,3.38026e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.98392e+10,3.33759e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.96e+10,3.28037e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.9511e+10,2.93998e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.93942e+10,2.95197e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.95962e+10,3.04929e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.94635e+10,3.05593e+09,ns,,,,,

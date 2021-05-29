@@ -5,7 +5,7 @@ import numpy
 import plotly.express as px
 import plotly.graph_objects as go
 
-NUMBER_OF_PARAMETER_ROWS = 9
+NUMBER_OF_PARAMETER_ROWS = 11
 NUMBER_OF_WARNING_ROWS = 1
 NUMBER_Of_SKIP_ROWS = 5
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         name='epoll',
         xbins=dict(
             start=0,
-            end=10,
+            end=30,
             size=0.01,
         ),
         autobinx=False,
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         name='process per socket',
         xbins=dict(
             start=0,
-            end=10,
+            end=30,
             size=0.01,
         ),
         autobinx=False,
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         name='thread per socket',
         xbins=dict(
             start=0,
-            end=10,
+            end=30,
             size=0.01,
         ),
         autobinx=False,
@@ -115,18 +115,21 @@ if __name__ == "__main__":
     # Displaying normality results
     print("NORMALITY TESTING\n" + "*" * 50)
     print("Epoll:")
+    print(f"Mean = {numpy.mean(epoll_data)}")
     if normal_epoll:
         print(f"Normal distribution, with p = {epoll_p}\n" + "*" * 50)
     else:
         print(f"Not a normal distribution, with p = {epoll_p}\n" + "*" * 50)
 
     print("Process per socket:")
+    print(f"Mean = {numpy.mean(process_data)}")
     if normal_process:
         print(f"Normal distribution, with p = {process_p}\n" + "*" * 50)
     else:
         print(f"Not a normal distribution, with p = {process_p}\n" + "*" * 50)
 
     print("Thread per socket:")
+    print(f"Mean = {numpy.mean(thread_data)}")
     if normal_thread:
         print(f"Normal distribution, with p = {thread_p}\n" + "*" * 50)
     else:
