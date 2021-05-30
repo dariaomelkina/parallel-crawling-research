@@ -28,6 +28,9 @@ void *EpollCrawler::parsing_thread(void *args) {
 
     std::unordered_map<int, html_getter_t *> responses;
 
+
+    size_t active_events = 0;
+
     for (size_t i = 0; i < max_events; i++) {
         int sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
         if (sock < 0) {
@@ -38,11 +41,7 @@ void *EpollCrawler::parsing_thread(void *args) {
         html_getter_ptr->buffer = new char[MAX_SIZE];
         html_getter_ptr->index = 0;
         responses[sock] = html_getter_ptr;
-    }
 
-    size_t active_events = 0;
-
-    for (auto&[sock, html_getter_ptr]: responses) {
         while (current_index < input_ptr->size()) {
             html_getter_ptr->parsed_url = parse_url((*input_ptr)[current_index]);
             current_index += params->threads_num;
@@ -60,7 +59,6 @@ void *EpollCrawler::parsing_thread(void *args) {
     }
 
 
-
     size_t bytes_read;
 
 
@@ -69,17 +67,19 @@ void *EpollCrawler::parsing_thread(void *args) {
         // Wait and test whether the connections are ready and have transmitted some
         // data
         size_t ready_events = epoll_wait(epoll_fd, events, max_events, -1);
+
         for (size_t i = 0; i < ready_events; i++) {
             int sock = events[i].data.fd;
-            bool need_new = false;
+            bool need_new = true;
             if (responses[sock]->mode == SOCK_CONNECTING) {
-                if (send_request(sock, responses[sock]->parsed_url, ADDITIONAL_PARAMS)) {
-                    connect_event.data.fd = sock;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &connect_event);
-                    responses[sock]->mode = SOCK_WRITING;
+                int res = send_request(sock, responses[sock]->parsed_url, ADDITIONAL_PARAMS);
+                if (res == 0) {
+                    read_event.data.fd = sock;
+                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &read_event);
+                    responses[sock]->mode = SOCK_READING;
+                    need_new = false;
                 } else {
                     std::cout << "Can't send request in while loop" << std::endl;
-                    need_new = true;
                 }
             } else if (responses[sock]->mode == SOCK_READING) {
                 bytes_read = read(
@@ -88,19 +88,22 @@ void *EpollCrawler::parsing_thread(void *args) {
                         MAX_SIZE - responses[sock]->index
                 );
                 responses[sock]->index += bytes_read;
-                if (bytes_read == 0 && responses[sock]->index != 0) {
-                    need_new = true;
-                    size_t tags = count_tags(responses[sock]->buffer, responses[sock]->index);
-                } else if (bytes_read == 0) {
-                    std::cout << responses[sock]->parsed_url.domain << std::endl;
-                    need_new = true;
+                if (bytes_read == -1) {
+                    std::cout << "Error while reading from {" << responses[sock]->parsed_url.domain << "}" << std::endl;
                 }
-            } else if (responses[sock]->mode == SOCK_WRITING) {
-                read_event.data.fd = sock;
-                epoll_ctl(epoll_fd, EPOLL_CTL_MOD, sock, &read_event);
-                responses[sock]->mode = SOCK_READING;
-            }
+                else if (bytes_read == 0) {
+                    if (responses[sock]->index != 0) {
+                        std::cout << responses[sock]->index << std::endl;
+                        size_t tags = count_tags(responses[sock]->buffer, responses[sock]->index);
+                    } else {
+                        std::cout << "Read 0 bytes from {" << responses[sock]->parsed_url.domain << "}" << std::endl;
+                    }
+                }
+                else {
+                    need_new = false;
+                }
 
+            }
             if (!need_new) {
                 continue;
             }
@@ -127,7 +130,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                 int res = connect_to_host(new_socket, responses[new_socket]->parsed_url);
                 if (res < 0 && errno != EINPROGRESS) {
                     std::cout << "Can't connect to host in while loop" << std::endl;
-                } else {
+                } else if (res < 0){
                     responses[new_socket]->mode = SOCK_CONNECTING;
                     connect_event.data.fd = new_socket;
                     epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &connect_event);
@@ -147,6 +150,13 @@ void *EpollCrawler::parsing_thread(void *args) {
 
     delete[] events;
 
+    for (auto& [sock, response]: responses) {
+        close(sock);
+        delete[] response->buffer;
+        delete response;
+        responses.erase(sock);
+    }
+
     // Once no urls are available anymore, finish working
     if (close(epoll_fd)) {
         throw std::runtime_error("Failed to close epoll file descriptor");
@@ -158,7 +168,8 @@ void *EpollCrawler::parsing_thread(void *args) {
 }
 
 EpollCrawler::EpollCrawler(size_t max_workers, size_t max_requests) : AbstractCrawler(max_workers),
-                                                                      _max_requests(max_requests) {}
+                                                                      _max_requests(max_requests) {
+}
 
 void EpollCrawler::process_queue() {
 

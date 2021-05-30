@@ -63,7 +63,7 @@ int connect_to_host(int sock, const parsed_url_t& parsed_url) {
 }
 
 
-bool send_request(int sock, const parsed_url_t& parsed_url, const std::string& additional_params) {
+int send_request(int sock, const parsed_url_t& parsed_url, const std::string& additional_params) {
     std::stringstream req_stream;
     req_stream << "GET " << parsed_url.path << " HTTP/1.1\r\n"
                << "Host: " << parsed_url.domain << "\r\n"
@@ -74,7 +74,19 @@ bool send_request(int sock, const parsed_url_t& parsed_url, const std::string& a
 
 
     // sending http request
-    return send(sock, request.c_str(), request.size(), 0) == request.size();
+    size_t res = send(sock, request.c_str(), request.size(), MSG_NOSIGNAL);
+    if (res == request.size()) {
+        return 0;
+    }
+
+    if (res == -1 && errno == EPIPE) {
+        std::cout << "ERROR: SIGPIPE while sending request to {" << parsed_url.domain << "}" << std::endl;
+        return -1;
+    }
+
+    return -2;
+
+
 
 }
 
@@ -89,8 +101,7 @@ size_t get_html(char* buffer, size_t max_size, const std::string& url, const std
         return 0;
     }
 
-    if (!send_request(sock, parsed_url, additional_params)) {
-        std::cout << "ERROR: Can't send request {" << url << "}" << std::endl;
+    if (send_request(sock, parsed_url, additional_params) != 0) {
         return 0;
     }
 
