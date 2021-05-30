@@ -1,0 +1,67 @@
+2021-05-29T00:46:19+03:00
+Running ./google-benchmark
+Run on (8 X 3900 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 32 KiB (x4)
+  L2 Unified 256 KiB (x4)
+  L3 Unified 6144 KiB (x1)
+Load Average: 9.96, 36.61, 118.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** Library was built as DEBUG. Timings may be affected.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_epoll/66429/iterations:1",1,1.52444e+10,2.24797e+09,ns,,,,,
+"benchmark_epoll/66429/iterations:1",1,1.80431e+10,2.61079e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02531e+10,1.00027e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02251e+10,1.03376e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02181e+10,1.00739e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02246e+10,1.03094e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02584e+10,1.01602e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02151e+10,9.68816e+08,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02118e+10,1.01891e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02503e+10,1.00921e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02421e+10,9.78728e+08,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02437e+10,1.04974e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02057e+10,1.06359e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02326e+10,9.6592e+08,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.0208e+10,1.03232e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02411e+10,1.06851e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02457e+10,1.02537e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02689e+10,1.06867e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02145e+10,1.03187e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02563e+10,1.08148e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02185e+10,1.01596e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02248e+10,1.03908e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02705e+10,1.0868e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02382e+10,1.00117e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.028e+10,1.015e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02856e+10,1.10021e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02675e+10,1.03543e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02298e+10,1.03179e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02512e+10,1.1401e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02422e+10,1.03387e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02502e+10,1.03606e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02779e+10,1.11817e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02309e+10,9.88511e+08,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02368e+10,1.03056e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02274e+10,1.01618e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02509e+10,1.06567e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02313e+10,1.04595e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02736e+10,1.02694e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02427e+10,1.01106e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02428e+10,1.088e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02463e+10,1.0345e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02328e+10,1.077e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02334e+10,1.19096e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02631e+10,1.0565e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02879e+10,1.03491e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.0241e+10,1.04347e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02694e+10,1.0297e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02535e+10,1.02672e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.0271e+10,1.0638e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02812e+10,1.04168e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02631e+10,1.02919e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02555e+10,1.02968e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.0289e+10,1.07099e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.03086e+10,1.05918e+09,ns,,,,,
+"benchmark_process_per_socket/66429/iterations:1",1,2.02986e+10,9.99466e+08,ns,,,,,
