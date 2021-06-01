@@ -12,23 +12,27 @@ void ProcessCrawler::parsing_process(size_t index, pthread_barrier_t* start_barr
     char *buffer = new char[MAX_SIZE];
 
     for (size_t i = index; i < input_queue.size(); i += max_workers) {
-        size_t bytes_read = get_html(buffer, MAX_SIZE, input_queue[i], ADDITIONAL_PARAMS);
+        int bytes_read = get_html(buffer, MAX_SIZE, input_queue[i], ADDITIONAL_PARAMS);
+        if (bytes_read < 0) {
+            continue;
+        }
         size_t tags = count_tags(buffer, bytes_read);
     }
 
     delete[] buffer;
 }
 
-ProcessCrawler::ProcessCrawler(size_t max_workers) : AbstractCrawler(max_workers) {}
-
-
-void ProcessCrawler::process_queue() {
+ProcessCrawler::ProcessCrawler(size_t max_workers) : AbstractCrawler(max_workers) {
     if (max_workers == 0) {
         throw std::runtime_error("There are no workers");
     }
+}
+
+
+void ProcessCrawler::start_workers() {
 
     // barrier that allows all processes to start their work at the same time
-    auto *start_barrier_ptr = (pthread_barrier_t *) mmap(
+    start_barrier_ptr = (pthread_barrier_t *) mmap(
             nullptr,
             sizeof(pthread_barrier_t),
             PROT_READ | PROT_WRITE,
@@ -45,7 +49,6 @@ void ProcessCrawler::process_queue() {
 
     pthread_barrierattr_destroy(&start_barrier_attr);
 
-
     for (size_t i = 0; i < max_workers - 1; i++) {
         int id = fork();
         if (id < 0) {
@@ -57,6 +60,10 @@ void ProcessCrawler::process_queue() {
 
     }
 
+}
+
+
+void ProcessCrawler::process_queue() {
     parsing_process(max_workers - 1, start_barrier_ptr);
 
     for (size_t i = 0; i < max_workers - 1; i++) {

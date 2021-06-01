@@ -20,6 +20,7 @@
 
 class ProcessCrawler : public AbstractCrawler {
 protected:
+    pthread_barrier_t* start_barrier_ptr;
 
     virtual void parsing_process(size_t index, pthread_barrier_t* start_barrier_ptr);
 
@@ -27,6 +28,8 @@ public:
     explicit ProcessCrawler(size_t max_workers);
 
     void process_queue() override;
+
+    void start_workers() override;
 
 
 };

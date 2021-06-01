@@ -44,19 +44,20 @@ int connect_to_host(int sock, const parsed_url_t& parsed_url) {
         throw std::runtime_error("Only http");
     }
 
-    struct hostent *host;
-    host = gethostbyname(parsed_url.domain.c_str());
+    //struct hostent *host;
+    //host = gethostbyname(parsed_url.domain.c_str());
 
     struct sockaddr_in server{};
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
 
-    if (!host || !host->h_addr) {
-        std::cout << "ERROR: host adress is null {" << parsed_url.domain << "}" << std::endl;
-        return -1;
-    }
-
-    server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
+    //if (!host || !host->h_addr) {
+    //    std::cout << "ERROR: host adress is null {" << parsed_url.domain << "}" << std::endl;
+    //    return -1;
+    //}
+    // std::cout << *((unsigned long *) host->h_addr) << std::endl;
+    // server.sin_addr.s_addr = *((unsigned long *) host->h_addr);
+    server.sin_addr.s_addr = 16787978;
 
     return connect(sock, (struct sockaddr *) &server, sizeof(server));
 
@@ -79,30 +80,30 @@ int send_request(int sock, const parsed_url_t& parsed_url, const std::string& ad
         return 0;
     }
 
-    if (res == -1 && errno == EPIPE) {
-        std::cout << "ERROR: SIGPIPE while sending request to {" << parsed_url.domain << "}" << std::endl;
+    if (res == -1) {
+        perror("Sending request error: ");
         return -1;
     }
 
     return -2;
 
-
-
 }
 
 
 
-size_t get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params) {
+int get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params) {
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock < 0) {
+        std::cout << sock << std::endl;
+    }
     parsed_url_t parsed_url = parse_url(url);
 
     if (connect_to_host(sock, parsed_url) < 0) {
-        std::cout << "ERROR: Can't connect to host {" << url << "}" << std::endl;
-        return 0;
+        return -1;
     }
 
     if (send_request(sock, parsed_url, additional_params) != 0) {
-        return 0;
+        return -2;
     }
 
     size_t index = 0;
@@ -116,6 +117,11 @@ size_t get_html(char* buffer, size_t max_size, const std::string& url, const std
         index += bytes_read;
         if (bytes_read == 0) {
             break;
+        }
+
+        if (bytes_read == -1) {
+            perror("Reading error");
+            return -3;
         }
     }
 

@@ -59,7 +59,7 @@ void *EpollCrawler::parsing_thread(void *args) {
     }
 
 
-    size_t bytes_read;
+    int bytes_read;
 
 
     while (current_index < input_ptr->size() || active_events != 0) {
@@ -79,7 +79,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                     responses[sock]->mode = SOCK_READING;
                     need_new = false;
                 } else {
-                    std::cout << "Can't send request in while loop" << std::endl;
+                    perror("Sending error: ");
                 }
             } else if (responses[sock]->mode == SOCK_READING) {
                 bytes_read = read(
@@ -88,15 +88,12 @@ void *EpollCrawler::parsing_thread(void *args) {
                         MAX_SIZE - responses[sock]->index
                 );
                 responses[sock]->index += bytes_read;
-                if (bytes_read == -1) {
-                    std::cout << "Error while reading from {" << responses[sock]->parsed_url.domain << "}" << std::endl;
+                if (bytes_read < 0) {
+                    perror("Reading error: ");
                 }
                 else if (bytes_read == 0) {
                     if (responses[sock]->index != 0) {
-                        std::cout << responses[sock]->index << std::endl;
                         size_t tags = count_tags(responses[sock]->buffer, responses[sock]->index);
-                    } else {
-                        std::cout << "Read 0 bytes from {" << responses[sock]->parsed_url.domain << "}" << std::endl;
                     }
                 }
                 else {
@@ -111,6 +108,9 @@ void *EpollCrawler::parsing_thread(void *args) {
             active_events--;
 
             int new_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
+            if (new_socket < 0) {
+                throw std::runtime_error("Can't create socket");
+            }
             auto html_getter_ptr = new html_getter_t;
             html_getter_ptr->mode = SOCK_IDLE;
             html_getter_ptr->buffer = responses[sock]->buffer;
@@ -130,7 +130,7 @@ void *EpollCrawler::parsing_thread(void *args) {
                 int res = connect_to_host(new_socket, responses[new_socket]->parsed_url);
                 if (res < 0 && errno != EINPROGRESS) {
                     std::cout << "Can't connect to host in while loop" << std::endl;
-                } else if (res < 0){
+                } else {
                     responses[new_socket]->mode = SOCK_CONNECTING;
                     connect_event.data.fd = new_socket;
                     epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &connect_event);
@@ -169,20 +169,14 @@ void *EpollCrawler::parsing_thread(void *args) {
 
 EpollCrawler::EpollCrawler(size_t max_workers, size_t max_requests) : AbstractCrawler(max_workers),
                                                                       _max_requests(max_requests) {
-}
-
-void EpollCrawler::process_queue() {
-
-    if (max_workers < 1) {
+    if (max_workers == 0) {
         throw std::runtime_error("There are no workers");
     }
+    workers = new pthread_t[max_workers-1];
+}
 
-    pthread_barrier_t start_barrier;
+void EpollCrawler::start_workers() {
     pthread_barrier_init(&start_barrier, nullptr, max_workers);
-
-
-    auto threads = new pthread_t[max_workers - 1];
-
 
     for (size_t i = 0; i < max_workers - 1; i++) {
         auto args = new async_parsing_args_t;
@@ -191,8 +185,13 @@ void EpollCrawler::process_queue() {
         args->threads_index = i;
         args->max_requests = _max_requests;
         args->start_barrier_ptr = &start_barrier;
-        pthread_create(&threads[i], nullptr, EpollCrawler::parsing_thread, (void *) args);
+        pthread_create(&workers[i], nullptr, EpollCrawler::parsing_thread, (void *) args);
     }
+
+}
+
+
+void EpollCrawler::process_queue() {
 
     auto main_args = new async_parsing_args_t;
     main_args->input_ptr = &input_queue;
@@ -205,11 +204,15 @@ void EpollCrawler::process_queue() {
 
 
     for (size_t i = 0; i < max_workers - 1; i++) {
-        pthread_join(threads[i], nullptr);
+        pthread_join(workers[i], nullptr);
     }
 
     input_queue.clear();
 
-    delete[] threads;
     pthread_barrier_destroy(&start_barrier);
+}
+
+EpollCrawler::~EpollCrawler() {
+    delete[] workers;
+
 }

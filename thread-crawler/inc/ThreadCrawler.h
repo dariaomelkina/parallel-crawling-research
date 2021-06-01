@@ -21,12 +21,20 @@ struct parsing_args_t {
 class ThreadCrawler : public AbstractCrawler {
 protected:
 
+    pthread_t* workers;
+
+    pthread_barrier_t start_barrier{};
+
     static void *parsing_thread(void *args);
 
 public:
     explicit ThreadCrawler(size_t max_workers);
 
-    virtual void process_queue();
+    void process_queue() override;
+
+    void start_workers() override;
+
+    ~ThreadCrawler();
 
 };
 

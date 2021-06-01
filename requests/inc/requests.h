@@ -33,6 +33,6 @@ int connect_to_host(int sock, const parsed_url_t& parsed_url);
 
 int send_request(int sock, const parsed_url_t& parsed_url, const std::string& additional_params);
 
-size_t get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params);
+int get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params);
 
 #endif //CRAWLERS_REQUESTS_H

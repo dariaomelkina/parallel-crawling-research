@@ -34,6 +34,8 @@ struct html_getter_t {
 class EpollCrawler : public AbstractCrawler {
 protected:
     size_t _max_requests;
+    pthread_t* workers;
+    pthread_barrier_t start_barrier{};
 
     static void *parsing_thread(void *args);
 
@@ -41,6 +43,10 @@ public:
     EpollCrawler(size_t max_workers, size_t max_requests);
 
     void process_queue() override;
+
+    void start_workers() override;
+
+    ~EpollCrawler();
 };
 
 #endif

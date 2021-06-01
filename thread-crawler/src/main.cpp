@@ -6,11 +6,14 @@
 
 int main() {
     std::vector<std::string> test_urls = {"http://www.example.com/",
+                                          "http://www.example.com/",
+                                          "http://www.example.com/",
+                                          "http://www.example.com/",
                                           "http://www.exmple.com/",
                                           "http://www.exmple.com/"};
 
 
-    ThreadCrawler x = ThreadCrawler(1);
+    ThreadCrawler x = ThreadCrawler(3);
 
     // adding links to the crawler
     for (auto &url: test_urls) {
@@ -19,6 +22,8 @@ int main() {
     }
 
     // processing links
+    x.start_workers();
+
     x.process_queue();
 
     return 0;
