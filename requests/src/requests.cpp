@@ -94,6 +94,7 @@ int send_request(int sock, const parsed_url_t& parsed_url, const std::string& ad
 int get_html(char* buffer, size_t max_size, const std::string& url, const std::string& additional_params) {
     int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
+        perror("Socket error: ");
         std::cout << sock << std::endl;
     }
     parsed_url_t parsed_url = parse_url(url);
