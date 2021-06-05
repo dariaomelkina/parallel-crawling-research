@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from delete_outliers import delete_outliers, adjust_length
 
-NUMBER_OF_PARAMETER_ROWS = 11
+NUMBER_OF_PARAMETER_ROWS = 0
 NUMBER_OF_WARNING_ROWS = 1
 NUMBER_Of_SKIP_ROWS = 5
 
@@ -61,13 +61,14 @@ if __name__ == "__main__":
     thread_fig.write_image("result-plots/thread-distribution.png")
 
     # Three crawlers together on one plot
+    max_val = max(max(epoll_data), max(process_data), max(thread_data)) + 3
     fig = go.Figure()
     fig.add_trace(go.Histogram(
         x=epoll_data,
         name='epoll',
         xbins=dict(
             start=0,
-            end=30,
+            end=max_val,
             size=0.01,
         ),
         autobinx=False,
@@ -79,7 +80,7 @@ if __name__ == "__main__":
         name='process per socket',
         xbins=dict(
             start=0,
-            end=30,
+            end=max_val,
             size=0.01,
         ),
         autobinx=False,
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         name='thread per socket',
         xbins=dict(
             start=0,
-            end=30,
+            end=max_val,
             size=0.01,
         ),
         autobinx=False,
