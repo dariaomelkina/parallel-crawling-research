@@ -1,13 +1,10 @@
 import sys
 import pandas as pd
-from scipy import stats
-import numpy
 import plotly.express as px
-import plotly.graph_objects as go
 
 NUMBER_OF_PARAMETER_ROWS = 11  # First lines without needed data
-NUMBER_OF_WARNING_ROWS = 1
-NUMBER_Of_SKIP_ROWS = 5
+# NUMBER_OF_WARNING_ROWS = 20
+NUMBER_Of_SKIP_ROWS = 0
 
 if __name__ == "__main__":
     ###################################################################################################################
@@ -29,7 +26,7 @@ if __name__ == "__main__":
     # Creating bar plot of the distribution
     fig = px.histogram(x=data,
                        nbins=100,  # TODO: test which number suits more
-                       title="Results distribution",
+                       title=f"Results distribution of {sys.argv[1]}",
                        labels=custom_labels)
 
     # Uncomment if You want to save graph
