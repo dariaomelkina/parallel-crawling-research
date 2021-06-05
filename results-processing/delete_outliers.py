@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import iqr
+import numpy
 
 
 def delete_outliers(data):
@@ -16,7 +17,16 @@ def delete_outliers(data):
     return list(filter(lambda x: Q1 - 1.5 * IQR <= x <= Q3 + 1.5 * IQR, data))
 
 
+def adjust_length(data, needed_length):
+    mean_value = numpy.mean(data)
+    data += [mean_value] * (needed_length - len(data))
+
+
 # Testing
 if __name__ == "__main__":
     test_data = [1, 2, 3, 4, -60, 90, 56, 3, 2, 3, 2, 5, 4, 6, -100]
-    print(delete_outliers(test_data))
+    test_data = delete_outliers(test_data)
+    print(len(test_data))
+    adjust_length(test_data, len(test_data) + 10)
+    print(len(test_data))
+    print(test_data)

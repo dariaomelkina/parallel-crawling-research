@@ -4,6 +4,7 @@ from scipy import stats
 import numpy
 import plotly.express as px
 import plotly.graph_objects as go
+from delete_outliers import delete_outliers, adjust_length
 
 NUMBER_OF_PARAMETER_ROWS = 11
 NUMBER_OF_WARNING_ROWS = 1
@@ -19,9 +20,16 @@ if __name__ == "__main__":
     thread_df = pd.read_csv(sys.argv[3],
                             skiprows=range(0, NUMBER_OF_PARAMETER_ROWS))
 
-    epoll_data = epoll_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
-    process_data = process_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
-    thread_data = thread_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000
+    epoll_data = delete_outliers(epoll_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000)
+    process_data = delete_outliers(process_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000)
+    thread_data = delete_outliers(thread_df['real_time'][NUMBER_Of_SKIP_ROWS:] / 1000000000)
+
+    ###################################################################################################################
+    # Adjust to same length
+    needed_length = max(len(epoll_data), len(process_data), len(thread_data))
+    adjust_length(epoll_data, needed_length)
+    adjust_length(process_data, needed_length)
+    adjust_length(thread_data, needed_length)
 
     ###################################################################################################################
     # Plot customizations
