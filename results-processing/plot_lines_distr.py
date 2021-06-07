@@ -81,5 +81,5 @@ if __name__ == "__main__":
     )
     # fig3.update_layout(yaxis_type="log")
     fig3.update_xaxes(showline=True, linewidth=1, linecolor='black', tickvals=threads)
-    fig3.update_yaxes(showline=True, linewidth=1, linecolor='black', type='category')
+    fig3.update_yaxes(showline=True, linewidth=1, linecolor='black')
     fig3.write_image("result-plots/tps-comparison.pdf")
