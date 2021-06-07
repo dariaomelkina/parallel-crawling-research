@@ -8,8 +8,7 @@ if __name__ == "__main__":
                   46.9795,
                   47.0385,
                   47.2885,
-                  48.4375,
-                  47.5819]
+                  48.4375]
     threads_25 = [47.34,
                   47.6758,
                   47.3808,
@@ -23,8 +22,7 @@ if __name__ == "__main__":
                25,
                50,
                100,
-               200,
-               300]
+               200]
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=sockets, y=threads_10, name='10 threads'))
@@ -83,5 +81,5 @@ if __name__ == "__main__":
     )
     # fig3.update_layout(yaxis_type="log")
     fig3.update_xaxes(showline=True, linewidth=1, linecolor='black', tickvals=threads)
-    fig3.update_yaxes(showline=True, linewidth=1, linecolor='black')
+    fig3.update_yaxes(showline=True, linewidth=1, linecolor='black', type='category')
     fig3.write_image("result-plots/tps-comparison.pdf")
