@@ -14,5 +14,6 @@ pip install plotly
 pip install pandas
 pip install scipy
 pip install numpy
+pip install psutil
 pip install matplotlib
 ```
