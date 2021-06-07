@@ -8,8 +8,8 @@ def create_histograms(distributions):
     custom_labels = {"x": "Time, s",
                      "y": "Number of iterations"}
 
-    # template = "plotly_white"
-    template = "simple_white"
+    template = "plotly_white"
+    # template = "simple_white"
 
     for distribution in distributions:
         name = distribution["name"]
@@ -20,6 +20,9 @@ def create_histograms(distributions):
         sample_histogtam.update_layout(
             font_size=20,
         )
+
+        sample_histogtam.update_xaxes(showline=True, linewidth=1, linecolor='black')
+        sample_histogtam.update_yaxes(showline=True, linewidth=1, linecolor='black')
 
         sample_histogtam.write_image(f"result-plots/{name}-distribution.pdf")
 
@@ -51,8 +54,8 @@ def three_distributions_plot(epoll_data, process_data, thread_data):
         {"data": thread_data, "name": "thread per socket", "color": "darkgreen"}
     )
 
-    # template = "plotly_white"
-    template = "simple_white"
+    template = "plotly_white"
+    # template = "simple_white"
 
     for distr in plot_data:
         fig.add_trace(go.Histogram(
@@ -82,4 +85,8 @@ def three_distributions_plot(epoll_data, process_data, thread_data):
             x=0.01
         )
     )
+
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black')
+    fig.update_yaxes(showline=True, linewidth=1, linecolor='black')
+
     fig.write_image("result-plots/distributions.pdf")
