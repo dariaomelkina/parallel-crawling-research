@@ -47,8 +47,7 @@ if __name__ == "__main__":
     )
 
     fig.update_xaxes(showline=True, linewidth=1, linecolor='black', type="linear", tickvals=sockets)
-    fig.update_yaxes(showline=True, linewidth=1, linecolor='black', type="linear",
-                     tickvals=threads_10 + threads_25 + threads_50 + threads_100)
+    fig.update_yaxes(showline=True, linewidth=1, linecolor='black', type="linear")
     fig.write_image("result-plots/epoll-comparison.pdf")
 
     # Process per socket for 264000 files
@@ -66,7 +65,7 @@ if __name__ == "__main__":
     )
 
     fig2.update_xaxes(showline=True, linewidth=1, linecolor='black', type="linear", tickvals=processes)
-    fig2.update_yaxes(showline=True, linewidth=1, linecolor='black', tickvals=pps_data)
+    fig2.update_yaxes(showline=True, linewidth=1, linecolor='black')
     fig2.write_image("result-plots/pps-comparison.pdf")
 
     # Thread per socket for 264000 files
@@ -82,8 +81,7 @@ if __name__ == "__main__":
         template=template,
         font_size=15,
     )
-    fig3.update_layout(yaxis_type="log")
+    # fig3.update_layout(yaxis_type="log")
     fig3.update_xaxes(showline=True, linewidth=1, linecolor='black', tickvals=threads)
     fig3.update_yaxes(showline=True, linewidth=1, linecolor='black')
-    fig3.show()
     fig3.write_image("result-plots/tps-comparison.pdf")
