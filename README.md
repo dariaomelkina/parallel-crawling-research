@@ -13,13 +13,11 @@ There are also implementations of benchmarking, helper modules (such as director
 results visualization) and instructions for server setup.
 
 ## Global parameters:
-_DRAFT_
-
 In order for testing of the crawlers to be consistent and representative we have 
 set some parameters, which should be the same for all the crawlers:
-* **OS (for benchmarking):** Ubuntu (_which one?_)
-* **Compiler:** gcc 10.2.0-6 version (_perhaps, we are not sure yet_)
-* **CMake:** 3.16/3.17+ version
+* **OS (for benchmarking):** Ubuntu 20.04 LTS
+* **Compiler:** GCC 9.3.0 version
+* **CMake:** 3.16+ version
 
 ## Credits:
 * Oleg Farenyuk
