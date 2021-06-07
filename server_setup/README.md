@@ -31,6 +31,9 @@ server {
 }
 ```
 
+## Setting up the global nxinx config
+Paste the contents of nginx.conf file from this directory into ```/usr/local/nginx/conf```
+
 ## Starting up the server
 Starting nginx:
 ```bash
