@@ -40,7 +40,7 @@ def three_distributions_plot(epoll_data, process_data, thread_data):
     fig = go.Figure()
 
     plot_data = (
-        {"data": epoll_data, "name": "epol", "color": "steelblue"},
+        {"data": epoll_data, "name": "epoll", "color": "steelblue"},
         {"data": process_data, "name": "process per socket", "color": "blueviolet"},
         {"data": thread_data, "name": "thread per socket", "color": "deeppink"}
     )

@@ -1,0 +1,8 @@
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"benchmark_epoll/190000/10/10/iterations:1",1,9.38125e+10,3.41422e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.46318e+10,3.97929e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.39472e+10,3.35392e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.55973e+10,3.30897e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.50672e+10,3.7519e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.68918e+10,3.63664e+10,ns,,,,,
+"benchmark_epoll/190000/10/10/iterations:1",1,9.44627e+10,3.45361e+10,ns,,,,,
