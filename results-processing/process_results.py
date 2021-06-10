@@ -22,16 +22,16 @@ def read_preprocess(filename):
 
 def main():
     # Read csv files and delete ourliers
-    print("EPOLL:")
+    # print("EPOLL:")
     epoll_data = read_preprocess(sys.argv[1])
-    print("\n\nPPS:")
+    # print("\n\nPPS:")
 
     process_data = read_preprocess(sys.argv[2])
 
     # print("\nAfter outlier deletion:")
     # print(pd.Series(process_data).describe())
 
-    print("\n\nTPS:")
+    # print("\n\nTPS:")
 
     thread_data = read_preprocess(sys.argv[3])
 
