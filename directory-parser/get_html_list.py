@@ -9,7 +9,7 @@ import random
 
 def density_plot(result_sizes):
     # Density Plot with Rug Plot
-    sns.distplot(result_sizes, hist=False, kde=True, rug=True,
+    sns.distplot(result_sizes, hist=False, kde=True, rug=False,
                  color='darkblue',
                  kde_kws={'linewidth': 2},
                  rug_kws={'color': 'black'})
@@ -54,7 +54,7 @@ def main():
 
     index = 0
     for i in file_list:
-        if i[1] >= 820:
+        if i[1] >= 200:
             break
         index += 1
     file_list = file_list[:index]

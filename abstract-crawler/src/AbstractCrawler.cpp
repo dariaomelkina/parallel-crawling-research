@@ -13,7 +13,7 @@ size_t AbstractCrawler::count_tags(const char *html, size_t html_size) {
     if (html_size < 2) {
         return 1;
     }
-    for (size_t j = 0; j < 6; j++) {
+    for (size_t j = 0; j < 2; j++) {
         std::vector<std::pair<size_t, size_t>> indeces;
         std::vector<std::string> tag_names;
 

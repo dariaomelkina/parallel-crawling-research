@@ -8,7 +8,7 @@ import sys
 
 def density_plot(result_sizes):
     # Density Plot with Rug Plot
-    sns.distplot(result_sizes, hist=False, kde=True, rug=True,
+    sns.distplot(result_sizes, hist=True, kde=True, rug=True,
                  color='darkblue',
                  kde_kws={'linewidth': 2},
                  rug_kws={'color': 'black'})
