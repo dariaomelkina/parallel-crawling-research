@@ -94,8 +94,8 @@ def plot(results_dict):
                 legend=dict(
                     yanchor="top",
                     y=0.99,
-                    xanchor="left",
-                    x=0.01
+                    xanchor="right",
+                    x=0.99
                 )
             )
 
