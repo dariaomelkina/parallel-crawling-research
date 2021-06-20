@@ -9,18 +9,39 @@ import random
 
 def density_plot(result_sizes):
     # Density Plot with Rug Plot
-    sns.distplot(result_sizes, hist=False, kde=True, rug=False,
+    ax = sns.distplot(result_sizes, hist=False, kde=True, rug=False,
                  color='darkblue',
                  kde_kws={'linewidth': 2},
                  rug_kws={'color': 'black'})
 
     # Plot formatting
-    plt.title('Density Plot of the size of html file in Kb')
+
+    SMALL_SIZE = 15
+    MEDIUM_SIZE = 200
+    BIGGER_SIZE = 20
+
+    # plt.title('Density Plot of the size of html file in Kb')
     plt.xlabel('HTML size, Kb')
     plt.ylabel('Density')
     plt.xlim((0, max(result_sizes)))
     plt.xticks(np.linspace(0, max(result_sizes), num=11))
-    plt.show()
+    # plt.rc('font', size=25)
+    # plt.rcParams.update({'font.size': 22})
+
+    ax.title.set_fontsize(18)
+    x = ([ax.xaxis.label, ax.yaxis.label] +
+             ax.get_xticklabels() + ax.get_yticklabels())
+    ax.xaxis.label.set_fontsize(18)
+    ax.yaxis.label.set_fontsize(17)
+    for tick in ax.get_xticklabels():
+        tick.set_fontsize(14)
+    for tick in ax.get_yticklabels():
+        tick.set_fontsize(11)
+
+    # plt.show()
+    plt.savefig('data_distribution.pdf')
+
+
 
 
 def main():
