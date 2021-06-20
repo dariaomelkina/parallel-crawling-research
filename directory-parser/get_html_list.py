@@ -14,32 +14,26 @@ def density_plot(result_sizes):
                  kde_kws={'linewidth': 2},
                  rug_kws={'color': 'black'})
 
-    # Plot formatting
-
-    SMALL_SIZE = 15
-    MEDIUM_SIZE = 200
-    BIGGER_SIZE = 20
+    plt.gcf().subplots_adjust(bottom=0.15)
 
     # plt.title('Density Plot of the size of html file in Kb')
     plt.xlabel('HTML size, Kb')
     plt.ylabel('Density')
     plt.xlim((0, max(result_sizes)))
     plt.xticks(np.linspace(0, max(result_sizes), num=11))
-    # plt.rc('font', size=25)
-    # plt.rcParams.update({'font.size': 22})
 
     ax.title.set_fontsize(18)
     x = ([ax.xaxis.label, ax.yaxis.label] +
              ax.get_xticklabels() + ax.get_yticklabels())
-    ax.xaxis.label.set_fontsize(18)
-    ax.yaxis.label.set_fontsize(17)
+    ax.xaxis.label.set_fontsize(20)
+    ax.yaxis.label.set_fontsize(18)
     for tick in ax.get_xticklabels():
-        tick.set_fontsize(14)
+        tick.set_fontsize(16)
     for tick in ax.get_yticklabels():
-        tick.set_fontsize(11)
+        tick.set_fontsize(13)
 
     # plt.show()
-    plt.savefig('data_distribution.pdf')
+    plt.savefig('data_distribution_big.pdf')
 
 
 
