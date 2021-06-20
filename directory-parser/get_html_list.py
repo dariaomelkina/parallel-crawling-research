@@ -20,12 +20,12 @@ def density_plot(result_sizes):
     plt.xlabel('HTML size, Kb')
     plt.ylabel('Density')
     plt.xlim((0, max(result_sizes)))
-    plt.xticks(np.linspace(0, max(result_sizes), num=11))
+    plt.xticks(np.linspace(0, max(result_sizes), num=5))
 
     ax.title.set_fontsize(18)
     x = ([ax.xaxis.label, ax.yaxis.label] +
              ax.get_xticklabels() + ax.get_yticklabels())
-    ax.xaxis.label.set_fontsize(20)
+    ax.xaxis.label.set_fontsize(23)
     ax.yaxis.label.set_fontsize(18)
     for tick in ax.get_xticklabels():
         tick.set_fontsize(16)
@@ -33,7 +33,7 @@ def density_plot(result_sizes):
         tick.set_fontsize(13)
 
     # plt.show()
-    plt.savefig('data_distribution_big.pdf')
+    plt.savefig('data_distribution_superbig.pdf')
 
 
 
