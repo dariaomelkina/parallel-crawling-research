@@ -5,7 +5,7 @@ from statistical_tests import display_normality_test, compare_distributions
 from preprocessing import read_preprocess, NAMES
 
 
-COLORS = ["blue", "orange", "darkgreen", "red"]
+COLORS = ["darkgreen", "red", "darkblue", "orange", "black"]
 RESULT_FOLDER = "results"
 
 

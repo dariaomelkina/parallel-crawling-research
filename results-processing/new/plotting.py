@@ -1,7 +1,7 @@
 import plotly.express as px
 import plotly.graph_objects as go
 
-BAR_WIDTH = 0.01
+BAR_WIDTH = 0.02
 
 def create_histogram(distribution, filename):
     # Plot customizations
@@ -58,8 +58,8 @@ def plot_distributions(distributions, filename):
         legend=dict(
             yanchor="top",
             y=0.99,
-            xanchor="left",
-            x=0.01
+            xanchor="right",
+            x=0.99
         )
     )
 
