@@ -73,6 +73,19 @@ static void benchmark_epoll(benchmark::State &state) {
     }
 }
 
+static void hlam(benchmark::State &state) {
+
+    EpollCrawler x = EpollCrawler(state.range(1), state.range(2));
+    for (auto _ : state) {
+        int x = 0;
+        for (size_t i = 0; i < 10000; i++)
+        {
+            x++;
+        }
+        
+    }
+}
+
 int iters = 1;
 int args = 264000;
 
@@ -81,11 +94,10 @@ int args_rozigriv = 20000;
 
 // Rozigriv:
 
-BENCHMARK(benchmark_epoll)->Args({args, 10, 15})->Iterations(1);
 BENCHMARK(benchmark_process_per_socket)->Args({args, 100})->Iterations(1);
-BENCHMARK(benchmark_thread_per_socket)->Args({args, 100})->Iterations(1);
-BENCHMARK(benchmark_process_per_socket)->Args({args, 100})->Iterations(1);
-BENCHMARK(benchmark_thread_per_socket)->Args({args, 100})->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Args({args, 100})->Iterations(1);
+// BENCHMARK(benchmark_process_per_socket)->Args({args, 100})->Iterations(1);
+// BENCHMARK(benchmark_thread_per_socket)->Args({args, 100})->Iterations(1);
 
 
 
@@ -95,284 +107,79 @@ BENCHMARK(benchmark_thread_per_socket)->Args({args, 100})->Iterations(1);
 
 
 
-BENCHMARK(benchmark_process_per_socket)
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
-    ->Args({args, 100})
+// BENCHMARK(benchmark_process_per_socket)
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
+//     ->Args({args, 100})
 
-    ->Iterations(1);
+//     ->Iterations(1);
 
+// BENCHMARK(benchmark_thread_per_socket)
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
+//     ->Args({args, 1000})
 
+//     ->Iterations(1);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-BENCHMARK(benchmark_thread_per_socket)
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-    ->Args({args, 1000})
-
-    ->Iterations(1);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-BENCHMARK(benchmark_epoll)
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-     ->Args({args, 10, 25})
-
-    ->Iterations(1);
+// BENCHMARK(benchmark_epoll)
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+//      ->Args({args, 10, 25})
+     
+//     ->Iterations(1);
 
 
 
