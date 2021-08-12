@@ -22,7 +22,6 @@ def one_file_processing(filename):
         } for i, name in enumerate(data)]
 
     parsed_filename = filename.split('.')[0].split('/')[-1].replace('_', '-')
-    
 
     for dist in distributions:
         display_normality_test(dist)
@@ -40,7 +39,7 @@ def many_files_processing(filenames):
     crawlers = {name: [] for name in NAMES.values()}
     for filename in filenames:
         data = read_preprocess(filename)
-        parsed_filename = filename.split('.')[0].split('/')[-1].replace('_', ', ')
+        parsed_filename = filename.split('/')[-1].split('.')[0].replace('_', ', ')
         distributions = [{
             "crawler_type": name,
             "name": f"{name} ({parsed_filename})",
@@ -49,6 +48,7 @@ def many_files_processing(filenames):
             } for i, name in enumerate(data)]
         for dist in distributions:
             crawlers[dist["crawler_type"]].append(dist)
+
     
     for crawler_type, distributions in crawlers.items():
         print(crawler_type)

@@ -59,49 +59,62 @@ def plot(results_dict):
             fig3.add_trace(go.Scatter(x=threads, y=means))
 
             template = "plotly_white"
-            fig3.update_layout(
-                xaxis_title_text='Number of threads',
-                yaxis_title_text='Time, s',
-                template=template,
-                font_size=15,
-            )
-            # fig3.update_layout(yaxis_type="log")
+            if crawler == "benchmark_process_per_socket":
+                fig3.update_layout(
+                    xaxis_title_text='Number of processes',
+                    yaxis_title_text='Time, s',
+                    template=template,
+                    font_size=15,
+                )
+            else:
+                fig3.update_layout(
+                    xaxis_title_text='Number of threads',
+                    yaxis_title_text='Time, s',
+                    template=template,
+                    font_size=15,
+                )
+                # fig3.update_layout(yaxis_type="log")
             # fig3.update_xaxes(showline=True, linewidth=1, linecolor='black', tickvals=threads)
-            fig3.update_xaxes(showline=True, linewidth=1, linecolor='black')
+            if crawler == "benchmark_process_per_socket":
+                newtickvals = [20, 50, 100, 200, 300, 400, 500]
+            else:
+                newtickvals = [10, 500, 1000, 2000, 3000, 4000, 5000]
+
+            fig3.update_xaxes(showline=True, linewidth=1, linecolor='black', tickvals=newtickvals)
             fig3.update_yaxes(showline=True, linewidth=1, linecolor='black')
             fig3.write_image(f"result-plots/{crawler}.pdf")
 
-        if crawler == "benchmark_epoll":
-            threads_unique = sorted(list(set(threads)))
-
-            fig = go.Figure()
-
-            # plotting a single for each thread number, it just works
-            for threads_num in threads_unique:
-                length = len(sockets)
-                means_thread = [means[i] for i in range(length) if threads[i] == threads_num]
-                sockets_thread = [sockets[i] for i in range(length) if threads[i] == threads_num]
-
-                sockets_thread, means_thread = sort_by_value(sockets_thread, means_thread)
-                fig.add_trace(go.Scatter(x=sockets_thread, y=means_thread, name=f"{threads_num} threads"))
-
-            template = "plotly_white"
-            fig.update_layout(
-                xaxis_title_text='Sockets per thread',
-                yaxis_title_text='Time, s',
-                template=template,
-                font_size=15,
-                legend=dict(
-                    yanchor="top",
-                    y=0.99,
-                    xanchor="right",
-                    x=0.99
-                )
-            )
-
-            fig.update_xaxes(showline=True, linewidth=1, linecolor='black', type="linear", tickvals=sockets)
-            fig.update_yaxes(showline=True, linewidth=1, linecolor='black', type="linear")
-            fig.write_image(f"result-plots/{crawler}.pdf")
+        # if crawler == "benchmark_epoll":
+        #     threads_unique = sorted(list(set(threads)))
+        #
+        #     fig = go.Figure()
+        #
+        #     # plotting a single for each thread number, it just works
+        #     for threads_num in threads_unique:
+        #         length = len(sockets)
+        #         means_thread = [means[i] for i in range(length) if threads[i] == threads_num]
+        #         sockets_thread = [sockets[i] for i in range(length) if threads[i] == threads_num]
+        #
+        #         sockets_thread, means_thread = sort_by_value(sockets_thread, means_thread)
+        #         fig.add_trace(go.Scatter(x=sockets_thread, y=means_thread, name=f"{threads_num} threads"))
+        #
+        #     template = "plotly_white"
+        #     fig.update_layout(
+        #         xaxis_title_text='Sockets per thread',
+        #         yaxis_title_text='Time, s',
+        #         template=template,
+        #         font_size=15,
+        #         legend=dict(
+        #             yanchor="top",
+        #             y=0.99,
+        #             xanchor="right",
+        #             x=0.99
+        #         )
+        #     )
+        #
+        #     fig.update_xaxes(showline=True, linewidth=1, linecolor='black', type="linear", tickvals=sockets)
+        #     fig.update_yaxes(showline=True, linewidth=1, linecolor='black', type="linear")
+        #     fig.write_image(f"result-plots/{crawler}.pdf")
 
 
 def main():
